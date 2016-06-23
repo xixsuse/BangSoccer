@@ -1,0 +1,94 @@
+{
+  "project_info": {
+    "project_number": "205937550804",
+    "firebase_url": "https://project-8138681142864808550.firebaseio.com",
+    "project_id": "project-8138681142864808550",
+    "storage_bucket": "project-8138681142864808550.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205937550804:android:46b47e2dfce27515",
+        "android_client_info": {
+          "package_name": "upgrade.ntv.footballservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205937550804-np6i82loftvcbp1uodopnehur754tfri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "upgrade.ntv.footballservice",
+            "certificate_hash": "829BA658482EDEFB5F74E70EDA1E50B967F14321"
+          }
+        },
+        {
+          "client_id": "205937550804-ldj4cllncs49v0comjj4okl4oqb0ikjt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDov-1epq01poRO6CtqI0CJCx2aiXeUr40"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205937550804:android:4d401bea24eacdbf",
+        "android_client_info": {
+          "package_name": "upgrade.ntv.bangsoccer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205937550804-jt880u3duoib80j1vnlvqem5hs8pp3tg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "upgrade.ntv.bangsoccer",
+            "certificate_hash": "829BA658482EDEFB5F74E70EDA1E50B967F14321"
+          }
+        },
+        {
+          "client_id": "205937550804-ldj4cllncs49v0comjj4okl4oqb0ikjt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDov-1epq01poRO6CtqI0CJCx2aiXeUr40"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205937550804-ldj4cllncs49v0comjj4okl4oqb0ikjt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

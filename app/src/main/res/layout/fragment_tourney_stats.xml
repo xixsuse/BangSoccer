@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+
+        android:background="@color/cardview_light_background"
+        android:layout_margin="4dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_weight="4.6"
+            android:text="Equipos"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/stats_pj_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.6"
+            android:text="PJ"
+android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/stats_pg_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.6"
+            android:gravity="center"
+
+            android:textColor="@color/colorBlack"
+            android:text="PG"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/stats_pe_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.6"
+            android:gravity="center"
+
+            android:textColor="@color/colorBlack"
+            android:text="PE"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/stats_pp_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.6"
+            android:gravity="center"
+            android:text="PP"
+
+            android:textColor="@color/colorBlack"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/stats_gf_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.6"
+            android:text="GF"
+
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/stats_gc_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.6"
+            android:text="GC"
+
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/stats_dg_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.8"
+            android:gravity="center"
+            android:text="DG"
+
+            android:textColor="@color/colorBlack"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/stats_ptos_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.8"
+            android:gravity="center"
+
+            android:textColor="@color/colorBlack"
+            android:text="PTs"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".FragmentTourneyStats"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="@color/colorWhite"
+        tools:listitem="@layout/fragment_tourney_stats" />
+
+</LinearLayout>

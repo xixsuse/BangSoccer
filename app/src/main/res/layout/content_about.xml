@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ActivityAbout"
+    tools:showIn="@layout/app_bar_about">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/about_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="20sp"
+            android:text="   We’re a group of dominicans who are very different from one another, which is great for creative problem-solving and out-of-the-box
+        thinking but it turns choosing a pizza topping into a board meeting. But despite our differences we’re joined together by a common belief:
+        “if you want something to be, go out there and make it yourself” (Except for affordable space travel, UpgradeSpace is not running yet so in
+        the meanwhile thanks to Musk and Bezos).\n
+        This common belief is what drives the projects we choose to make. We’re heavily invested in our projects because we grew tired of waiting for
+        others to come along and make them. We have three standards for undertaking anything: we either learn a lot from this idea, we love
+        it (like what), or we’re going to enjoy the hell out of making it. This is why we’re not a company that you can hire for any project, like
+        the next “Hot or Not” or show us your\n
+        “It’s like Uber but for horse-drawn carriages (which admittedly sounds hilarious).\n
+
+        If you really have faith in your idea email us at info@upgrade.do and make us believe in it.\n
+        We make the things we love, and we love beautiful things, functional things. We love things that kick ass and look good doing it. " />
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

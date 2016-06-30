@@ -1,0 +1,92 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".FragmentNewsFeeddetails">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackground"
+        app:cardElevation="8dp"
+        app:contentPadding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/newsfeeddetails_news_title"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:lineSpacingExtra="8dp"
+                    android:text="Carlos Vargas regresaría en Mayo."
+                    android:textAlignment="center"
+                    android:textAppearance="@android:style/TextAppearance.Material.Title"
+                    tools:targetApi="LOLLIPOP" />
+
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/newsfeeddetails_news_timestamp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:text="April 15 at 10:17am "
+                    android:textAlignment="viewEnd"
+                    android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+                    android:textSize="12sp"
+                    tools:targetApi="LOLLIPOP" />
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/cardview_light_background"
+                android:layout_weight="2">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="6">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newsfeeddetails_news_description"
+                    android:text="El incansable garrinchero podría volver a los campos de juego el próximo mes para disputar los torneos de futbol 11 y futbol 5 en los que participa el Club.
+
+El juvenil es símbolo de combatividad y posee el respeto de compañeros y mayores.
+Carlos sufrió una lesión tras una caída estrepitosa en la.opa Loyola"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</android.support.v4.widget.NestedScrollView>

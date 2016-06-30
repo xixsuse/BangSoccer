@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@drawable/ic_news_icon"
+            android:title="Noticias"
+            />
+        <item
+            android:id="@+id/nav_clubs"
+            android:icon="@drawable/ic_teams_icon"
+            android:title="Clubes" />
+
+        <item
+            android:id="@+id/nav_dynamic_tourney"
+            android:title="Partidos"
+            android:icon="@drawable/ic_soccer_ball"
+            />
+        <!--app:actionLayout="@layout/drawer_switch"-->
+        <item
+            android:id="@+id/nav_location"
+            android:icon="@drawable/ic_soccer_location_icon"
+            android:title="Estadios" />
+
+    </group>
+
+
+    <item android:title="Communicate"
+        >
+        <menu><!--
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_setting_light"
+                android:title="Settings" />-->
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_upgraden"
+                android:title="Upgrade" />
+        </menu>
+    </item>
+
+</menu>

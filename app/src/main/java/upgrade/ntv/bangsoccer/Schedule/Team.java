@@ -7,8 +7,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,22 +20,25 @@ import upgrade.ntv.bangsoccer.R;
  */
 public class Team implements Cloneable {
 
-    private  int mTeamID, mTeamImage;
-    private String mName, mStadium, mProfile;
-    private int mPJ, mDG, mPoints, mTeamRank;
+    private  int teamid, team_image, pj, dg, points, rank, clubid;
+    private String name, stadium, profile, division;
+
     private boolean isFavorite;
-    private List<Players> mPlayersList = new ArrayList<Players>();
-    private List<String> mMatchList = new ArrayList<String>();
-    protected Team clone;
+    private List<Players> player_list = new ArrayList<Players>();
+    private List<String> match_list = new ArrayList<String>();
 
-    DatabaseReference mFireBaseRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference mFireBasePlayersRef = mFireBaseRootRef.child("Players");
+    private Team team_clone;
 
+    private  DatabaseReference mFireBaseRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mFireBasePlayersRef = mFireBaseRootRef.child("Players");
 
+    public Team() {
+        //jackson object
+    }
 
     // public constructor
-    public Team( int teamID) {
-        this.mTeamID = teamID;
+    public Team( int teamid) {
+        this.teamid = teamid;
 
         mFireBasePlayersRef.addChildEventListener(new PlayerEvenetListener());
         onSaveTeam();
@@ -49,7 +50,12 @@ public class Team implements Cloneable {
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Players firebaseRequest = dataSnapshot.getValue(Players.class);
             firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
-            getmPlayersList().add(0, firebaseRequest);
+            getPlayer_list().add(0, firebaseRequest);
+            if(firebaseRequest.getTeamid()==0){
+                firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
+                getPlayer_list().add(0, firebaseRequest);
+            }
+
 
         }
 
@@ -94,9 +100,9 @@ public class Team implements Cloneable {
 
     //   Setters
 
-public Team getClone() throws CloneNotSupportedException {
-   clone= (Team) this.clone();
-    return clone;
+public Team getTeam_clone() throws CloneNotSupportedException {
+   team_clone = (Team) this.clone();
+    return team_clone;
 }
 
     public boolean isFavorite() {
@@ -107,152 +113,151 @@ public Team getClone() throws CloneNotSupportedException {
         isFavorite = favorite;
     }
 
-    private void setmTeamImage(int mTeamImage) {
-        this.mTeamImage = mTeamImage;
+    private void setTeam_image(int team_image) {
+        this.team_image = team_image;
     }
 
-    private void setmName(String mName) {
-        this.mName = mName;
+    private void setName(String name) {
+        this.name = name;
     }
 
-    private void setmStadium(String mStadium) {
-        this.mStadium = mStadium;
+    private void setStadium(String stadium) {
+        this.stadium = stadium;
     }
 
-    private void setmProfile(String mProfile) {
-        this.mProfile = mProfile;
+    private void setProfile(String profile) {
+        this.profile = profile;
     }
 
-    private void setmPJ(int mPJ) {
-        this.mPJ = mPJ;
+    private void setPj(int pj) {
+        this.pj = pj;
     }
 
-    private void setmDG(int mDG) {
-        this.mDG = mDG;
+    private void setDg(int dg) {
+        this.dg = dg;
     }
 
-    private void setmPoints(int mPoints) {
-        this.mPoints = mPoints;
+    private void setPoints(int points) {
+        this.points = points;
     }
 
-    private void setmTeamRank(int mTeamRank) {
-        this.mTeamRank = mTeamRank;
+    private void setRank(int rank) {
+        this.rank = rank;
     }
 
     private void addPlayersList(List<Players> mPlayersList) {
-        this.mPlayersList = mPlayersList;
+        this.player_list = mPlayersList;
     }
 
     // Getters
 
 
-    public int getmTeamImage() {
-        return mTeamImage;
+    public int getTeam_image() {
+        return team_image;
     }
 
-    public int getmTeamID() {
-        return mTeamID;
+    public int getTeamid() {
+        return teamid;
     }
 
-    public String getmName() {
-        return mName;
+    public String getName() {
+        return name;
     }
 
-    public String getmStadium() {
-        return mStadium;
+    public String getStadium() {
+        return stadium;
     }
 
 
 
-    public int getmPJ() {
-        return mPJ;
+    public int getPj() {
+        return pj;
     }
 
-    public int getmDG() {
-        return mDG;
+    public int getDg() {
+        return dg;
     }
 
-    public int getmPoints() {
-        return mPoints;
+    public int getPoints() {
+        return points;
     }
 
-    public int getmTeamRank() {
-        return mTeamRank;
+    public int getRank() {
+        return rank;
     }
 
-    public List<Players> getmPlayersList() {
-        return mPlayersList;
+    public List<Players> getPlayer_list() {
+        return player_list;
     }
 
-    public List<String> getmMatchList() {
-        return mMatchList;
+    public List<String> getMatch_list() {
+        return match_list;
     }
 
     public void addMatchList(List<String> mMatchList) {
-        this.mMatchList = mMatchList;
+        this.match_list = mMatchList;
     }
 
 
     // object functions
 
     private void addPlayer(Players player){
-        mPlayersList.add(player);
+        player_list.add(player);
     }
 
     private void addMatch(String match){
-        mMatchList.add(match);
+        match_list.add(match);
     }
 
 
     public void getPlayer(int index){
-        mPlayersList.get(index);
+        player_list.get(index);
     }
 
     public String getMatch(int index){
-       return mMatchList.get(index);
+       return match_list.get(index);
     }
 
 
     private void onSaveTeam(){
         for (int i = 0; i < AppConstant.mTeamArrayList.length; i++)
         {
-            if( Integer.valueOf(AppConstant.mTeamArrayList[i][0]) == this.mTeamID){
-                setmName(AppConstant.mTeamArrayList[i][1]);
-                setmStadium(AppConstant.mTeamArrayList[i][2]);
-                setmTeamImage(AppConstant.mImageList[i]);
+            if( Integer.valueOf(AppConstant.mTeamArrayList[i][0]) == this.teamid){
+                setName(AppConstant.mTeamArrayList[i][1]);
+                setStadium(AppConstant.mTeamArrayList[i][2]);
+                setTeam_image(AppConstant.mImageList[i]);
             }
         }
     }
-    public static List<Players> mTeamPlayerArrayList;
-    private  void onSavePlayerList(){
+
+/*    private  void onSavePlayerList(){
         Players playersToAdd;
-        Query queryPlayersRef = mFireBasePlayersRef.orderByKey();
+
         for (int i = 0; i <AppConstant.mTeamPlayerArrayList.length; i++) {
 
-           if( Integer.valueOf(AppConstant.mTeamPlayerArrayList[i][0]).equals(this.mTeamID))
-           {
- /*              playersToAdd = new Players(
+            if( Integer.valueOf(AppConstant.mTeamPlayerArrayList[i][0]).equals(this.teamid))
+            {
+             playersToAdd = new Players(
                        AppConstant.mTeamPlayerArrayList[i][1],
                        AppConstant.mTeamPlayerArrayList[i][2],
-                       this.mTeamID,
+                       this.teamid,
                        AppConstant.mTeamPlayerArrayList[i][3],
                        AppConstant.mTeamPlayerArrayList[i][4],
                        AppConstant.mTeamPlayerArrayList[i][5],
-                       R.drawable.ic_player_icon);*/
+                       R.drawable.ic_player_icon);
 
-              // addPlayer(playersToAdd);
-           }
+                addPlayer(playersToAdd);
+            }
         }
-    }
-
+    }*/
     private void onCreateTeamMatch(){
         for (int i = 0; i < AppConstant.mMatchArrayList.length-9 ; i++) {
             for (int j = 0; j < AppConstant.mMatchArrayList[i].length  ; j++) {
                 String matchList = null;
-                if(AppConstant.mMatchArrayList[i][j][1] == mTeamID ) {
-                    matchList = mName + " VS " + AppConstant.mTeamArrayList[AppConstant.mMatchArrayList[i][j][2]][1] +" "+ AppConstant.mMatchTimeDateArray[i][j][0];
-                }else if( AppConstant.mMatchArrayList[i][j][2] == mTeamID){
-                    matchList = mName + " VS " + AppConstant.mTeamArrayList[AppConstant.mMatchArrayList[i][j][1]][1]+" "+ AppConstant.mMatchTimeDateArray[i][j][0];
+                if(AppConstant.mMatchArrayList[i][j][1] == teamid) {
+                    matchList = name + " VS " + AppConstant.mTeamArrayList[AppConstant.mMatchArrayList[i][j][2]][1] +" "+ AppConstant.mMatchTimeDateArray[i][j][0];
+                }else if( AppConstant.mMatchArrayList[i][j][2] == teamid){
+                    matchList = name + " VS " + AppConstant.mTeamArrayList[AppConstant.mMatchArrayList[i][j][1]][1]+" "+ AppConstant.mMatchTimeDateArray[i][j][0];
                 }
 
                     addMatch(matchList);
@@ -262,7 +267,7 @@ public Team getClone() throws CloneNotSupportedException {
 
     public String onCreateMatchListString(){
         String listToShow = "";
-        for (int j = 0; j <getmMatchList().size() ; j++) {
+        for (int j = 0; j < getMatch_list().size() ; j++) {
             if (getMatch(j) != null) {
                 listToShow = listToShow + getMatch(j) + "\n" ;
             }
@@ -273,17 +278,18 @@ public Team getClone() throws CloneNotSupportedException {
     }
 
 
+
     @Override
     public String toString() {
         return "Team{" +
-                "mName='" + mName + '\'' +
-                ", mStadium='" + mStadium + '\'' +
-                ", mProfile='" + mProfile + '\'' +
-                ", mPJ=" + mPJ +
-                ", mDG=" + mDG +
-                ", mPoints=" + mPoints +
-                ", mTeamRank=" + mTeamRank +
-                ", mPlayersList=" + mPlayersList +
+                "name='" + name + '\'' +
+                ", stadium='" + stadium + '\'' +
+                ", profile='" + profile + '\'' +
+                ", pj=" + pj +
+                ", dg=" + dg +
+                ", points=" + points +
+                ", rank=" + rank +
+                ", player_list=" + player_list +
                 '}';
     }
 }

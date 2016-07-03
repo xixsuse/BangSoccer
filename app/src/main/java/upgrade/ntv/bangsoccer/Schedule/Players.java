@@ -10,8 +10,8 @@ import upgrade.ntv.bangsoccer.R;
 public class Players {
 
 
-    private String name, division, alias,  position;
-    private int number, teamid, avatar;
+    private String name, division, alias,  position, goals, red_card, yellow_card, asisst, nacionalidad, altura, peso, pie_dominante;
+    private int number, teamid, avatar, playerid;
      @JsonIgnore
     String mFireBaseKey;
 
@@ -94,6 +94,8 @@ public class Players {
     public void setmFireBaseKey(String mFireBaseKey) {
         this.mFireBaseKey = mFireBaseKey;
     }
+
+
 
     @Override
     public String toString() {

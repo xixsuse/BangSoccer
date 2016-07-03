@@ -64,7 +64,7 @@ final int pos = position;
         //calls the Team1 Screen based on the teamID
             //TODO: replace with local DBSource
             Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
-            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmTeam1().getmTeamID());
+            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmTeam1().getTeamid());
 
             if (intent != null) {
 
@@ -81,7 +81,7 @@ final int pos = position;
             //calls the Team2 Screen based on the teamID
             //TODO: replace with local DBSource
             Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
-            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmTeam2().getmTeamID());
+            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmTeam2().getTeamid());
 
             if (intent != null) {
 

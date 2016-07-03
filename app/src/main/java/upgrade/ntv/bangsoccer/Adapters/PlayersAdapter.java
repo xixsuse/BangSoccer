@@ -11,16 +11,10 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Players;
 import upgrade.ntv.bangsoccer.Schedule.Team;
 
-import com.firebase.client.Firebase;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by jfrom on 3/22/2016.
@@ -53,7 +47,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
 
     @Override
     public int getItemCount() {
-        return (this.mTeam.getmPlayersList().size());
+        return (this.mTeam.getPlayer_list().size());
     }
 
 
@@ -68,7 +62,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
     }
 
     public int getPlayerID(int id){
-       return mTeam.getmPlayersList().get(id).getNumber();
+       return mTeam.getPlayer_list().get(id).getNumber();
     }
 
     @Override
@@ -76,12 +70,12 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
         // - get element from your dataset at this vPlayerPosition
         // - replace the contents of the view with that element
 
-        holder.vPlayerName.setText(mTeam.getmPlayersList().get(position).getName());
-        holder.vPlayerNumber.setText(String.valueOf(mTeam.getmPlayersList().get(position).getNumber()));
+        holder.vPlayerName.setText(mTeam.getPlayer_list().get(position).getName());
+        holder.vPlayerNumber.setText(String.valueOf(mTeam.getPlayer_list().get(position).getNumber()));
         holder.vPlayerAvatar.setImageResource(R.drawable.ic_player_icon);
-        holder.vPlayerPosition.setText(mTeam.getmPlayersList().get(position).getPosition());
-        holder.vPlayerTeamDivision.setText(mTeam.getmPlayersList().get(position).getDivision());
-        holder.vPlayerAlias.setText(mTeam.getmPlayersList().get(position).getAlias());
+        holder.vPlayerPosition.setText(mTeam.getPlayer_list().get(position).getPosition());
+        holder.vPlayerTeamDivision.setText(mTeam.getPlayer_list().get(position).getDivision());
+        holder.vPlayerAlias.setText(mTeam.getPlayer_list().get(position).getAlias());
     }
 
     // Provides a reference to the views for each data item

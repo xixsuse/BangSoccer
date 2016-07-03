@@ -30,7 +30,7 @@ public class ActivityFavoriteNFollow extends AppCompatActivity {
     public  void cloneClubsItems() throws CloneNotSupportedException {
         for (int i = 0; i < clubItems.size(); i++) {
             Team myTeam =  clubItems.get(i);
-            clubsToSelect.add(myTeam.getClone());
+            clubsToSelect.add(myTeam.getTeam_clone());
         }
     }
     @Override

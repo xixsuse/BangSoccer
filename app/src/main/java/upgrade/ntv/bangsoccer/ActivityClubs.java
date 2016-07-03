@@ -97,7 +97,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
         ImageView img = (ImageView) findViewById(R.id.club_header_img);
         if (img != null) {
-            img.setImageResource(selectedTeam.getmTeamImage());
+            img.setImageResource(selectedTeam.getTeam_image());
         }
 
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {

@@ -48,9 +48,9 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
     public void onBindViewHolder(TourneyStatsAdapter.TeamStatsHolder holder, int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vStatsTeamName.setText(mTeamList.get(position).getmName());
+        holder.vStatsTeamName.setText(mTeamList.get(position).getName());
 
-        holder.vTeamAvatar.setImageResource(mTeamList.get(position).getmTeamImage());
+        holder.vTeamAvatar.setImageResource(mTeamList.get(position).getTeam_image());
         holder.vPJ.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
         holder.vPG.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
         holder.vPE.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
@@ -61,7 +61,7 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
         holder.vPoints.setText(String.valueOf((int) (Math.random() * ((9) + 1))));
 
 
-        holder.Id = mTeamList.get(position).getmTeamID();
+        holder.Id = mTeamList.get(position).getTeamid();
 
     }
         // Provides a reference to the views for each data item

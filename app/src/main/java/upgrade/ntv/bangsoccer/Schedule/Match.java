@@ -66,11 +66,11 @@ public class Match {
         int image = 0;
         switch (index){
             case 1:
-            image = mTeam1.getmTeamImage();
+            image = mTeam1.getTeam_image();
                 break;
 
             case 2:
-                image = mTeam2.getmTeamImage();
+                image = mTeam2.getTeam_image();
                 break;
         }
 
@@ -81,11 +81,11 @@ public class Match {
         String name = null;
         switch (index){
             case 1:
-                name = mTeam1.getmName();
+                name = mTeam1.getName();
                 break;
 
             case 2:
-                name = mTeam2.getmName();
+                name = mTeam2.getName();
                 break;
         }
 
@@ -110,7 +110,7 @@ public class Match {
     }
 
     private void onCreateStadium(){
-       this.mStadium = mTeam1.getmStadium();
+       this.mStadium = mTeam1.getStadium();
     }
 
  /*   private void onCreateDate(){

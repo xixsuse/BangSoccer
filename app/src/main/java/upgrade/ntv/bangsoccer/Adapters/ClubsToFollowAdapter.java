@@ -43,7 +43,7 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     }
 
     public int getClubID(int position) {
-        return mTeamList.get(position).getmTeamID();
+        return mTeamList.get(position).getTeamid();
     }
 
     @Override
@@ -66,9 +66,9 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     public void onBindViewHolder(final ClubsToFollowAdapter.TeamHolder holder,final int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vClubName.setText(mTeamList.get(position).getmName());
-        holder.vClubAvatar.setImageResource(mTeamList.get(position).getmTeamImage());
-        holder.Id = mTeamList.get(position).getmTeamID();
+        holder.vClubName.setText(mTeamList.get(position).getName());
+        holder.vClubAvatar.setImageResource(mTeamList.get(position).getTeam_image());
+        holder.Id = mTeamList.get(position).getTeamid();
         holder.cCheckBox.setChecked(mTeamList.get(position).isFavorite());
         holder.vCardView.setOnClickListener(new View.OnClickListener()
         {

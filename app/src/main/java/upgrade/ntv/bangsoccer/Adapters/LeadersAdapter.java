@@ -48,9 +48,9 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
     public void onBindViewHolder(LeadersAdapter.TeamHolder holder, int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vPlayerName.setText(mTeamList.get(2).getmPlayersList().get(1).getmPlayerName());
+        holder.vPlayerName.setText(mTeamList.get(2).getmPlayersList().get(1).getName());
         holder.vPlayerNumber.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vPlayerAvatar.setImageResource(mTeamList.get(2).getmPlayersList().get(1).getmPlayer_Avatar());
+        holder.vPlayerAvatar.setImageResource(mTeamList.get(2).getmPlayersList().get(1).getAvatar());
         holder.vPlayerClub.setText(mTeamList.get(position).getmName());
 
         holder.Id = mTeamList.get(position).getmTeamID();

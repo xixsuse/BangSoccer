@@ -2,6 +2,14 @@ package upgrade.ntv.bangsoccer.Schedule;
 
 
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +30,67 @@ public class Team implements Cloneable {
     private List<String> mMatchList = new ArrayList<String>();
     protected Team clone;
 
+    DatabaseReference mFireBaseRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mFireBasePlayersRef = mFireBaseRootRef.child("Players");
+
+
+
     // public constructor
     public Team( int teamID) {
         this.mTeamID = teamID;
+
+        mFireBasePlayersRef.addChildEventListener(new PlayerEvenetListener());
         onSaveTeam();
-        onSavePlayerList();
         onCreateTeamMatch();
     }
+
+    private class PlayerEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Players firebaseRequest = dataSnapshot.getValue(Players.class);
+            firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
+            getmPlayersList().add(0, firebaseRequest);
+
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
+/*    private class PlayerValueEventListner implements ValueEventListener{
+
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            System.out.println("There are " + dataSnapshot.getChildrenCount() + " players");
+            for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
+                Players player = playerSnapshot.getValue(Players.class);
+                player.setmFireBaseKey(playerSnapshot.getKey());
+                addPlayer(player);
+                //System.out.println(player.getmPlayerName() + " - " + player.getmFireBaseKey());
+            }
+        }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }*/
 
     //   Setters
 
@@ -161,23 +223,24 @@ public Team getClone() throws CloneNotSupportedException {
             }
         }
     }
-
+    public static List<Players> mTeamPlayerArrayList;
     private  void onSavePlayerList(){
         Players playersToAdd;
+        Query queryPlayersRef = mFireBasePlayersRef.orderByKey();
         for (int i = 0; i <AppConstant.mTeamPlayerArrayList.length; i++) {
 
            if( Integer.valueOf(AppConstant.mTeamPlayerArrayList[i][0]).equals(this.mTeamID))
            {
-               playersToAdd = new Players(
+ /*              playersToAdd = new Players(
                        AppConstant.mTeamPlayerArrayList[i][1],
                        AppConstant.mTeamPlayerArrayList[i][2],
                        this.mTeamID,
                        AppConstant.mTeamPlayerArrayList[i][3],
                        AppConstant.mTeamPlayerArrayList[i][4],
                        AppConstant.mTeamPlayerArrayList[i][5],
-                       R.drawable.ic_player_icon);
+                       R.drawable.ic_player_icon);*/
 
-               addPlayer(playersToAdd);
+              // addPlayer(playersToAdd);
            }
         }
     }

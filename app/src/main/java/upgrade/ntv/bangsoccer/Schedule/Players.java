@@ -1,61 +1,105 @@
 package upgrade.ntv.bangsoccer.Schedule;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import upgrade.ntv.bangsoccer.R;
+
 /**
  * Created by Jose on 3/15/2015.
  */
 public class Players {
 
-    String mPlayerName, mPosition, mPlayerNum, mPlayerAlias, mDivition;
-    int  mTeamID, mPlayer_Avatar;
 
+    private String name, division, alias,  position;
+    private int number, teamid, avatar;
+     @JsonIgnore
+    String mFireBaseKey;
 
-    public Players(String mPlayerName, String mPlayerNum, int mTeamID, String position, String Alias, String Division, int Avatar) {
-        this.mPlayerName = mPlayerName;
-        this.mPlayerNum = mPlayerNum;
-        this.mTeamID = mTeamID;
-        this.mPosition= position;
-        this.mPlayerAlias = Alias;
-        this.mDivition = Division;
-        this.mPlayer_Avatar=Avatar;
+    public Players() {
+        //required empty constructor for jackson lib.
     }
 
-    public String getmPlayerAlias() {
-        return this.mPlayerAlias;
+    public Players(String name, int avatar, String division, String alias, String position, int number, int teamid) {
+        avatar = R.drawable.ic_player_icon;
+        this.name = name;
+        this.avatar = avatar;
+        this.division = division;
+        this.alias = alias;
+        this.position = position;
+        this.number = number;
+        this.teamid = teamid;
     }
 
-    public String getmDivition() {
-        return this.mDivition;
+
+    public String getName() {
+        return name;
     }
 
-    public int getmTeamID() {
-        return this.mTeamID;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getmPlayerName() {
-        return this.mPlayerName;
+    public String getDivision() {
+        return division;
     }
 
-    public String getmPlayerNum() {
-        return this.mPlayerNum;
+    public void setDivision(String division) {
+        this.division = division;
     }
 
-    public String getmPosition() {
-        return this.mPosition;
+    public String getAlias() {
+        return alias;
     }
 
-    public int getmPlayer_Avatar() {
-        return this.mPlayer_Avatar;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
-    public void setmPlayer_Avatar(int mPlayer_Avatar) {
-        this.mPlayer_Avatar = mPlayer_Avatar;
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getTeamid() {
+        return teamid;
+    }
+
+    public void setTeamid(int teamid) {
+        this.teamid = teamid;
+    }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getmFireBaseKey() {
+        return mFireBaseKey;
+    }
+
+    public void setmFireBaseKey(String mFireBaseKey) {
+        this.mFireBaseKey = mFireBaseKey;
     }
 
     @Override
     public String toString() {
         return "Players{" +
-                "mPlayerName='" + mPlayerName + '\'' +
-                ", mPlayerNum=" + mPlayerNum +
+                "mPlayerName='" + name + '\'' +
+                ", mPlayerNum=" + number +
                 '}';
     }
 

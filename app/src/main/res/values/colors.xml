@@ -11,14 +11,14 @@
     <color name="colorPrimaryLight">#FF8A65</color>-->
     // Accent Colors
     <!--  <color name="colorAccent">#a80022</color>-->
-    <color name="colorAccent">#35c1d3</color>
+    <color name="colorAccent">#ff3a1d</color>
     <!--<color name="colorAccent2">#35c1d3</color>-->
-    <color name="colorAccentLight">#ed3a43</color>
+    <color name="colorAccentLight">#ff8300</color>
 
 
     // FAKE Primary Colors
-    <color name="colorPrimary">#011e62</color>
-    <color name="colorPrimaryDark">#000e30</color>
+    <color name="colorPrimary">#460328</color>
+    <color name="colorPrimaryDark">#3b0322</color>
     <color name="colorNewsFeed">#e313110b</color>
     <color name="textColorPrimary">#66000000</color>
 

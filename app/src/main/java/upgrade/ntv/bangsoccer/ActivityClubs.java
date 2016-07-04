@@ -22,14 +22,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
+import upgrade.ntv.bangsoccer.Schedule.Players;
 import upgrade.ntv.bangsoccer.Schedule.Team;
 
 public class ActivityClubs extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,
@@ -42,17 +51,26 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
-    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
-    private static final int ALPHA_ANIMATIONS_DURATION = 200;
-
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
-
+    private int teamid;
     private Toolbar toolbar;
     private ViewPager mViewPager;
-
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mPlayersDeftailsRef = databaseReference.child("Players");
     private Activity thisActivity;
+
+    private TextView vPlayerName ;
+    private TextView vPlayerFullName ;
+    private CircleImageView vPlayerAvatar ;
+    private TextView vPlayerNationality ;
+    private TextView vLeaderPosition ;
+    private TextView vPlayerWeightNHeight ;
+    private TextView vPlayerGoals ;
+    private TextView vPlayerCards ;
+    private TextView vPlayerDominantFoot;
+    private TextView vPlayerAliasNNumber;
+    private String PlayerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +78,10 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         setContentView(R.layout.activity_clubs);
 
         this.thisActivity = this;
-        int _teamID = (int) getIntent().getExtras().get("CLUBID");
-        Team selectedTeam = new Team(_teamID);
 
-        bindActivity();
-        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        getTeamId();
+        BindActivity();
+        BindSlidingPanel();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -95,11 +100,43 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
             }
         });
 
+    }
+
+    private void getTeamId() {
+        teamid = (int) getIntent().getExtras().get("CLUBID");
+    }
+
+    private void BindActivity() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //   mTitle = (TextView) findViewById(R.id.main_textview_title);
+        //  mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
+        //    mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+        //toolbar team image
         ImageView img = (ImageView) findViewById(R.id.club_header_img);
+        Team selectedTeam = new Team(teamid);
+
         if (img != null) {
             img.setImageResource(selectedTeam.getTeam_image());
         }
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+
+    }
+    
+    private void BindSlidingPanel() {
+        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -111,91 +148,65 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-              if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-            //      slidingUpPanelLayout.setAnchorPoint(0.0f);
-              //    slidingUpPanelLayout.setPanelHeight(0);
+                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    //      slidingUpPanelLayout.setAnchorPoint(0.0f);
+                    //    slidingUpPanelLayout.setPanelHeight(0);
 
-                  Log.i("ActivityClubs", "onPanelStateChanged " + newState.name());
+                    Log.i("ActivityClubs", "onPanelStateChanged " + newState.name());
 
                 }
-                if(previousState == SlidingUpPanelLayout.PanelState.COLLAPSED){
-                //    slidingUpPanelLayout.setAnchorPoint(0.0f);
+                if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    //    slidingUpPanelLayout.setAnchorPoint(0.0f);
 
                 }
                 Log.i("ActivityClubs", "onPanelStateChanged " + newState);
 
             }
         });
-      /*  slidingUpPanelLayout.setFadeOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            }
-        });*/
-
-/*      TODO: bind the layout and methods to populate accordingly
-        TextView vPlayerName = (TextView) findViewById(R.id.leaders_player_name);;
-        CircleImageView vPlayerAvatar ;
-        TextView vPlayerNumber;
-        TextView vLeaderPosition;
-        TextView vPlayerClub;
-        int Id;
-
-            vPlayerName = (TextView) findViewById(R.id.leaders_player_name);
-            vPlayerAvatar = (CircleImageView) findViewById(R.id.leaders_player_avatar);
-            vPlayerNumber = (TextView) findViewById(R.id.leaders_player_number);
-            vLeaderPosition = (TextView) findViewById(R.id.leaders_position_text);
-            vPlayerClub = (TextView) findViewById(R.id.leaders_player_club);
-*/
-
-/*
-
-        if (slidingUpPanelLayout != null) {
-            if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.HIDDEN) {
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);}
-*/
-
+        //sliding view elements
+        vPlayerName = (TextView) findViewById(R.id.player_detail__name);
+        vPlayerFullName = (TextView) findViewById(R.id.detailss_player_fullname_text);
+        vPlayerAvatar = (CircleImageView) findViewById(R.id.player_detail_avatar);
+        vPlayerNationality = (TextView) findViewById(R.id.details_player__nationality_text);
+        vLeaderPosition = (TextView) findViewById(R.id.detailss_player_position_text);
+        vPlayerWeightNHeight = (TextView) findViewById(R.id.detailss_player_weight_height_text);
+        vPlayerGoals = (TextView) findViewById(R.id.detailss_player_goals_text);
+        vPlayerCards = (TextView) findViewById(R.id.detailss_player_discipline_text);
+        vPlayerDominantFoot = (TextView) findViewById(R.id.detailss_player_dominant_foot);
+        vPlayerAliasNNumber = (TextView) findViewById(R.id.player_detail_Alias_n_Number);
     }
 
+    private void onClickedFragmentPlayer(final String playerid) {
+        PlayerId=playerid;
+        Query query =   mPlayersDeftailsRef;
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot playerSnapshot) {
+               String snapshotKey = playerSnapshot.child(PlayerId).getKey();
 
+                if (playerid.equals(snapshotKey)){
+                    Players playerDetails = playerSnapshot.child(PlayerId).getValue(Players.class);
+                    vPlayerName.setText( playerDetails.getName());
+                    vPlayerFullName.setText(playerDetails.getName());
+                    vPlayerAvatar.setImageResource(playerDetails.getAvatar());
+                    vPlayerNationality.setText(playerDetails.getNationality());
+                    vLeaderPosition.setText(playerDetails.getPosition());
+                    vPlayerWeightNHeight.setText(playerDetails.getWeightNHeight());
+                    vPlayerGoals.setText(playerDetails.getGoals());
+                    vPlayerCards.setText(playerDetails.getCards());
+                    vPlayerDominantFoot.setText(playerDetails.getDominant_foot());
+                    vPlayerAliasNNumber.setText(playerDetails.getAliasNNumber());
+                    vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon2);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-    private void onClickedFragmentPlayer() {
+            }
+        });
         findViewById(R.id.dragView).setVisibility(View.VISIBLE);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-    }
-
-    private void bindActivity() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //   mTitle = (TextView) findViewById(R.id.main_textview_title);
-        //  mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
-        //    mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-
-/*        CollapsingToolbarLayout c = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        AppBarLayout appbar = (AppBarLayout)findViewById(R.id.app_bar_layout);
-        toolbar.setTitle("");
-        c.setTitleEnabled(false);
-
-        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-
-            boolean isVisible = true;
-            int scrollRange = -1;
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    toolbar.setTitle("Clubes");
-                    isVisible = true;
-                } else if(isVisible) {
-                    toolbar.setTitle("");
-                    isVisible = false;
-                }
-            }
-        });*/
 
     }
 
@@ -247,12 +258,12 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-            Intent intent = DrawerSelector.onItemSelected(this, id);
+        Intent intent = DrawerSelector.onItemSelected(this, id);
 
-            if (intent != null) {
-                startActivity(intent);
-               // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-            }
+        if (intent != null) {
+            startActivity(intent);
+            // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -269,10 +280,15 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     @Override
     public void onListFragmentInteraction() {
+
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(String playerid) {
+        //fragmentPayer interaction listener sends the player id
         Log.i("ActivityClubs", "onPanelStateChanged " + " FRAGMENTCLICk! ");
-        onClickedFragmentPlayer();
-
-
+        onClickedFragmentPlayer(playerid);
     }
 
     /**
@@ -314,7 +330,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
             } else if (position == 1) {
 
-                FragmentPlayers fragmentPlayers = FragmentPlayers.newInstance(position + 1);
+                FragmentPlayers fragmentPlayers = FragmentPlayers.newInstance(teamid);
                 mPageReferenceMap.put("2", tag);
                 return fragmentPlayers;
 
@@ -358,8 +374,6 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
                     return "JUGADORES";
                 case 2:
                     return "Historial".toUpperCase(l);
-
-
             }
             return null;
         }

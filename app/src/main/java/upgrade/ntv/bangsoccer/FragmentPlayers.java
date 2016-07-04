@@ -21,7 +21,7 @@ import upgrade.ntv.bangsoccer.Adapters.PlayersAdapter;
 public class FragmentPlayers extends Fragment {
 
     // TODO: Customize parameter argument names
-    private static final String TEAM_ID = "team-id";
+    private static final String TEAM_ID = "teamid";
     private int mTeamID;
     private PlayersAdapter mPlayerAdapter;
    private Context mContext;
@@ -78,7 +78,8 @@ public class FragmentPlayers extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
            // mPlayerAdapter.getPlayerID(position);
-             mListener.onListFragmentInteraction();
+             String x =  mPlayerAdapter.getPlayerId(position);
+             mListener.onListFragmentInteraction(mPlayerAdapter.getPlayerId(position));
 
 
             }
@@ -125,5 +126,6 @@ public class FragmentPlayers extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction();
+        void onListFragmentInteraction(String playerid);
     }
 }

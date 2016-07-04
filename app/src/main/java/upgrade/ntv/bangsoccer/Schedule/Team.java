@@ -1,19 +1,9 @@
 package upgrade.ntv.bangsoccer.Schedule;
 
-
-
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
-import upgrade.ntv.bangsoccer.R;
-
 
 /**
  * Created by Jose on 3/15/2015.
@@ -29,8 +19,6 @@ public class Team implements Cloneable {
 
     private Team team_clone;
 
-    private  DatabaseReference mFireBaseRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mFireBasePlayersRef = mFireBaseRootRef.child("Players");
 
     public Team() {
         //jackson object
@@ -39,64 +27,9 @@ public class Team implements Cloneable {
     // public constructor
     public Team( int teamid) {
         this.teamid = teamid;
-
-        mFireBasePlayersRef.addChildEventListener(new PlayerEvenetListener());
         onSaveTeam();
         onCreateTeamMatch();
     }
-
-    private class PlayerEvenetListener implements ChildEventListener {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Players firebaseRequest = dataSnapshot.getValue(Players.class);
-            firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
-            getPlayer_list().add(0, firebaseRequest);
-            if(firebaseRequest.getTeamid()==0){
-                firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
-                getPlayer_list().add(0, firebaseRequest);
-            }
-
-
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    }
-
-/*    private class PlayerValueEventListner implements ValueEventListener{
-
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            System.out.println("There are " + dataSnapshot.getChildrenCount() + " players");
-            for (DataSnapshot playerSnapshot : dataSnapshot.getChildren()) {
-                Players player = playerSnapshot.getValue(Players.class);
-                player.setmFireBaseKey(playerSnapshot.getKey());
-                addPlayer(player);
-                //System.out.println(player.getmPlayerName() + " - " + player.getmFireBaseKey());
-            }
-        }
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    }*/
 
     //   Setters
 
@@ -210,8 +143,8 @@ public Team getTeam_clone() throws CloneNotSupportedException {
     }
 
 
-    public void getPlayer(int index){
-        player_list.get(index);
+    public Players getPlayer(int index){
+        return player_list.get(index);
     }
 
     public String getMatch(int index){
@@ -230,26 +163,6 @@ public Team getTeam_clone() throws CloneNotSupportedException {
         }
     }
 
-/*    private  void onSavePlayerList(){
-        Players playersToAdd;
-
-        for (int i = 0; i <AppConstant.mTeamPlayerArrayList.length; i++) {
-
-            if( Integer.valueOf(AppConstant.mTeamPlayerArrayList[i][0]).equals(this.teamid))
-            {
-             playersToAdd = new Players(
-                       AppConstant.mTeamPlayerArrayList[i][1],
-                       AppConstant.mTeamPlayerArrayList[i][2],
-                       this.teamid,
-                       AppConstant.mTeamPlayerArrayList[i][3],
-                       AppConstant.mTeamPlayerArrayList[i][4],
-                       AppConstant.mTeamPlayerArrayList[i][5],
-                       R.drawable.ic_player_icon);
-
-                addPlayer(playersToAdd);
-            }
-        }
-    }*/
     private void onCreateTeamMatch(){
         for (int i = 0; i < AppConstant.mMatchArrayList.length-9 ; i++) {
             for (int j = 0; j < AppConstant.mMatchArrayList[i].length  ; j++) {

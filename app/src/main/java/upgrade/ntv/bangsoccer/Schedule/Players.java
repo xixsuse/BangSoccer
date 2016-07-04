@@ -8,10 +8,11 @@ import upgrade.ntv.bangsoccer.R;
  * Created by Jose on 3/15/2015.
  */
 public class Players {
+    // Used for a query
+    public static final String TEAM_ID = "teamid";
 
-
-    private String name, division, alias,  position, goals, red_card, yellow_card, asisst, nacionalidad, altura, peso, pie_dominante;
-    private int number, teamid, avatar, playerid;
+    private String name, division, alias,  position, goals, assistance, nationality, height, weight, dominant_foot;
+    private int number, teamid, avatar, red_card, yellow_card;
      @JsonIgnore
     String mFireBaseKey;
 
@@ -30,6 +31,115 @@ public class Players {
         this.teamid = teamid;
     }
 
+    public Players(String name, String division, String alias, String position, String goals, String nationality, String height,
+                   String weight, String dominant_foot, int number, int teamid, int avatar, int red_card, int yellow_card) {
+        this.name = name;
+        this.division = division;
+        this.alias = alias;
+        this.position = position;
+        this.goals = goals;
+        this.nationality = nationality;
+        this.height = height;
+        this.weight = weight;
+        this.dominant_foot = dominant_foot;
+        this.number = number;
+        this.teamid = teamid;
+        this.avatar = avatar;
+        this.red_card = red_card;
+        this.yellow_card = yellow_card;
+    }
+
+    public String getGoals() {
+        return goals;
+    }
+
+    public void setGoals(String goals) {
+        this.goals = goals;
+    }
+
+    public int getRed_card() {
+        return red_card;
+    }
+
+    public void setRed_card(int red_card) {
+        this.red_card = red_card;
+    }
+
+    public int getYellow_card() {
+        return yellow_card;
+    }
+
+    public void setYellow_card(int yellow_card) {
+        this.yellow_card = yellow_card;
+    }
+
+    public String getAssistance() {
+        return assistance;
+    }
+
+    public void setAssistance(String assistance) {
+        this.assistance = assistance;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getDominant_foot() {
+        return dominant_foot;
+    }
+
+    public void setDominant_foot(String dominant_foot) {
+        this.dominant_foot = dominant_foot;
+    }
+
+    public String getCards(){
+        StringBuilder cards = new StringBuilder();
+        return  cards
+                .append(String.valueOf(getYellow_card()))
+                .append(" Amarillas")
+                .append(" y ")
+                .append(String.valueOf(getRed_card()))
+                .append(" Rojas").toString();
+    }
+
+    public String getWeightNHeight(){
+        StringBuilder weight = new StringBuilder();
+        return  weight
+                .append(getWeight())
+                .append(" lbs ")
+                .append("| ")
+                .append(getHeight())
+                .append(" Pies").toString();
+    }
+
+    public String getAliasNNumber(){
+        StringBuilder alias= new StringBuilder();
+        return  alias
+                .append(getAlias())
+                .append(", ")
+                .append(getNumber()).toString();
+    }
 
     public String getName() {
         return name;

@@ -11,8 +11,12 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.R;
+import upgrade.ntv.bangsoccer.Schedule.Players;
 import upgrade.ntv.bangsoccer.Schedule.Team;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,7 +28,6 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
     private Team mTeam;
     private Context mContext;
     private LayoutInflater inflater;
-    public static final String FIREBASE_PLAYER ="https://project-8138681142864808550.firebaseio.com/Players";
     //private Firebase mPlayerFireBase;
     private DatabaseReference mFireBaseRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mFireBasePlayersRef = mFireBaseRootRef.child("Players");
@@ -37,12 +40,49 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
         this.mTeam = new Team(mTeamID);
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
+        this.mFireBasePlayersRef.addChildEventListener(new PlayerEvenetListener());
     }
 
-    private List<TeamHolder> TeamItems;
 
-    public PlayersAdapter(List<TeamHolder> teamItems) {
-        this.TeamItems = teamItems;
+    private class PlayerEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Players firebaseRequest = dataSnapshot.getValue(Players.class);
+
+            int playerTeamId = firebaseRequest.getTeamid();
+            if (playerTeamId == mTeamID) {
+
+                firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
+                mTeam.getPlayer_list().add(0, firebaseRequest);
+            }
+            notifyDataSetChanged();
+
+
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
+    public String getPlayerId(int position) {
+        return this.mTeam.getPlayer(position).getmFireBaseKey();
     }
 
     @Override
@@ -59,10 +99,6 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
         // set the view's size, margins, paddings and app_bar_teams parameters
 
         return new TeamHolder(v);
-    }
-
-    public int getPlayerID(int id){
-       return mTeam.getPlayer_list().get(id).getNumber();
     }
 
     @Override

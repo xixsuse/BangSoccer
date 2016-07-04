@@ -81,7 +81,8 @@
                     android:layout_weight="9.4"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="16dp">
 
 
                         <TextView
@@ -128,7 +129,8 @@
                     android:layout_weight="9.4"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="16dp">
 
                         <TextView
                             android:id="@+id/details_player__nationality_text"
@@ -174,7 +176,8 @@
                     android:layout_weight="9.4"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="16dp">
 
 
                         <TextView
@@ -220,7 +223,9 @@
                     android:layout_weight="9.4"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+
+                    android:layout_marginLeft="16dp">
 
                         <TextView
                             android:id="@+id/detailss_player_weight_height_text"
@@ -266,6 +271,8 @@
                     android:layout_weight="9.4"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
+
+                    android:layout_marginLeft="16dp"
                     android:orientation="vertical">
 
                         <TextView
@@ -312,6 +319,8 @@
                     android:layout_weight="9.4"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
+
+                    android:layout_marginLeft="16dp"
                     android:orientation="vertical">
 
                         <TextView
@@ -357,6 +366,8 @@
                     android:layout_height="45dp"
                     android:layout_weight="9.4"
                     android:layout_marginTop="8dp"
+
+                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
                     android:orientation="vertical">
 

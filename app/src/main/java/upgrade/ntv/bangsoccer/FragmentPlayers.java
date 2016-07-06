@@ -21,7 +21,7 @@ import upgrade.ntv.bangsoccer.Adapters.PlayersAdapter;
 public class FragmentPlayers extends Fragment {
 
     // TODO: Customize parameter argument names
-    private static final String TEAM_ID = "teamid";
+    private static final String TEAM_ID = "team-id";
     private int mTeamID;
     private PlayersAdapter mPlayerAdapter;
    private Context mContext;

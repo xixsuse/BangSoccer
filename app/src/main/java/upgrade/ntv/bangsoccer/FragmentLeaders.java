@@ -25,14 +25,9 @@ import upgrade.ntv.bangsoccer.Schedule.Team;
  */
 public class FragmentLeaders extends Fragment {
 
-
-    private List<Team> clubItems = new ArrayList<>();
-
     // TODO: Customize parameter argument names
-    private static final String TEAM_ID = "team-id";
-    private int mTeamID;
     private LeadersAdapter mLeadersAdapter;
-   private Context mContext;
+    private Context mContext;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -42,43 +37,17 @@ public class FragmentLeaders extends Fragment {
     public FragmentLeaders() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static FragmentLeaders newInstance() {
         FragmentLeaders fragment = new FragmentLeaders();
-     /*   Bundle args = new Bundle();
-        args.putInt(TEAM_ID, teamId);
-        fragment.setArguments(args);*/
         return fragment;
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        populateDummyClubsItems();
-        if (getArguments() != null) {
-            mTeamID = getArguments().getInt(TEAM_ID);
-        }
-
-
-    }
-
-    //dummy data for the global news feed
-    public void populateDummyClubsItems() {
-        for (int i = 0; i < AppConstant.mTeamArrayList.length; i++) {
-            Team myTeam = new Team(i);
-            clubItems.add(myTeam);
-        }
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leaders, container, false);
 
-        mLeadersAdapter = new LeadersAdapter(clubItems, getActivity());
-
+        mLeadersAdapter = new LeadersAdapter(getActivity());
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
@@ -94,8 +63,6 @@ public class FragmentLeaders extends Fragment {
             public void onItemClick(View view, int position) {
                 // mPlayerAdapter.getPlayerID(position);
                 mListener.onListFragmentInteraction();
-
-
             }
 
             @Override
@@ -123,7 +90,6 @@ public class FragmentLeaders extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
 
     /**

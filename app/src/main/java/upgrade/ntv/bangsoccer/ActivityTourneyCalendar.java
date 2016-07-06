@@ -147,36 +147,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
             }
         });
-      /*  slidingUpPanelLayout.setFadeOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            }
-        });*/
-
-
-/* TODO: bind the layout and methods to populate accordingly
-        TextView vPlayerName = (TextView) findViewById(R.id.leaders_player_name);;
-        CircleImageView vPlayerAvatar ;
-        TextView vPlayerNumber;
-        TextView vLeaderPosition;
-        TextView vPlayerClub;
-        int Id;
-
-            vPlayerName = (TextView) findViewById(R.id.leaders_player_name);
-            vPlayerAvatar = (CircleImageView) findViewById(R.id.leaders_player_avatar);
-            vPlayerNumber = (TextView) findViewById(R.id.leaders_player_number);
-            vLeaderPosition = (TextView) findViewById(R.id.leaders_position_text);
-            vPlayerClub = (TextView) findViewById(R.id.leaders_player_club);
-*/
-
-/*
-
-        if (slidingUpPanelLayout != null) {
-            if (slidingUpPanelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.HIDDEN) {
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);}
-*/
-
 
     }
 
@@ -189,8 +159,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         } catch (Exception e) {
             Log.i("view exception", e.getMessage());
         }
-             // slidingUpPanelLayout.setAnchorPoint(0.7f);
-        // slidingUpPanelLayout.startAnimation(animation);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
@@ -222,13 +190,17 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
     public void onSpinnerSelecterWorker(MenuItem item) {
 
+        if (mTourneyCalendarPagerAdapter != null) {
+            mTourneyCalendarPagerAdapter.clearAll();
+        }
+
         char menu1src = checkSRC(menuItem_1);
         char menu2src = checkSRC(menuItem_2);
         char menuIcon = checkSRC(item);
 
         if (getLastSelectedItem() != menuIcon) {
             //erase all current fragment from the view pager
-            mTourneyCalendarPagerAdapter.clearAll();
+
             mTourneyCalendarPagerAdapter.setCurrentIconID(menuIcon);
             switch (menuIcon) {
                 case 'P':
@@ -242,23 +214,23 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                     toolbar.setTitle("Partidos");
                     try {
                         if (mMenu != null) {
-                                if (menuIcon == menu1src) {
-                                    if ('T' == menu2src) {
-                                        menuItem_1.setIcon(R.drawable.ic_leaders);
-                                        menuItem_1.setTitle("Lideres");
+                            if (menuIcon == menu1src) {
+                                if ('T' == menu2src) {
+                                    menuItem_1.setIcon(R.drawable.ic_leaders);
+                                    menuItem_1.setTitle("Lideres");
 
-                                    } else {
-                                        menuItem_1.setIcon(R.drawable.ic_club_stats);
-                                        menuItem_1.setTitle("Tabla de Posiciones");
-                                    }
-                                }else if ('T' == menu1src) {
-                                    menuItem_2.setIcon(R.drawable.ic_leaders);
-                                    menuItem_2.setTitle("Lideres");
+                                } else {
+                                    menuItem_1.setIcon(R.drawable.ic_club_stats);
+                                    menuItem_1.setTitle("Tabla de Posiciones");
+                                }
+                            } else if ('T' == menu1src) {
+                                menuItem_2.setIcon(R.drawable.ic_leaders);
+                                menuItem_2.setTitle("Lideres");
 
                             } else {
-                                    menuItem_2.setIcon(R.drawable.ic_club_stats);
-                                    menuItem_2.setTitle("Tabla de Posiciones");
-                                }
+                                menuItem_2.setIcon(R.drawable.ic_club_stats);
+                                menuItem_2.setTitle("Tabla de Posiciones");
+                            }
                         }
 
                     } catch (Exception e) {
@@ -287,7 +259,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                                     menuItem_1.setIcon(R.drawable.ic_match_vs);
                                     menuItem_1.setTitle("Partidos");
                                 }
-                            }else if ('P' == menu1src) {
+                            } else if ('P' == menu1src) {
                                 menuItem_2.setIcon(R.drawable.ic_leaders);
                                 menuItem_2.setTitle("Lideres");
                             } else {
@@ -322,7 +294,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                                     menuItem_1.setIcon(R.drawable.ic_match_vs);
                                     menuItem_1.setTitle("Partidos");
                                 }
-                            }else if ('P' == menu1src) {
+                            } else if ('P' == menu1src) {
                                 menuItem_2.setIcon(R.drawable.ic_club_stats);
                                 menuItem_2.setTitle("Tabla de Posiciones");
                             } else {
@@ -348,7 +320,8 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (slidingUpPanelLayout != null &&
-                (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
+                        slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
             super.onBackPressed();
@@ -369,8 +342,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         menuItem_2 = mMenu.findItem(R.id.action_tourney_menu_2);
         menuItem_2.setIcon(R.drawable.ic_leaders);
         menuItem_2.setTitle("Lideres");
-        // toolbar.getMenu().getItem(R.id.action_matches).setVisible(false);
-        // findViewById(R.id.action_matches).setVisibility(View.GONE);
         return true;
     }
 
@@ -413,6 +384,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @Override
     protected void onDestroy() {
         super.onDestroy();
+      //  mTourneyCalendarPagerAdapter.clearAll();
         //    Toast.makeText(ActivityTourneyCalendar.this, "onDestroy tourAct", Toast.LENGTH_SHORT).show();
     }
 
@@ -438,19 +410,23 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
         private int currentIconID = 0;
         private int pagerCount = 1;
-        private Map<String, Fragment> mPageReferenceMap = new HashMap<>();
+       private Map<String, Fragment> mPageReferenceMap = new HashMap<>();
 
         public TourneyCalendarPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
         public void clearAll() //Clear all pages
         {
             if (mPageReferenceMap != null) {
                 if (mPageReferenceMap.size() > 0) {
+                    Fragment oldFragment = null;
                     FragmentManager fm = getSupportFragmentManager();
                     for (int i = 0; i < mPageReferenceMap.size(); i++)
-                        fm.beginTransaction().remove(getFragmentForPosition(i)).commit();
+
+                       oldFragment  = getFragmentForPosition(i);
+                        if( oldFragment != null) {
+                            fm.beginTransaction().remove(oldFragment).commit();
+                        }
                 }
                 mPageReferenceMap.clear();
             }
@@ -493,17 +469,17 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             switch (typeID) {
                 case 'P':
                     selectedFragmentType = FragmentMatches.newInstance(position + 1);
-                    mPageReferenceMap.put(tag, selectedFragmentType);
+                   mPageReferenceMap.put(tag, selectedFragmentType);
                     break;
 
                 case 'L':
                     selectedFragmentType = FragmentLeaders.newInstance();
-                    mPageReferenceMap.put(tag, selectedFragmentType);
+                   mPageReferenceMap.put(tag, selectedFragmentType);
                     break;
 
                 case 'T':
                     selectedFragmentType = FragmentTourneyStats.newInstance();
-                    mPageReferenceMap.put(tag, selectedFragmentType);
+                   mPageReferenceMap.put(tag, selectedFragmentType);
                     break;
             }
             return selectedFragmentType;

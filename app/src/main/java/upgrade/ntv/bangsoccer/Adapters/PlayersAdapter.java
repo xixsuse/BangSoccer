@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.Schedule.Players;
 import upgrade.ntv.bangsoccer.Schedule.Team;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 /**
  * Created by jfrom on 3/22/2016.
@@ -29,10 +31,9 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
     private Context mContext;
     private LayoutInflater inflater;
     //private Firebase mPlayerFireBase;
-    private DatabaseReference mFireBaseRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mFireBasePlayersRef = mFireBaseRootRef.child("Players");
 
     private int mTeamID;
+    private Query query;
 
     public PlayersAdapter(int teamid, Context context) {
 
@@ -40,7 +41,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
         this.mTeam = new Team(mTeamID);
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
-        this.mFireBasePlayersRef.addChildEventListener(new PlayerEvenetListener());
+        query = AppicationCore.mPlayersDeftailsRef;
+        query.addChildEventListener(new PlayerEvenetListener());
     }
 
 

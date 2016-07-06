@@ -1,6 +1,5 @@
 package upgrade.ntv.bangsoccer.Schedule;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import upgrade.ntv.bangsoccer.R;
 
@@ -12,8 +11,8 @@ public class Players {
     public static final String TEAM_ID = "teamid";
 
     private String name, division, alias,  position, goals, assistance, nationality, height, weight, dominant_foot;
-    private int number, teamid, avatar, red_card, yellow_card;
-     @JsonIgnore
+    private int number, teamid, avatar = 0 , red_card, yellow_card;
+
     String mFireBaseKey;
 
     public Players() {
@@ -190,7 +189,10 @@ public class Players {
     }
 
     public int getAvatar() {
-        return avatar;
+        if (avatar != 0){
+            return avatar;
+        }
+        return R.drawable.ic_player_name_icon;
     }
 
     public void setAvatar(int avatar) {

@@ -42,13 +42,8 @@ public class FragmentTourneyStats extends Fragment {
     public FragmentTourneyStats() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static FragmentTourneyStats newInstance() {
         FragmentTourneyStats fragment = new FragmentTourneyStats();
-     /*   Bundle args = new Bundle();
-        args.putInt(TEAM_ID, teamId);
-        fragment.setArguments(args);*/
         return fragment;
     }
 

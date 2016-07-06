@@ -56,8 +56,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     private int teamid;
     private Toolbar toolbar;
     private ViewPager mViewPager;
-    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mPlayersDeftailsRef = databaseReference.child("Players");
+
     private Activity thisActivity;
 
     private TextView vPlayerName ;
@@ -71,6 +70,8 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     private TextView vPlayerDominantFoot;
     private TextView vPlayerAliasNNumber;
     private String PlayerId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +179,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     private void onClickedFragmentPlayer(final String playerid) {
         PlayerId=playerid;
-        Query query =   mPlayersDeftailsRef;
+        Query query = AppicationCore.mPlayersDeftailsRef;
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot playerSnapshot) {
@@ -291,14 +292,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         onClickedFragmentPlayer(playerid);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     * <p>
-     * <p>
-     * /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private Map<String, String> mPageReferenceMap = new HashMap<>();

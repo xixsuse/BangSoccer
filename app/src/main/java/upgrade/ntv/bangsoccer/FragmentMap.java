@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -32,7 +33,7 @@ import upgrade.ntv.bangsoccer.Attraction.Attraction;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
 import upgrade.ntv.bangsoccer.Utils.Utils;
 
-public class FragmentMap extends Fragment {
+public class FragmentMap extends Fragment implements OnMapReadyCallback {
 
     // Google map object.
     private SupportMapFragment mMapView;
@@ -114,10 +115,7 @@ public class FragmentMap extends Fragment {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = mMapView.getMap();
-            if (mMap != null) {
-                setUpMap();
-            }
+            mMapView.getMapAsync(this);
         }
     }
 
@@ -353,6 +351,12 @@ public class FragmentMap extends Fragment {
         for (Attraction attraction : ActivityMain.mAttractionsArrayList) {
             drawAttraction(attraction);
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        setUpMap();
     }
 
 

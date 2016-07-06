@@ -7,31 +7,69 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
+import upgrade.ntv.bangsoccer.Schedule.Players;
 import upgrade.ntv.bangsoccer.Schedule.Team;
 
 
 /**
  * Created by jfrom on 3/22/2016.
  */
-public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHolder>{
+public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHolder> {
 
-    private List<Team> mTeamList;
+    public List<Players> mPlayersLeader = new ArrayList<Players>();;
     private Context mContext;
+    private Query queryLeaders;
 
+    public LeadersAdapter(Context context) {
 
-    public LeadersAdapter(List<Team> list, Context context) {
-        this.mTeamList = list;
         this.mContext = context;
+        queryLeaders = AppicationCore.mPlayersDeftailsRef;
+        queryLeaders.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Players firebaseRequest = dataSnapshot.getValue(Players.class);
+                firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
+                mPlayersLeader.add(0, firebaseRequest);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
     @Override
     public int getItemCount() {
-        return this.mTeamList.size();
+        return this.mPlayersLeader.size();
     }
 
 
@@ -48,24 +86,25 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
     public void onBindViewHolder(LeadersAdapter.TeamHolder holder, int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vPlayerName.setText(mTeamList.get(2).getPlayer_list().get(1).getName());
-        holder.vPlayerNumber.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vPlayerAvatar.setImageResource(mTeamList.get(2).getPlayer_list().get(1).getAvatar());
-        holder.vPlayerClub.setText(mTeamList.get(position).getName());
-
-        holder.Id = mTeamList.get(position).getTeamid();
-
+        if(mPlayersLeader.size() >0) {
+            holder.vPlayerName.setText(mPlayersLeader.get(position).getName());
+            holder.vPlayerNumber.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
+            holder.vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon);
+            Team team = new Team(mPlayersLeader.get(position).getTeamid());
+            holder.vPlayerClub.setText(team.getName());
+            holder.Id = mPlayersLeader.get(position).getTeamid();
+        }
     }
-        // Provides a reference to the views for each data item
 
-    public static class TeamHolder extends RecyclerView.ViewHolder{
+    // Provides a reference to the views for each data item
+    public static class TeamHolder extends RecyclerView.ViewHolder {
         TextView vPlayerName;
         CircleImageView vPlayerAvatar;
         TextView vPlayerNumber;
         TextView vPlayerClub;
         int Id;
 
-        public TeamHolder(View v){
+        public TeamHolder(View v) {
             super(v);
             vPlayerName = (TextView) v.findViewById(R.id.leaders_player_name);
             vPlayerAvatar = (CircleImageView) v.findViewById(R.id.leaders_player_avatar);

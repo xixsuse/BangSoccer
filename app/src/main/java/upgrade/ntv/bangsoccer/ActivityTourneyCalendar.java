@@ -41,6 +41,8 @@ import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 
 public class ActivityTourneyCalendar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener, FragmentTourneyStats.OnListFragmentInteractionListener {
@@ -53,14 +55,13 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
+    private static TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
     private DrawerLayout drawer;
     private static Activity thisActivity;
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private int mLastSelectedItem = 10;
-    private MenuItem menuItem_1, menuItem_2;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -123,7 +124,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             }
         });
 
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -134,7 +134,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         }
         mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getSupportFragmentManager());
         //set the default id
-        mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_calendar);
+        setCurrentIconID(R.id.matches_calendar);
         mTourneyCalendarPagerAdapter.setPagerCount(AppConstant.mMatchArrayList.length);
 
         // Set up the ViewPager with the sections adapter.
@@ -199,7 +199,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         return (new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBottomBarrSelected(button.getId());
+                onBottomBarrSelected(view.getId());
             }
         });
     }
@@ -246,59 +246,72 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
         if (getLastSelectedItem() != id) {
             switch (id) {
-                case R.id.matches_calendar://matches calendar
-                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_calendar);
+                case R.id.matches_calendar:
+                    setCurrentIconID(R.id.matches_calendar);
                     if (!tabLayout.isShown()) {
                         tabLayout.setVisibility(View.VISIBLE);
                     }
                     // sets a new fragment and updates the view
-                    resetAdapterWithNewPagerCount(AppConstant.mMatchArrayList.length);
+                    resetAdapterWithNewPagerCount(AppConstant.mMatchArrayList.length, id);
                     setLastSpinnerSelectedItem(R.id.matches_calendar);
                     break;
-                case R.id.matches_stats: //matches calendar
-                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_stats);
+                case R.id.matches_stats:
+                    setCurrentIconID(R.id.matches_stats);
                     if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
-                    resetAdapterWithNewPagerCount(1);
+                    resetAdapterWithNewPagerCount(1, id);
                     setLastSpinnerSelectedItem(R.id.matches_stats);
                     break;
 
-                case R.id.matches_leaders:  //matches calendar
-                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_leaders);
+                case R.id.matches_leaders:
+                    setCurrentIconID(R.id.matches_leaders);
                     if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
-                    resetAdapterWithNewPagerCount(1);
+                    resetAdapterWithNewPagerCount(1, id);
                     setLastSpinnerSelectedItem(R.id.matches_leaders);
 
                     break;
 
-                case R.id.matches_news://matches calendar
-                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_news);
+                case R.id.matches_news:
+                    setCurrentIconID(R.id.matches_news);
                     if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
-                    resetAdapterWithNewPagerCount(1);
+                    resetAdapterWithNewPagerCount(1, id);
                     setLastSpinnerSelectedItem(R.id.matches_news);
                     break;
 
-            }            mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+            }            //mTourneyCalendarPagerAdapter.notifyDataSetChanged();
         }
+
+        mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+        mTourneyCalendarPagerAdapter.getItem(0);
     }
 
-    public boolean resetAdapterWithNewPagerCount(int pageCount) {
+    public boolean resetAdapterWithNewPagerCount(int pageCount, int id) {
 
         boolean success = false;
         try {
             mTourneyCalendarPagerAdapter.clearAll();
-
+           // mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getSupportFragmentManager());
+            //set the default id
+           mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getSupportFragmentManager());
+            //set the default id
+            setCurrentIconID(id);
             mTourneyCalendarPagerAdapter.setPagerCount(pageCount);
-            mTourneyCalendarPagerAdapter.getItem(0);
+
+            // Set up the ViewPager with the sections adapter.
+            //mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
+            //setCurrentIconID(id);
+
 
             success = true;
         } catch (Exception e) {
-            FirebaseCrash.report(e);
+            Log.i("tourneyBar ", e.getMessage());
+           // FirebaseCrash.report(e);
         }
 
 
@@ -394,11 +407,14 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-
+    private static int currentIconID = 0;
+    public void setCurrentIconID(int currentIconid) {
+        ActivityTourneyCalendar.currentIconID = currentIconid;
+    }
 
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
 
-        private int currentIconID = 0;
+
         private int pagerCount = 1;
         private Map<String, Fragment> mPageReferenceMap = new HashMap<>();
 
@@ -427,9 +443,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             return currentIconID;
         }
 
-        public void setCurrentIconID(int currentIconID) {
-            this.currentIconID = currentIconID;
-        }
+
 
         public int getPagerCount() {
             return pagerCount;

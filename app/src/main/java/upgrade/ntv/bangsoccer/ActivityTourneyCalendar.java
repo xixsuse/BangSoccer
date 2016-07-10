@@ -26,9 +26,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.HashMap;
@@ -57,7 +59,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private SlidingUpPanelLayout slidingUpPanelLayout;
-    private char mLastSelectedItem = 10;
+    private int mLastSelectedItem = 10;
     private MenuItem menuItem_1, menuItem_2;
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -69,11 +71,11 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         return thisActivity;
     }
 
-    public char getLastSelectedItem() {
+    public int getLastSelectedItem() {
         return mLastSelectedItem;
     }
 
-    public void setLastSpinnerSelectedItem(char mLastSpinnerSelectedItem) {
+    public void setLastSpinnerSelectedItem(int mLastSpinnerSelectedItem) {
         this.mLastSelectedItem = mLastSpinnerSelectedItem;
     }
 
@@ -122,7 +124,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         });
 
 
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -133,8 +134,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         }
         mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getSupportFragmentManager());
         //set the default id
-        mTourneyCalendarPagerAdapter.setCurrentIconID('P');
-
+        mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_calendar);
         mTourneyCalendarPagerAdapter.setPagerCount(AppConstant.mMatchArrayList.length);
 
         // Set up the ViewPager with the sections adapter.
@@ -157,6 +157,15 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             @Override
             public void onPageSelected(int position) {/*  actionBar.setSelectedNavigationItem(position);*/}
         });
+
+        ImageView matchButton = (ImageView) findViewById(R.id.matches_calendar);
+        matchButton.setOnClickListener(tourneyBarListner(matchButton));
+        ImageView statsButton = (ImageView) findViewById(R.id.matches_stats);
+        statsButton.setOnClickListener(tourneyBarListner(statsButton));
+        ImageView leadersButton = (ImageView) findViewById(R.id.matches_leaders);
+        leadersButton.setOnClickListener(tourneyBarListner(leadersButton));
+        ImageView newsButton = (ImageView) findViewById(R.id.matches_news);
+        newsButton.setOnClickListener(tourneyBarListner(newsButton));
 
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -183,19 +192,18 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             }
         });
 
+
     }
 
-    private void onClickedFragmentLeaders() {
-        try {
-            if (findViewById(R.id.dragView) != null) {
-                findViewById(R.id.dragView).setVisibility(View.VISIBLE);
+    private View.OnClickListener tourneyBarListner(final ImageView button) {
+        return (new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBottomBarrSelected(button.getId());
             }
-
-        } catch (Exception e) {
-            Log.i("view exception", e.getMessage());
-        }
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        });
     }
+
 
     private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
         private final ThemedSpinnerAdapter.Helper mDropDownHelper;
@@ -234,167 +242,67 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         }
     }
 
+    public void onBottomBarrSelected(int id) {
 
-    public char checkSRC(MenuItem item) {
-        char imageSRC;
-        //compares the current icon and returns the drawable id
-        if (item.getTitle().equals("Partidos")) {
-            imageSRC = 'P';
-        } else if (item.getTitle().equals("Tabla de Posiciones")) {
-            imageSRC = 'T';
-        } else {
-            imageSRC = 'L';
-        }
-        return imageSRC;
-    }
-
- /*   public int checkID(int item){
-        int imageID;
-        //compares the current icon and returns the drawable id
-        if(item==R.drawable.ic_match_vs){
-            imageID= 1; //tourney
-        }else if (item==R.drawable.ic_club_stats){
-            imageID = 2; //stats
-        }else {
-            imageID = 3; //leader
-        }
-        return imageID;
-    }*/
-
-    public void onSpinnerSelecterWorker(MenuItem item) {
-
-        char menu1src = checkSRC(menuItem_1);
-        char menu2src = checkSRC(menuItem_2);
-        char menuIcon = checkSRC(item);
-
-        if (getLastSelectedItem() != menuIcon) {
-            mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getSupportFragmentManager());
-            mTourneyCalendarPagerAdapter.setCurrentIconID(menuIcon);
-            switch (menuIcon) {
-                case 'P':
-                    mTourneyCalendarPagerAdapter.setCurrentIconID('P');
+        if (getLastSelectedItem() != id) {
+            switch (id) {
+                case R.id.matches_calendar://matches calendar
+                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_calendar);
                     if (!tabLayout.isShown()) {
                         tabLayout.setVisibility(View.VISIBLE);
                     }
                     // sets a new fragment and updates the view
-                    mTourneyCalendarPagerAdapter.setPagerCount(AppConstant.mMatchArrayList.length);
-
-                   mTourneyCalendarPagerAdapter.getItem(0);
-
-                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-
-                    toolbar.setTitle("Partidos");
-                    try {
-                        if (mMenu != null) {
-                            if (menuIcon == menu1src) {
-                                if ('T' == menu2src) {
-                                    menuItem_1.setIcon(R.drawable.ic_leaders);
-                                    menuItem_1.setTitle("Lideres");
-
-                                } else {
-                                    menuItem_1.setIcon(R.drawable.ic_club_stats);
-                                    menuItem_1.setTitle("Tabla de Posiciones");
-                                }
-                            } else if ('T' == menu1src) {
-                                menuItem_2.setIcon(R.drawable.ic_leaders);
-                                menuItem_2.setTitle("Lideres");
-
-                            } else {
-                                menuItem_2.setIcon(R.drawable.ic_club_stats);
-                                menuItem_2.setTitle("Tabla de Posiciones");
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        Log.i("view exception", e.getMessage());
-                    }
-                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-                    setLastSpinnerSelectedItem(menuIcon);
-
+                    resetAdapterWithNewPagerCount(AppConstant.mMatchArrayList.length);
+                    setLastSpinnerSelectedItem(R.id.matches_calendar);
                     break;
-                case 'T':
-                    mTourneyCalendarPagerAdapter.setCurrentIconID('T');
-
-
+                case R.id.matches_stats: //matches calendar
+                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_stats);
                     if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
-                    mTourneyCalendarPagerAdapter.setPagerCount(1);
-
-                    mTourneyCalendarPagerAdapter.getItem(0);
-                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-
-                    toolbar.setTitle("Tabla de Posiciones");
-
-                    try {
-                        if (mMenu != null) {
-                            if (menuIcon == menu1src) {
-                                if ('P' == menu2src) {
-                                    menuItem_1.setIcon(R.drawable.ic_leaders);
-                                    menuItem_1.setTitle("Lideres");
-                                } else {
-                                    menuItem_1.setIcon(R.drawable.ic_match_vs);
-                                    menuItem_1.setTitle("Partidos");
-                                }
-                            } else if ('P' == menu1src) {
-                                menuItem_2.setIcon(R.drawable.ic_leaders);
-                                menuItem_2.setTitle("Lideres");
-                            } else {
-                                menuItem_2.setIcon(R.drawable.ic_match_vs);
-                                menuItem_2.setTitle("Partidos");
-
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        Log.i("view exception", e.getMessage());
-                    }
-                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-                    setLastSpinnerSelectedItem(menuIcon);
+                    resetAdapterWithNewPagerCount(1);
+                    setLastSpinnerSelectedItem(R.id.matches_stats);
                     break;
 
-                case 'L':
-                    mTourneyCalendarPagerAdapter.setCurrentIconID('L');
+                case R.id.matches_leaders:  //matches calendar
+                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_leaders);
                     if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
-
-
-
-                    mTourneyCalendarPagerAdapter.setPagerCount(1);
-                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-                    mTourneyCalendarPagerAdapter.getItem(0);
-                    toolbar.setTitle("Lideres");
-
-                    try {
-                        if (mMenu != null) {
-                            if (menuIcon == menu1src) {
-                                if ('P' == menu2src) {
-                                    menuItem_1.setIcon(R.drawable.ic_club_stats);
-                                    menuItem_1.setTitle("Tabla de Posiciones");
-                                } else {
-                                    menuItem_1.setIcon(R.drawable.ic_match_vs);
-                                    menuItem_1.setTitle("Partidos");
-                                }
-                            } else if ('P' == menu1src) {
-                                menuItem_2.setIcon(R.drawable.ic_club_stats);
-                                menuItem_2.setTitle("Tabla de Posiciones");
-                            } else {
-
-                                menuItem_2.setIcon(R.drawable.ic_match_vs);
-                                menuItem_2.setTitle("Partidos");
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        Log.i("view exception", e.getMessage());
-                    }
-                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+                    resetAdapterWithNewPagerCount(1);
+                    setLastSpinnerSelectedItem(R.id.matches_leaders);
 
                     break;
 
-            }
+                case R.id.matches_news://matches calendar
+                    mTourneyCalendarPagerAdapter.setCurrentIconID(R.id.matches_news);
+                    if (tabLayout.isShown()) {
+                        tabLayout.setVisibility(View.GONE);
+                    }
+                    resetAdapterWithNewPagerCount(1);
+                    setLastSpinnerSelectedItem(R.id.matches_news);
+                    break;
+
+            }            mTourneyCalendarPagerAdapter.notifyDataSetChanged();
         }
+    }
+
+    public boolean resetAdapterWithNewPagerCount(int pageCount) {
+
+        boolean success = false;
+        try {
+            mTourneyCalendarPagerAdapter.clearAll();
+
+            mTourneyCalendarPagerAdapter.setPagerCount(pageCount);
+            mTourneyCalendarPagerAdapter.getItem(0);
+
+            success = true;
+        } catch (Exception e) {
+            FirebaseCrash.report(e);
+        }
+
+
+        return success;
     }
 
     @Override
@@ -418,13 +326,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        /*mMenu = menu;
-        menuItem_1 = mMenu.findItem(R.id.action_tourney_menu_1);
-        menuItem_1.setIcon(R.drawable.ic_club_stats);
-        menuItem_1.setTitle("Tabla de Posiciones");
-        menuItem_2 = mMenu.findItem(R.id.action_tourney_menu_2);
-        menuItem_2.setIcon(R.drawable.ic_leaders);
-        menuItem_2.setTitle("Lideres");*/
+
         return true;
     }
 
@@ -433,15 +335,19 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-/*
-        if (mTourneyCalendarPagerAdapter != null) {
-            //erase all current fragment from the view pager
-            mTourneyCalendarPagerAdapter.clearAll();
+        int id = item.getItemId();
+        Intent intent;
+
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
         }
-*/
 
-
-       // onSpinnerSelecterWorker(item);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_favorites) {
+            intent = new Intent(this, ActivityFavoriteNFollow.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -461,31 +367,24 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         return true;
     }
 
+
+    private void onClickedFragmentLeaders() {
+        try {
+            if (findViewById(R.id.dragView) != null) {
+                findViewById(R.id.dragView).setVisibility(View.VISIBLE);
+            }
+
+        } catch (Exception e) {
+            Log.i("view exception", e.getMessage());
+        }
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+    }
+
     @Override
     public void onListFragmentInteraction() {
         onClickedFragmentLeaders();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //       Toast.makeText(ActivityTourneyCalendar.this, "onStart tourAct", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-      //  mTourneyCalendarPagerAdapter.clearAll();
-        //    Toast.makeText(ActivityTourneyCalendar.this, "onDestroy tourAct", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        //   Toast.makeText(ActivityTourneyCalendar.this, "onRestart tourAct", Toast.LENGTH_SHORT).show();
-
-    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -501,11 +400,12 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
         private int currentIconID = 0;
         private int pagerCount = 1;
-       private Map<String, Fragment> mPageReferenceMap = new HashMap<>();
+        private Map<String, Fragment> mPageReferenceMap = new HashMap<>();
 
         public TourneyCalendarPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+
         public void clearAll() //Clear all pages
         {
             if (mPageReferenceMap != null) {
@@ -514,10 +414,10 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                     FragmentManager fm = getSupportFragmentManager();
                     for (int i = 0; i < mPageReferenceMap.size(); i++)
 
-                       oldFragment  = getFragmentForPosition(i);
-                        if( oldFragment != null) {
-                            fm.beginTransaction().remove(oldFragment).commit();
-                        }
+                        oldFragment = getFragmentForPosition(i);
+                    if (oldFragment != null) {
+                        fm.beginTransaction().remove(oldFragment).commit();
+                    }
                 }
                 mPageReferenceMap.clear();
             }
@@ -548,6 +448,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return fragmentType(position);
+
         }
 
         /**
@@ -558,19 +459,21 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             String tag = makeFragmentName(mViewPager.getId(), (int) getItemId(position));
             int typeID = getCurrentIconID();
             switch (typeID) {
-                case 'P':
+                case R.id.matches_calendar:
                     selectedFragmentType = FragmentMatches.newInstance(position + 1);
-                   mPageReferenceMap.put(tag, selectedFragmentType);
+                    mPageReferenceMap.put(tag, selectedFragmentType);
                     break;
-
-                case 'L':
-                    selectedFragmentType = FragmentLeaders.newInstance();
-                   mPageReferenceMap.put(tag, selectedFragmentType);
-                    break;
-
-                case 'T':
+                case R.id.matches_stats:
                     selectedFragmentType = FragmentTourneyStats.newInstance();
-                   mPageReferenceMap.put(tag, selectedFragmentType);
+                    mPageReferenceMap.put(tag, selectedFragmentType);
+                    break;
+                case R.id.matches_leaders:
+                    selectedFragmentType = FragmentLeaders.newInstance();
+                    mPageReferenceMap.put(tag, selectedFragmentType);
+                    break;
+                case R.id.matches_news:
+                    selectedFragmentType = FragmentNewsFeed.newInstance();
+                    mPageReferenceMap.put(tag, selectedFragmentType);
                     break;
             }
             return selectedFragmentType;

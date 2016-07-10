@@ -1,7 +1,9 @@
 package upgrade.ntv.bangsoccer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -14,11 +16,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -83,10 +92,36 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         ActivityTourneyCalendar.thisActivity = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("Partidos");
+            toolbar.setTitle("");
         }
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        // Setup spinner
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setAdapter(new MyAdapter(
+                toolbar.getContext(),
+                new String[]{
+                        "Section 1",
+                        "Section 2",
+                        "Section 3",
+                }));
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // When the given dropdown item is selected, show its contents in the
+                // container view.
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -162,6 +197,44 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
+    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
+        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
+
+        public MyAdapter(Context context, String[] objects) {
+            super(context, android.R.layout.simple_list_item_1, objects);
+            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View view;
+
+            if (convertView == null) {
+                // Inflate the drop down using the helper's LayoutInflater
+                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
+                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            } else {
+                view = convertView;
+            }
+
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setText(getItem(position));
+
+            return view;
+        }
+
+        @Override
+        public Resources.Theme getDropDownViewTheme() {
+            return mDropDownHelper.getDropDownViewTheme();
+        }
+
+        @Override
+        public void setDropDownViewTheme(Resources.Theme theme) {
+            mDropDownHelper.setDropDownViewTheme(theme);
+        }
+    }
+
+
     public char checkSRC(MenuItem item) {
         char imageSRC;
         //compares the current icon and returns the drawable id
@@ -190,27 +263,26 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
     public void onSpinnerSelecterWorker(MenuItem item) {
 
-        if (mTourneyCalendarPagerAdapter != null) {
-            mTourneyCalendarPagerAdapter.clearAll();
-        }
-
         char menu1src = checkSRC(menuItem_1);
         char menu2src = checkSRC(menuItem_2);
         char menuIcon = checkSRC(item);
 
         if (getLastSelectedItem() != menuIcon) {
-            //erase all current fragment from the view pager
-
+            mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getSupportFragmentManager());
             mTourneyCalendarPagerAdapter.setCurrentIconID(menuIcon);
             switch (menuIcon) {
                 case 'P':
+                    mTourneyCalendarPagerAdapter.setCurrentIconID('P');
                     if (!tabLayout.isShown()) {
                         tabLayout.setVisibility(View.VISIBLE);
                     }
                     // sets a new fragment and updates the view
                     mTourneyCalendarPagerAdapter.setPagerCount(AppConstant.mMatchArrayList.length);
-                    mTourneyCalendarPagerAdapter.getItem(0);
+
+                   mTourneyCalendarPagerAdapter.getItem(0);
+
                     mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+
                     toolbar.setTitle("Partidos");
                     try {
                         if (mMenu != null) {
@@ -236,17 +308,22 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                     } catch (Exception e) {
                         Log.i("view exception", e.getMessage());
                     }
-
+                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
                     setLastSpinnerSelectedItem(menuIcon);
 
                     break;
                 case 'T':
+                    mTourneyCalendarPagerAdapter.setCurrentIconID('T');
+
+
                     if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
                     mTourneyCalendarPagerAdapter.setPagerCount(1);
+
                     mTourneyCalendarPagerAdapter.getItem(0);
                     mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+
                     toolbar.setTitle("Tabla de Posiciones");
 
                     try {
@@ -272,16 +349,21 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                     } catch (Exception e) {
                         Log.i("view exception", e.getMessage());
                     }
+                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
                     setLastSpinnerSelectedItem(menuIcon);
                     break;
 
                 case 'L':
+                    mTourneyCalendarPagerAdapter.setCurrentIconID('L');
                     if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
+
+
+
                     mTourneyCalendarPagerAdapter.setPagerCount(1);
-                    mTourneyCalendarPagerAdapter.getItem(0);
                     mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+                    mTourneyCalendarPagerAdapter.getItem(0);
                     toolbar.setTitle("Lideres");
 
                     try {
@@ -307,7 +389,8 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                     } catch (Exception e) {
                         Log.i("view exception", e.getMessage());
                     }
-                    setLastSpinnerSelectedItem(menuIcon);
+                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+
                     break;
 
             }
@@ -334,14 +417,14 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_calendar, menu);
-        mMenu = menu;
+        getMenuInflater().inflate(R.menu.main, menu);
+        /*mMenu = menu;
         menuItem_1 = mMenu.findItem(R.id.action_tourney_menu_1);
         menuItem_1.setIcon(R.drawable.ic_club_stats);
         menuItem_1.setTitle("Tabla de Posiciones");
         menuItem_2 = mMenu.findItem(R.id.action_tourney_menu_2);
         menuItem_2.setIcon(R.drawable.ic_leaders);
-        menuItem_2.setTitle("Lideres");
+        menuItem_2.setTitle("Lideres");*/
         return true;
     }
 
@@ -350,7 +433,15 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        onSpinnerSelecterWorker(item);
+/*
+        if (mTourneyCalendarPagerAdapter != null) {
+            //erase all current fragment from the view pager
+            mTourneyCalendarPagerAdapter.clearAll();
+        }
+*/
+
+
+       // onSpinnerSelecterWorker(item);
 
         return super.onOptionsItemSelected(item);
     }
@@ -501,7 +592,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
         @Override
         public int getCount() {
-            // Show 10 total pages.
             return getPagerCount();
 
         }

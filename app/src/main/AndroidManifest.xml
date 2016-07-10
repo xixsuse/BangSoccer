@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="upgrade.ntv.bangsoccer">
 
-
     <!-- Bluetooth permissions and features -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -22,11 +21,11 @@
         android:required="true" />
 
     <application
+        android:name=".AppicationCore"
         android:allowBackup="true"
         android:icon="@mipmap/ic_ldf_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".AppicationCore"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -125,20 +124,14 @@
         <activity
             android:name=".ActivityFavoriteNFollow"
             android:label="@string/title_activity_activity_favorite_nfollow"
-            android:parentActivityName=".ActivityMain"
             android:launchMode="singleTop"
+            android:parentActivityName=".ActivityMain"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityMain" />
         </activity>
-        <activity android:name=".FireTestActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".FireTestActivity"/>
     </application>
 
 </manifest>

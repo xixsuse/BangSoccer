@@ -3,6 +3,8 @@ package upgrade.ntv.bangsoccer;
 import android.app.Application;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,11 +24,29 @@ public class AppicationCore extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (!FirebaseApp.getApps(this).isEmpty()) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                FirebaseCrash.report(ex);
+            }
+        });
+
+
+        if (databaseReference == null){
+            try{
+                if (!FirebaseApp.getApps(this).isEmpty()) {
+                    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+                }
+            }catch (Exception e) {
+                FirebaseCrash.log("firebase Crash reports  failed to initialize");
+
+            }finally
+             {
+                databaseReference = FirebaseDatabase.getInstance().getReference();
+                mPlayersDeftailsRef = databaseReference.child("Players");
+                mTeamsRef = databaseReference.child("Team");
+            }
         }
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        mPlayersDeftailsRef = databaseReference.child("Players");
-        mTeamsRef = databaseReference.child("Team");
+
         populateDummyClubsItems();    }
 }

@@ -11,9 +11,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -24,8 +26,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha3'
-    compile 'com.google.firebase:firebase-crash:9.2.0'
     compile 'com.google.firebase:firebase-core:9.2.0'
+    compile 'com.google.firebase:firebase-crash:9.2.0'
+
     compile 'com.google.firebase:firebase-auth:9.2.0'
     compile 'com.google.firebase:firebase-database:9.2.0'
     compile 'com.firebaseui:firebase-ui:0.4.1'

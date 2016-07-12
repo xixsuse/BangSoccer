@@ -68,7 +68,7 @@ public class ActivityFavoriteNFollow extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 clubsAdapter.getClubID(position);
 
-                Intent intent = DrawerSelector.onItemSelected(thisActivity, 100);
+                Intent intent = DrawerSelector.onItemSelected(tourneyActivity, 100);
                 intent.putExtra("CLUBID", position);
 
                 ClubsToFollowAdapter.TeamHolder myholder   = (ClubsToFollowAdapter.TeamHolder) clubsAdapter.getItemHolder(position).getTag();

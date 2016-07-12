@@ -39,6 +39,7 @@ public class FragmentMatches extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_matches_content, container, false);
         Bundle arg = getArguments();
+        setRetainInstance(true);
         int index = arg.getInt(ARG_SECTION_NUMBER);
 
        // mScheduleText.setText("Semana " + index);

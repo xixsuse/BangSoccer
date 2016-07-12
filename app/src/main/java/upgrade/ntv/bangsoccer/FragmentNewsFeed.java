@@ -80,7 +80,7 @@ public class FragmentNewsFeed extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsfeed, container, false);
-
+        setRetainInstance(true);
         populateDummyNewsFeedItems();
         newsFeedAdapter = new NewsFeedAdapter(newsFeedItems);
 
@@ -103,7 +103,7 @@ public class FragmentNewsFeed extends Fragment {
                         Constants.NEWS_FEED_DETAILS_ACTIVITY);
 
                 //will be used to identify and go back to the  calling fragment newsfeedfragment (#1)
-                intent.putExtra("tourney_newsfeed", 1);
+                intent.putExtra("position", 1);
 
 
                 if (intent != null) {

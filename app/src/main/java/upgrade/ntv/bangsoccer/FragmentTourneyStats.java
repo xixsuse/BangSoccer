@@ -54,7 +54,7 @@ public class FragmentTourneyStats extends Fragment {
         if (getArguments() != null) {
             mTournamentID = getArguments().getInt(TOURNEY_ID);
         }
-
+        setRetainInstance(true);
 
     }
 

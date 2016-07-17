@@ -63,15 +63,15 @@ public class FragmentNewsFeed extends Fragment {
 
     }
     public void populateDummyNewsFeedItems(){
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC defenderá título de Copa Regional en El Seibo"));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC defenderá título de Copa Regional en El Seibo"));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
-        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Upgrade, We Create"));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC defenderá título de Copa Regional en El Seibo"));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC defenderá título de Copa Regional en El Seibo"));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
+//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Upgrade, We Create"));
 
     }
 

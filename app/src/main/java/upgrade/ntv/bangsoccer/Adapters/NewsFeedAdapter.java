@@ -43,7 +43,8 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.NewsFe
         // - replace the contents of the view with that element
         NewsFeedItem newsFeedItem = newsFeedItems.get(position);
 
-        holder.vImage.setImageResource(newsFeedItem.image);
+        holder.vImage.setImageBitmap(newsFeedItem.image);
+        // holder.vImage.setImageResource(newsFeedItem.image);
         holder.vTitleTextView.setText(newsFeedItem.tittle);
         holder.ID =position;
     }

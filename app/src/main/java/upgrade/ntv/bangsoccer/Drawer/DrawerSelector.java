@@ -6,6 +6,7 @@ import android.content.Intent;
 import upgrade.ntv.bangsoccer.ActivityAbout;
 import upgrade.ntv.bangsoccer.ActivityClubSelect;
 import upgrade.ntv.bangsoccer.ActivityClubs;
+import upgrade.ntv.bangsoccer.ActivityFacebook;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.ActivityNewsDetails;
 import upgrade.ntv.bangsoccer.ActivityTour;
@@ -64,6 +65,10 @@ public class DrawerSelector {
                 break;
             case Constants.NEWS_FEED_DETAILS_ACTIVITY:
                 intent = new Intent(callingActivity, ActivityNewsDetails.class);
+                break;
+
+            case R.id.nav_facebook:
+                intent = new Intent(callingActivity, ActivityFacebook.class);
                 break;
 
 

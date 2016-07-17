@@ -38,6 +38,11 @@
                 android:icon="@drawable/ic_setting_light"
                 android:title="Settings" />-->
             <item
+                android:id="@+id/nav_facebook"
+                android:icon="@drawable/ic_facebook"
+                android:title="Facebook" />
+
+            <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_upgraden"
                 android:title="Upgrade" />

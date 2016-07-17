@@ -46,7 +46,7 @@ public class FragmentLeaders extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leaders, container, false);
-        setRetainInstance(true);
+
         mLeadersAdapter = new LeadersAdapter(getActivity());
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);

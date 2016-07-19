@@ -10,8 +10,11 @@ package upgrade.ntv.bangsoccer.dao;
 public class DBNewsFeed {
 
     private Long id;
-    private String Description;
+    private String UserName;
+    private String Message;
+    private String Story;
     private byte[] Picture;
+    private String Date;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -23,10 +26,13 @@ public class DBNewsFeed {
         this.id = id;
     }
 
-    public DBNewsFeed(Long id, String Description, byte[] Picture) {
+    public DBNewsFeed(Long id, String UserName, String Message, String Story, byte[] Picture, String Date) {
         this.id = id;
-        this.Description = Description;
+        this.UserName = UserName;
+        this.Message = Message;
+        this.Story = Story;
         this.Picture = Picture;
+        this.Date = Date;
     }
 
     public Long getId() {
@@ -37,12 +43,28 @@ public class DBNewsFeed {
         this.id = id;
     }
 
-    public String getDescription() {
-        return Description;
+    public String getUserName() {
+        return UserName;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setUserName(String UserName) {
+        this.UserName = UserName;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String Message) {
+        this.Message = Message;
+    }
+
+    public String getStory() {
+        return Story;
+    }
+
+    public void setStory(String Story) {
+        this.Story = Story;
     }
 
     public byte[] getPicture() {
@@ -51,6 +73,14 @@ public class DBNewsFeed {
 
     public void setPicture(byte[] Picture) {
         this.Picture = Picture;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String Date) {
+        this.Date = Date;
     }
 
     // KEEP METHODS - put your custom methods here

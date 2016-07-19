@@ -173,11 +173,16 @@ public class ActivityFacebook extends AppCompatActivity implements  NavigationVi
                             for(int i = 0; i < 6; i++){
                                 JSONObject obj = jarray.getJSONObject(i);
                                 String message= obj.optString("message");
-                                String imageURL= obj.optString("full_picture"); //TODO: post picture pending
+                                String imageURL= obj.optString("full_picture");
+                                String date= obj.optString("created_time");
+                                String story= obj.optString("story");
 
-                                if(message!=null){
+                                //Cleaning Date/Time
+                                date = date.split("T")[0]+" ("+date.split("T")[1].substring(0,5)+")";
 
-                                    new DownloadImageTask(message)
+                                if(imageURL!=null){
+
+                                    new DownloadImageTask(message, story, date)
                                             .execute(imageURL);
                                 }
 
@@ -194,7 +199,7 @@ public class ActivityFacebook extends AppCompatActivity implements  NavigationVi
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "full_picture,message");
+        parameters.putString("fields", "full_picture,message,created_time,story");
         request.setParameters(parameters);
         request.executeAsync();
 
@@ -229,10 +234,14 @@ public class ActivityFacebook extends AppCompatActivity implements  NavigationVi
      */
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         String msg;
+        String story;
+        String date;
 
 
-        public DownloadImageTask(String msg) {
+        public DownloadImageTask(String msg, String story, String date) {
             this.msg = msg;
+            this.story = story;
+            this.date=date;
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -251,7 +260,9 @@ public class ActivityFacebook extends AppCompatActivity implements  NavigationVi
         protected void onPostExecute(Bitmap result) {
 
             DBNewsFeed newsFeed = new DBNewsFeed();
-            newsFeed.setDescription(msg);
+            newsFeed.setMessage(msg);
+            newsFeed.setStory(story);
+            newsFeed.setDate(date);
             newsFeed.setPicture(bitmapToByte(result));
             AppicationCore.getDbNewsFeedDao().insertInTx(newsFeed);
         }

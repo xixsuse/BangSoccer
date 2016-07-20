@@ -37,8 +37,9 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout drawer;
     private Activity thisActivity;
+    private int newsFeedID=-1;
 
-    private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
+    //private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -48,13 +49,17 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed_details);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null)
+          newsFeedID= extras.getInt("newsFeedID");
+
 
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         //dummy data
-        populateDummyNewsFeedItems();
+       // populateDummyNewsFeedItems();
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -90,7 +95,7 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
     }
 
     public void populateDummyNewsFeedItems(){
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
+       //newsFeedItems.add(new NewsFeedItem(null, "PROBANDO DETALLES"));
 //        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
 //        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC defenderá título de Copa Regional en El Seibo"));
 //        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
@@ -178,13 +183,17 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return FragmentNewsFeeddetails.newInstance();
+            if(newsFeedID!=-1)
+                return FragmentNewsFeeddetails.newInstance(newsFeedID);
+
+            return FragmentNewsFeeddetails.newInstance(position);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return newsFeedItems.size();
+           // return newsFeedItems.size();
+            return AppicationCore.getAllNewsFeed().size();
         }
 
         @Override

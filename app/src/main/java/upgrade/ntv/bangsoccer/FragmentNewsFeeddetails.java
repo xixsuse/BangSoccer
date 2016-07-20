@@ -1,6 +1,8 @@
 package upgrade.ntv.bangsoccer;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.List;
+
+import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 
 /**
  * A fragment representing a list of Items.
@@ -21,10 +29,14 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
     private DrawerLayout drawer;
     // TODO: Customize parameter argument names
     private static final String NEWS_ID = "news-id";
-    private static int mNewsID;
     private static Toolbar toolbar;
     private static Context mContext;
     private OnListFragmentInteractionListener mListener;
+    private DBNewsFeed mNewsFeed;
+    private TextView tvDate;
+    private TextView tvTitle;
+    private TextView tvDescription;
+    private ImageView ivPicture;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -35,11 +47,11 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static FragmentNewsFeeddetails newInstance() {
+    public static FragmentNewsFeeddetails newInstance(int newId) {
         FragmentNewsFeeddetails fragment = new FragmentNewsFeeddetails();
-        // Bundle args = new Bundle();
-        // args.putInt(NEWS_ID, newId);
-        // fragment.setArguments(args);
+         Bundle args = new Bundle();
+         args.putInt(NEWS_ID, newId);
+         fragment.setArguments(args);
         return fragment;
     }
 
@@ -47,8 +59,10 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+       // mNewsFeed= AppicationCore.getNewsFeed(2);
         if (getArguments() != null) {
-            mNewsID = getArguments().getInt(NEWS_ID);
+            long mNewsID = getArguments().getInt(NEWS_ID);
+            mNewsFeed= AppicationCore.getNewsFeed(mNewsID);
         }
 
 
@@ -84,6 +98,33 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
         recyclerView.setAdapter(newsFeedAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setItemAnimator(new DefaultItemAnimator());*/
+
+        tvDate = (TextView) view.findViewById(R.id.newsfeeddetails_news_timestamp);
+        tvTitle = (TextView) view.findViewById(R.id.newsfeeddetails_news_title);
+        tvDescription = (TextView) view.findViewById(R.id.newsfeeddetails_news_description);
+        ivPicture = (ImageView) view.findViewById(R.id.app_barr_news_details_imageheader);
+
+
+
+        if(mNewsFeed!=null) {
+
+            String story = mNewsFeed.getStory();
+
+            if(story!=null && story.length()>1)
+                tvTitle.setText(story);
+
+            else
+                tvTitle.setText("Publicación");
+
+
+            tvDate.setText(mNewsFeed.getDate());
+            tvDescription.setText(mNewsFeed.getMessage());
+
+            Bitmap bm = bitmapFromByte(mNewsFeed.getPicture());
+            ivPicture.setImageBitmap(bm);
+            bm=null;
+
+        }
 
         return view;
     }
@@ -125,5 +166,13 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction();
+    }
+
+
+    public Bitmap bitmapFromByte(byte[] b){
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 2;
+        return  BitmapFactory.decodeByteArray(b , 0, b .length, options);
     }
 }

@@ -43,6 +43,11 @@
                 android:title="Facebook" />
 
             <item
+                android:id="@+id/nav_email"
+                android:icon="@drawable/ic_email_white_18dp"
+                android:title="email" />
+
+            <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_upgraden"
                 android:title="Upgrade" />

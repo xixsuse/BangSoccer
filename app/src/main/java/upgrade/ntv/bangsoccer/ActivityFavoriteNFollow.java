@@ -23,7 +23,7 @@ import static upgrade.ntv.bangsoccer.AppConstants.AppConstant.clubItems;
 public class ActivityFavoriteNFollow extends AppCompatActivity {
 
     private Activity thisActivity;
-   public List<Team> clubsToSelect  = new ArrayList<>();
+    public List<Team> clubsToSelect  = new ArrayList<>();
     private ClubsToFollowAdapter clubsAdapter;
     private GridLayoutManager lLayout;
 

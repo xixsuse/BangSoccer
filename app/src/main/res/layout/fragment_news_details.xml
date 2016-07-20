@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:lineSpacingExtra="8dp"
-                    android:text="Carlos Vargas regresaría en Mayo."
+                    android:text="PRUEBA/ Fragment_news_details.xml"
                     android:textAlignment="center"
                     android:textAppearance="@android:style/TextAppearance.Material.Title"
                     tools:targetApi="LOLLIPOP" />

@@ -161,11 +161,13 @@ public class ActivityMain extends AppCompatActivity
             public void onItemClick(View view, int position) {
 
                 Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
-                intent.putExtra("position", position);
+                intent.putExtra("newsFeedID", position+1);
 
                 if (intent != null) {
                     startActivity(intent);
                 }
+
+
             }
 
             @Override
@@ -189,7 +191,7 @@ public class ActivityMain extends AppCompatActivity
 
             for(int i=0; i<newsfeeds.size(); i++){
                 Bitmap bm = bitmapFromByte(newsfeeds.get(i).getPicture());
-                newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getDescription()));
+                newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getMessage()));
                 bm=null;
             }
         }

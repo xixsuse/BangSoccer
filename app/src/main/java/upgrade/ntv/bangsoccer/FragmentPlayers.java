@@ -78,7 +78,7 @@ public class FragmentPlayers extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
            // mPlayerAdapter.getPlayerID(position);
-             String x =  mPlayerAdapter.getPlayerId(position);
+           //  String x =  mPlayerAdapter.getPlayerId(position);
              mListener.onListFragmentInteraction(mPlayerAdapter.getPlayerId(position));
 
 

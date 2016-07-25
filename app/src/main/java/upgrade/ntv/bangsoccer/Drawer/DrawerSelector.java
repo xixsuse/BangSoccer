@@ -68,9 +68,9 @@ public class DrawerSelector {
                 intent = new Intent(callingActivity, ActivityNewsDetails.class);
                 break;
 
-            case R.id.nav_facebook:
+            /*case R.id.nav_facebook:
                 intent = new Intent(callingActivity, ActivityFacebook.class);
-                break;
+                break;*/
 
 
             case R.id.nav_email:

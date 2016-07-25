@@ -61,7 +61,7 @@
             android:label="Clubes"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
+       <!-- <activity
             android:name=".ActivityFacebook"
             android:label="Facebook Login"
             android:parentActivityName=".ActivityMain"
@@ -69,7 +69,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityMain" />
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".ActivityLogin"

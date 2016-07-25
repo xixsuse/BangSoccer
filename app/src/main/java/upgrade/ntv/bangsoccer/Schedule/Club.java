@@ -3,40 +3,48 @@ package upgrade.ntv.bangsoccer.Schedule;
 import java.util.ArrayList;
 import java.util.List;
 
-import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
-
 /**
  * Created by Jose on 3/15/2015.
  */
-public class Team implements Cloneable {
+public class Club implements Cloneable {
 
-    private  int teamid, team_image, pj, dg, points, rank, clubid;
-    private String name, stadium, profile, division;
+    private  int  pj, dg, points, rank, clubid;
+    private String name, stadium, profile, division, team_image;
 
     private boolean isFavorite;
     private List<Players> player_list = new ArrayList<Players>();
     private List<String> match_list = new ArrayList<String>();
 
-    private Team team_clone;
+    private Club club_clone;
+
+    String mFireBaseKey;
 
 
-    public Team() {
+    public Club() {
         //jackson object
     }
 
     // public constructor
-    public Team( int teamid) {
-        this.teamid = teamid;
-        onSaveTeam();
-        onCreateTeamMatch();
+    public Club(int clubid) {
+        this.clubid = clubid;
+  /*      onSaveTeam();
+        onCreateTeamMatch();*/
     }
 
     //   Setters
 
-public Team getTeam_clone() throws CloneNotSupportedException {
-   team_clone = (Team) this.clone();
-    return team_clone;
+public Club getClub_clone() throws CloneNotSupportedException {
+   club_clone = (Club) this.clone();
+    return club_clone;
 }
+
+    public String getmFireBaseKey() {
+        return mFireBaseKey;
+    }
+
+    public void setmFireBaseKey(String mFireBaseKey) {
+        this.mFireBaseKey = mFireBaseKey;
+    }
 
     public boolean isFavorite() {
         return isFavorite;
@@ -46,7 +54,7 @@ public Team getTeam_clone() throws CloneNotSupportedException {
         isFavorite = favorite;
     }
 
-    private void setTeam_image(int team_image) {
+    private void setTeam_image(String team_image) {
         this.team_image = team_image;
     }
 
@@ -85,12 +93,8 @@ public Team getTeam_clone() throws CloneNotSupportedException {
     // Getters
 
 
-    public int getTeam_image() {
+    public String getTeam_image() {
         return team_image;
-    }
-
-    public int getTeamid() {
-        return teamid;
     }
 
     public String getName() {
@@ -152,7 +156,7 @@ public Team getTeam_clone() throws CloneNotSupportedException {
     }
 
 
-    private void onSaveTeam(){
+/*    private void onSaveTeam(){
         for (int i = 0; i < AppConstant.mTeamArrayList.length; i++)
         {
             if( Integer.valueOf(AppConstant.mTeamArrayList[i][0]) == this.teamid){
@@ -176,7 +180,7 @@ public Team getTeam_clone() throws CloneNotSupportedException {
                     addMatch(matchList);
                 }
             }
-        }
+        }*/
 
     public String onCreateMatchListString(){
         String listToShow = "";
@@ -194,7 +198,7 @@ public Team getTeam_clone() throws CloneNotSupportedException {
 
     @Override
     public String toString() {
-        return "Team{" +
+        return "Club{" +
                 "name='" + name + '\'' +
                 ", stadium='" + stadium + '\'' +
                 ", profile='" + profile + '\'' +

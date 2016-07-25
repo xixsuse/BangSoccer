@@ -18,8 +18,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 import upgrade.ntv.bangsoccer.Schedule.Players;
-import upgrade.ntv.bangsoccer.Schedule.Team;
 
 
 /**
@@ -90,8 +90,8 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
             holder.vPlayerName.setText(mPlayersLeader.get(position).getName());
             holder.vPlayerNumber.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
             holder.vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon);
-            Team team = new Team(mPlayersLeader.get(position).getTeamid());
-            holder.vPlayerClub.setText(team.getName());
+            Club club = new Club(mPlayersLeader.get(position).getTeamid());
+            holder.vPlayerClub.setText(club.getName());
             holder.Id = mPlayersLeader.get(position).getTeamid();
         }
     }

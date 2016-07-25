@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 
 /**
@@ -19,19 +21,19 @@ import upgrade.ntv.bangsoccer.Schedule.Team;
  */
 public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapter.TeamStatsHolder>{
 
-    List<Team> mTeamList;
+    List<Club> mClubList;
     Context mContext;
 
 
-    public TourneyStatsAdapter(List<Team> list, Context context) {
-        this.mTeamList = list;
+    public TourneyStatsAdapter(List<Club> list, Context context) {
+        this.mClubList = list;
         this.mContext = context;
     }
 
 
     @Override
     public int getItemCount() {
-        return this.mTeamList.size();
+        return this.mClubList.size();
     }
 
 
@@ -48,9 +50,12 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
     public void onBindViewHolder(TourneyStatsAdapter.TeamStatsHolder holder, int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vStatsTeamName.setText(mTeamList.get(position).getName());
-
-        holder.vTeamAvatar.setImageResource(mTeamList.get(position).getTeam_image());
+        holder.vStatsTeamName.setText(mClubList.get(position).getName());
+        Picasso.with(mContext).
+                load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
+                placeholder(R.drawable.ic_open_game_icon).
+                into(holder.vTeamAvatar);
+       // holder.vTeamAvatar.setImageResource(mClubList.get(position).getTeam_image());
         holder.vPJ.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
         holder.vPG.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
         holder.vPE.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
@@ -61,7 +66,7 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
         holder.vPoints.setText(String.valueOf((int) (Math.random() * ((9) + 1))));
 
 
-        holder.Id = mTeamList.get(position).getTeamid();
+        holder.Id = mClubList.get(position).getmFireBaseKey();
 
     }
         // Provides a reference to the views for each data item
@@ -77,7 +82,7 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
         TextView vGC;
         TextView vDG;
         TextView vPoints;
-        int Id;
+        String Id;
 
         public TeamStatsHolder(View v){
             super(v);

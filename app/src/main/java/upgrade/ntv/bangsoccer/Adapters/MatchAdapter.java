@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.R;
@@ -57,14 +59,18 @@ final int pos = position;
     holder.day.setText(mWeeklySchedule.getmWeeklyMatch().get(position).getTime());
 
     //     holder.team2.setText( mTeam.getmWeeklyMatch().get(vPlayerPosition).getTeamName(2));
-    holder.teamLogo1.setImageResource(mWeeklySchedule.getmWeeklyMatch().get(position).getTeamImage(1));
+    Picasso.with(mContext).
+    load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
+            placeholder(R.drawable.ic_open_game_icon).
+            into(holder.teamLogo1);
+    //holder.teamLogo1.setImageResource(mWeeklySchedule.getmWeeklyMatch().get(position).getTeamImage(1));
     holder.teamLogo1.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
         //calls the Team1 Screen based on the teamID
             //TODO: replace with local DBSource
             Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
-            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmTeam1().getTeamid());
+            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmClub1().getmFireBaseKey());
 
             if (intent != null) {
 
@@ -74,14 +80,18 @@ final int pos = position;
         }
 
     });
-    holder.teamLogo2.setImageResource(mWeeklySchedule.getmWeeklyMatch().get(position).getTeamImage(2));
+    Picasso.with(mContext).
+            load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
+            placeholder(R.drawable.ic_open_game_icon).
+            into(holder.teamLogo2);
+   // holder.teamLogo2.setImageResource(mWeeklySchedule.getmWeeklyMatch().get(position).getTeamImage(2));
     holder.teamLogo2.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             //calls the Team2 Screen based on the teamID
             //TODO: replace with local DBSource
             Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
-            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmTeam2().getTeamid());
+            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmClub2().getmFireBaseKey());
 
             if (intent != null) {
 

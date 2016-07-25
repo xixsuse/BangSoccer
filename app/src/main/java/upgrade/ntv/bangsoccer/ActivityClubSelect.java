@@ -21,14 +21,13 @@ import java.util.List;
 import upgrade.ntv.bangsoccer.Adapters.ClubsAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 
 public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // name of the file to preserve areas
     private Activity thisActivity;
-    private List<Team> clubItems = new ArrayList<>();
     private ClubsAdapter clubsAdapter;
     private GridLayoutManager lLayout;
 
@@ -36,7 +35,6 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.thisActivity = this;
-        populateDummyClubsItems();
         setContentView(R.layout.activity_club_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,7 +60,7 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
         lLayout = new GridLayoutManager(ActivityClubSelect.this, 4);
         recyclerView.setLayoutManager(lLayout);
 
-        clubsAdapter = new ClubsAdapter(clubItems, this);
+        clubsAdapter =new ClubsAdapter(this);
         recyclerView.setAdapter(clubsAdapter);
         /*
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -91,14 +89,6 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
 
 
 
-    }
-
-    //dummy data for the global news feed
-    public void populateDummyClubsItems() {
-        for (int i = 0; i < AppConstant.mTeamArrayList.length; i++) {
-            Team myTeam = new Team(i);
-            clubItems.add(myTeam);
-        }
     }
 
     public void onClickedTeam(View v) {

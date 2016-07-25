@@ -7,19 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.Schedule.Players;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 /**
@@ -27,7 +23,7 @@ import com.google.firebase.database.Query;
  */
 public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHolder> {
 
-    private Team mTeam;
+    private Club mClub;
     private Context mContext;
     private LayoutInflater inflater;
     //private Firebase mPlayerFireBase;
@@ -38,7 +34,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
     public PlayersAdapter(int teamid, Context context) {
 
         this.mTeamID = teamid;
-        this.mTeam = new Team(mTeamID);
+        this.mClub = new Club(mTeamID);
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
         query = AppicationCore.mPlayersDeftailsRef;
@@ -55,7 +51,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
             if (playerTeamId == mTeamID) {
 
                 firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
-                mTeam.getPlayer_list().add(0, firebaseRequest);
+                mClub.getPlayer_list().add(0, firebaseRequest);
             }
             notifyDataSetChanged();
 
@@ -84,12 +80,12 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
     }
 
     public String getPlayerId(int position) {
-        return this.mTeam.getPlayer(position).getmFireBaseKey();
+        return this.mClub.getPlayer(position).getmFireBaseKey();
     }
 
     @Override
     public int getItemCount() {
-        return (this.mTeam.getPlayer_list().size());
+        return (this.mClub.getPlayer_list().size());
     }
 
 
@@ -108,12 +104,12 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
         // - get element from your dataset at this vPlayerPosition
         // - replace the contents of the view with that element
 
-        holder.vPlayerName.setText(mTeam.getPlayer_list().get(position).getName());
-        holder.vPlayerNumber.setText(String.valueOf(mTeam.getPlayer_list().get(position).getNumber()));
+        holder.vPlayerName.setText(mClub.getPlayer_list().get(position).getName());
+        holder.vPlayerNumber.setText(String.valueOf(mClub.getPlayer_list().get(position).getNumber()));
         holder.vPlayerAvatar.setImageResource(R.drawable.ic_player_icon);
-        holder.vPlayerPosition.setText(mTeam.getPlayer_list().get(position).getPosition());
-        holder.vPlayerTeamDivision.setText(mTeam.getPlayer_list().get(position).getDivision());
-        holder.vPlayerAlias.setText(mTeam.getPlayer_list().get(position).getAlias());
+        holder.vPlayerPosition.setText(mClub.getPlayer_list().get(position).getPosition());
+        holder.vPlayerTeamDivision.setText(mClub.getPlayer_list().get(position).getDivision());
+        holder.vPlayerAlias.setText(mClub.getPlayer_list().get(position).getAlias());
     }
 
     // Provides a reference to the views for each data item

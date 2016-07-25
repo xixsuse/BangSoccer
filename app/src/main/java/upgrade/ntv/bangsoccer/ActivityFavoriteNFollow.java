@@ -16,21 +16,21 @@ import java.util.List;
 import upgrade.ntv.bangsoccer.Adapters.ClubsToFollowAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
 import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 import static upgrade.ntv.bangsoccer.AppConstants.AppConstant.clubItems;
 
 public class ActivityFavoriteNFollow extends AppCompatActivity {
 
     private Activity thisActivity;
-    public List<Team> clubsToSelect  = new ArrayList<>();
+    public List<Club> clubsToSelect  = new ArrayList<>();
     private ClubsToFollowAdapter clubsAdapter;
     private GridLayoutManager lLayout;
 
     public  void cloneClubsItems() throws CloneNotSupportedException {
         for (int i = 0; i < clubItems.size(); i++) {
-            Team myTeam =  clubItems.get(i);
-            clubsToSelect.add(myTeam.getTeam_clone());
+            Club myClub =  clubItems.get(i);
+            clubsToSelect.add(myClub.getClub_clone());
         }
     }
     @Override

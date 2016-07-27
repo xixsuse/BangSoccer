@@ -33,7 +33,6 @@ import upgrade.ntv.bangsoccer.dao.DBTourneyDao;
 import upgrade.ntv.bangsoccer.dao.DaoMaster;
 import upgrade.ntv.bangsoccer.dao.DaoSession;
 
-import static upgrade.ntv.bangsoccer.AppConstants.AppConstant.populateDummyClubsItems;
 
 /**
  * Created by jfrom on 5/28/2016.
@@ -94,7 +93,7 @@ public class AppicationCore extends Application {
                 mCuartaRef = storageReference.child("cuarta");
                 databaseReference = FirebaseDatabase.getInstance().getReference();
                 mPlayersDeftailsRef = databaseReference.child("Players");
-                mTeamsRef = databaseReference.child("Club");
+                mTeamsRef = databaseReference.child("Clubs");
                 authReference =FirebaseAuth.getInstance();
                 mAuthListener = new FirebaseAuth.AuthStateListener() {
                     @Override
@@ -112,9 +111,6 @@ public class AppicationCore extends Application {
                 };authReference.addAuthStateListener(mAuthListener);
             }
         }
-
-        populateDummyClubsItems();
-
 
         // Database Initialization
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "soccerDB", null);

@@ -33,10 +33,14 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
 
     public ClubsAdapter(Context context) {
         this.mContext = context;
-
+        this.query = AppicationCore.mTeamsRef;
+        this.query.addChildEventListener(new ClubsAdapter.TeamEvenetListener());
 
     }
 
+    public List<Club> getClubList() {
+        return mClubList;
+    }
 
     private class TeamEvenetListener implements ChildEventListener {
         @Override
@@ -90,8 +94,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
                 .inflate(R.layout.row_clubs_list, parent, false);
         // set the view's size, margins, paddings and app_bar_teams parameters
 //TODO: create listener in the activity and pass it to the adapter
-        this.query = AppicationCore.mTeamsRef;
-        this.query.addChildEventListener(new ClubsAdapter.TeamEvenetListener());
+
 
         return new TeamHolder(v);
     }

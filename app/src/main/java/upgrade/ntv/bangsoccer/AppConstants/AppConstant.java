@@ -17,13 +17,7 @@ public class AppConstant implements Cloneable {
             "Copa Garrincha"
     );
 
-public static List<Club> clubItems  = new ArrayList<>();
-    public static void populateDummyClubsItems() {
-        for (int i = 0; i < AppConstant.mTeamArrayList.length; i++) {
-            Club myClub = new Club(i);
-            clubItems.add(myClub);
-        }
-    }
+
 
    public static String[][] mTeamArrayList = {
            {

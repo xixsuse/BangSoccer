@@ -10,8 +10,8 @@ public class Players {
     // Used for a query
     public static final String TEAM_ID = "teamid";
 
-    private String name, division, alias,  position, goals, assistance, nationality, height, weight, dominant_foot;
-    private int number, teamid, avatar = 0 , red_card, yellow_card;
+    private String name, teamid, division, alias,  position, goals, assistance, nationality, height, weight, dominant_foot;
+    private int number,  avatar = 0 , red_card, yellow_card;
 
     String mFireBaseKey;
 
@@ -19,7 +19,7 @@ public class Players {
         //required empty constructor for jackson lib.
     }
 
-    public Players(String name, int avatar, String division, String alias, String position, int number, int teamid) {
+    public Players(String name, int avatar, String division, String alias, String position, int number, String teamid) {
         avatar = R.drawable.ic_player_icon;
         this.name = name;
         this.avatar = avatar;
@@ -31,7 +31,7 @@ public class Players {
     }
 
     public Players(String name, String division, String alias, String position, String goals, String nationality, String height,
-                   String weight, String dominant_foot, int number, int teamid, int avatar, int red_card, int yellow_card) {
+                   String weight, String dominant_foot, int number, String teamid, int avatar, int red_card, int yellow_card) {
         this.name = name;
         this.division = division;
         this.alias = alias;
@@ -180,11 +180,11 @@ public class Players {
         this.number = number;
     }
 
-    public int getTeamid() {
+    public String getTeamid() {
         return teamid;
     }
 
-    public void setTeamid(int teamid) {
+    public void setTeamid(String teamid) {
         this.teamid = teamid;
     }
 

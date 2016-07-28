@@ -27,9 +27,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.facebook.FacebookSdk;
+import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -177,9 +179,14 @@ public class ActivityMain extends AppCompatActivity
         }));
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        if (BuildConfig.DEBUG) {
+            FacebookSdk.setIsDebugEnabled(true);
+            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+        }
         AppEventsLogger.activateApp(this);
-      //  FirebaseCrash.report(new Exception("My first Android non-fatal error"));
-      //  FirebaseCrash.log("Activity created");
+   /*    FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+        FirebaseCrash.log("Activity created");*/
     }
 
         //dummy data for the global news feed

@@ -10,11 +10,13 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 
 /**
@@ -22,13 +24,13 @@ import upgrade.ntv.bangsoccer.Schedule.Team;
  */
 public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdapter.TeamHolder> {
 
-    private List<Team> mTeamList = new ArrayList<>();
+    private List<Club> mClubList = new ArrayList<>();
     private Context mContext;
     private LayoutInflater inflater;
     private List<View> itemHolder = new ArrayList<>(13);
 
-    public ClubsToFollowAdapter(List<Team> list, Context context) {
-        this.mTeamList = list;
+    public ClubsToFollowAdapter(List<Club> list, Context context) {
+        this.mClubList = list;
         this.mContext = context;
 
     }
@@ -42,13 +44,13 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
         this.itemHolder.add(itemHolder);
     }
 
-    public int getClubID(int position) {
-        return mTeamList.get(position).getTeamid();
+    public String getClubID(int position) {
+        return mClubList.get(position).getmFireBaseKey();
     }
 
     @Override
     public int getItemCount() {
-        return (this.mTeamList.size());
+        return (this.mClubList.size());
     }
 
 
@@ -66,19 +68,22 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     public void onBindViewHolder(final ClubsToFollowAdapter.TeamHolder holder,final int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vClubName.setText(mTeamList.get(position).getName());
-        holder.vClubAvatar.setImageResource(mTeamList.get(position).getTeam_image());
-        holder.Id = mTeamList.get(position).getTeamid();
-        holder.cCheckBox.setChecked(mTeamList.get(position).isFavorite());
+        holder.vClubName.setText(mClubList.get(position).getName());
+        Picasso.with(mContext).
+                load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
+                placeholder(R.drawable.ic_open_game_icon).
+                into(holder.vClubAvatar); //holder.vClubAvatar.setImageResource(mClubList.get(position).getTeam_image());
+        holder.Id = mClubList.get(position).getmFireBaseKey();
+        holder.cCheckBox.setChecked(mClubList.get(position).isFavorite());
         holder.vCardView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
                 holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
                 if(holder.cCheckBox.isChecked() == true){
-                    mTeamList.get(position).setFavorite(true);
+                    mClubList.get(position).setFavorite(true);
                 }else{
-                    mTeamList.get(position).setFavorite(false);
+                    mClubList.get(position).setFavorite(false);
                 }
 
             }
@@ -94,7 +99,7 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
         private ImageView vClubAvatar;
         private CheckBox cCheckBox;
         private CardView vCardView;
-        private int Id;
+        private String Id;
 
         public TeamHolder(View v) {
             super(v);

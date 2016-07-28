@@ -15,7 +15,7 @@ import java.util.List;
 
 import upgrade.ntv.bangsoccer.Adapters.TourneyStatsAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 /**
  * A fragment representing a list of Items.
@@ -26,7 +26,7 @@ import upgrade.ntv.bangsoccer.Schedule.Team;
 public class FragmentTourneyStats extends Fragment {
 
 
-    private List<Team> clubItems = new ArrayList<>();
+    private List<Club> clubItems = new ArrayList<>();
 
     // TODO: Customize parameter argument names
     private static final String TOURNEY_ID = "team-id";
@@ -50,7 +50,6 @@ public class FragmentTourneyStats extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        populateDummyClubsItems();
         if (getArguments() != null) {
             mTournamentID = getArguments().getInt(TOURNEY_ID);
         }
@@ -58,13 +57,7 @@ public class FragmentTourneyStats extends Fragment {
 
     }
 
-    //dummy data for the global news feed
-    public void populateDummyClubsItems() {
-        for (int i = 0; i < AppConstant.mTeamArrayList.length; i++) {
-            Team myTeam = new Team(i);
-            clubItems.add(myTeam);
-        }
-    }
+
 
 
     @Override

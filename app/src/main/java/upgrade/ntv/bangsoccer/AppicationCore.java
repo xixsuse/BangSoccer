@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,7 +33,6 @@ import upgrade.ntv.bangsoccer.dao.DBTourneyDao;
 import upgrade.ntv.bangsoccer.dao.DaoMaster;
 import upgrade.ntv.bangsoccer.dao.DaoSession;
 
-import static upgrade.ntv.bangsoccer.AppConstants.AppConstant.populateDummyClubsItems;
 
 /**
  * Created by jfrom on 5/28/2016.
@@ -69,13 +69,12 @@ public class AppicationCore extends Application {
     public void onCreate() {
         super.onCreate();
 
-    /*    Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+      /*  Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             @Override
             public void uncaughtException(Thread thread, Throwable ex) {
                 FirebaseCrash.report(ex);
             }
-        });
-*/
+        });*/
 
         if (databaseReference == null) {
             try {
@@ -87,14 +86,14 @@ public class AppicationCore extends Application {
                 Log.i("firebase persistance: ", e.getMessage());
             } finally {
                // FirebaseStorage storage = FirebaseStorage.getInstance();
-                storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://project-8138681142864808550.appspot.com/Test_MediaCancha/");
+                storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bangsoccer-1382.appspot.com/MediaCancha/");
                 mPrimeraRef = storageReference.child("primera");
                 mSegundaRef = storageReference.child("segunda");
                 mTerceraRef = storageReference.child("tercera");
                 mCuartaRef = storageReference.child("cuarta");
                 databaseReference = FirebaseDatabase.getInstance().getReference();
                 mPlayersDeftailsRef = databaseReference.child("Players");
-                mTeamsRef = databaseReference.child("Team");
+                mTeamsRef = databaseReference.child("Clubs");
                 authReference =FirebaseAuth.getInstance();
                 mAuthListener = new FirebaseAuth.AuthStateListener() {
                     @Override
@@ -112,9 +111,6 @@ public class AppicationCore extends Application {
                 };authReference.addAuthStateListener(mAuthListener);
             }
         }
-
-        populateDummyClubsItems();
-
 
         // Database Initialization
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "soccerDB", null);

@@ -8,10 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 
 /**
@@ -19,31 +27,63 @@ import upgrade.ntv.bangsoccer.Schedule.Team;
  */
 public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
 
-    List<Team> mTeamList;
-    Context mContext;
-    LayoutInflater inflater ;
+    private List<Club> mClubList = new ArrayList<>();
+    private Context mContext;
+    private Query query;
 
-    public ClubsAdapter(List<Team> list, Context context) {
-        this.mTeamList = list;
+    public ClubsAdapter(Context context) {
         this.mContext = context;
+        this.query = AppicationCore.mTeamsRef;
+        this.query.addChildEventListener(new ClubsAdapter.TeamEvenetListener());
 
     }
 
-    private List<Team> TeamItems;
-
-    public ClubsAdapter(List<Team> teamItems){
-
-
-        this.TeamItems = teamItems;
+    public List<Club> getClubList() {
+        return mClubList;
     }
 
-    public int getClubID(int position){
-        return mTeamList.get(position).getTeamid();
+    private class TeamEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Club firebaseRequest = dataSnapshot.getValue(Club.class);
+
+            firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
+            getClubList().add(0, firebaseRequest);
+
+            notifyDataSetChanged();
+
+
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
+
+    public String getClubID(int position){
+        return mClubList.get(position).getmFireBaseKey();
     }
 
     @Override
     public int getItemCount() {
-        return (this.mTeamList.size());
+        return (this.mClubList.size());
     }
 
 
@@ -53,6 +93,8 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_clubs_list, parent, false);
         // set the view's size, margins, paddings and app_bar_teams parameters
+//TODO: create listener in the activity and pass it to the adapter
+
 
         return new TeamHolder(v);
     }
@@ -61,9 +103,13 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
     public void onBindViewHolder(ClubsAdapter.TeamHolder holder, int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vClubName.setText(mTeamList.get(position).getName());
-        holder.vClubAvatar.setImageResource(mTeamList.get(position).getTeam_image());
-        holder.Id = mTeamList.get(position).getTeamid();
+        holder.vClubName.setText(mClubList.get(position).getName());
+
+        Picasso.with(mContext).
+                load(mClubList.get(position).getTeam_image()).
+                placeholder(R.drawable.ic_open_game_icon).
+                into(holder.vClubAvatar);
+        holder.Id = mClubList.get(position).getmFireBaseKey();
 
 
     }
@@ -72,7 +118,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
     public static class TeamHolder extends RecyclerView.ViewHolder{
         TextView vClubName;
         ImageView vClubAvatar;
-        int Id;
+        String Id;
 
         public TeamHolder(View v){
             super(v);

@@ -8,12 +8,12 @@ public class Match {
     private final int mMatchID;
     private String mStadium, mTime, mDate;
     private boolean mTv;
-    private Team mTeam1, mTeam2;
+    private Club mClub1, mClub2;
 
-    public Match(int mID, Team mTeam1, Team mTeam2) {
+    public Match(int mID, Club mClub1, Club mClub2) {
         this.mMatchID = mID ;
-        this.mTeam1 = mTeam1;
-        this.mTeam2 = mTeam2;
+        this.mClub1 = mClub1;
+        this.mClub2 = mClub2;
         this.mTv = false;
         onCreateMatch();
     }
@@ -22,12 +22,12 @@ public class Match {
      *   setters & getters
      */
 
-    public Team getmTeam1() {
-        return mTeam1;
+    public Club getmClub1() {
+        return mClub1;
     }
 
-    public Team getmTeam2() {
-        return mTeam2;
+    public Club getmClub2() {
+        return mClub2;
     }
 
     private void setmTime(String mTime) {
@@ -62,15 +62,15 @@ public class Match {
         return mTv;
     }
 
-    public int getTeamImage(int index){
-        int image = 0;
+    public String getTeamImage(int index){
+        String image ="";
         switch (index){
             case 1:
-            image = mTeam1.getTeam_image();
+            image = mClub1.getTeam_image();
                 break;
 
             case 2:
-                image = mTeam2.getTeam_image();
+                image = mClub2.getTeam_image();
                 break;
         }
 
@@ -81,11 +81,11 @@ public class Match {
         String name = null;
         switch (index){
             case 1:
-                name = mTeam1.getName();
+                name = mClub1.getName();
                 break;
 
             case 2:
-                name = mTeam2.getName();
+                name = mClub2.getName();
                 break;
         }
 
@@ -110,7 +110,7 @@ public class Match {
     }
 
     private void onCreateStadium(){
-       this.mStadium = mTeam1.getStadium();
+       this.mStadium = mClub1.getStadium();
     }
 
  /*   private void onCreateDate(){
@@ -126,8 +126,8 @@ public class Match {
     @Override
     public String toString() {
         return "Match{" +
-                "mTeam1='" + mTeam1 + '\'' +
-                ", mTeam2='" + mTeam2 + '\'' +
+                "mClub1='" + mClub1 + '\'' +
+                ", mClub2='" + mClub2 + '\'' +
                 ", mStadium='" + mStadium + '\'' +
 
                 ", mTime=" + mTime +

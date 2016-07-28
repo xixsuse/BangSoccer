@@ -24,7 +24,7 @@ import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 */
 /**
@@ -35,14 +35,14 @@ import upgrade.ntv.bangsoccer.Schedule.Team;
 
 
 public class TeamsToolBarSpinnerAdapter extends BaseAdapter implements ThemedSpinnerAdapter {
-    private List<Team> mItems = new ArrayList<>();
+    private List<Club> mItems = new ArrayList<>();
     private LayoutInflater mInfalter;
-    private Team team = null;
+    private Club team = null;
     private ThemedSpinnerAdapter.Helper mDropDownHelper;
     private Context mContext;
     private ClubsAdapter clubsAdapter;
 
-    public TeamsToolBarSpinnerAdapter(Context context, Team team){
+    public TeamsToolBarSpinnerAdapter(Context context, Club team){
         mDropDownHelper =  new ThemedSpinnerAdapter.Helper(context);
         this.team = team;
         mInfalter = mDropDownHelper.getDropDownViewInflater();
@@ -58,11 +58,11 @@ public class TeamsToolBarSpinnerAdapter extends BaseAdapter implements ThemedSpi
         mItems.clear();
     }
 
-    public void addItem(Team yourObject) {
+    public void addItem(Club yourObject) {
         mItems.add(yourObject);
     }
 
-    public void addItems(List<Team> yourObjectList) {
+    public void addItems(List<Club> yourObjectList) {
         mItems.addAll(yourObjectList);
     }
 
@@ -72,7 +72,7 @@ public class TeamsToolBarSpinnerAdapter extends BaseAdapter implements ThemedSpi
     }
 
     @Override
-    public Team getItem(int position) {
+    public Club getItem(int position) {
         return mItems.get(position);
     }
 

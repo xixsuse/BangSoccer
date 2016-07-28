@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Team;
+import upgrade.ntv.bangsoccer.Schedule.Club;
 
 /**
  * Created by Jose on 3/15/2015.
@@ -17,13 +17,7 @@ public class AppConstant implements Cloneable {
             "Copa Garrincha"
     );
 
-public static List<Team> clubItems  = new ArrayList<>();
-    public static void populateDummyClubsItems() {
-        for (int i = 0; i < AppConstant.mTeamArrayList.length; i++) {
-            Team myTeam = new Team(i);
-            clubItems.add(myTeam);
-        }
-    }
+
 
    public static String[][] mTeamArrayList = {
            {

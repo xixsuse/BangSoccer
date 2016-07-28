@@ -54,8 +54,8 @@ public class WeeklySchedule {
         for (int i = 0; i < AppConstant.mMatchArrayList.length ; i++) {
             if( AppConstant.mMatchArrayList[i][0][0] == mWeeklyScheduleID -1){
                  for (int j = 0; j < AppConstant.mMatchArrayList[i].length  ; j++) {
-                     Club club1 = new Club(AppConstant.mMatchArrayList[i][j][1]);
-                     Club club2 = new Club(AppConstant.mMatchArrayList[i][j][2]);
+                     Club club1 = new Club();
+                     Club club2 = new Club();
                      Match myMatch = new Match(mWeeklyScheduleID, club1, club2);
                      myMatch.setDate("6:00pm");
                      setMatch(myMatch);

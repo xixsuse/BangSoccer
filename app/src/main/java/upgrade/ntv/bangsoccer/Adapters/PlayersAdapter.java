@@ -28,13 +28,13 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
     private LayoutInflater inflater;
     //private Firebase mPlayerFireBase;
 
-    private int mTeamID;
+    private String mTeamID;
     private Query query;
 
-    public PlayersAdapter(int teamid, Context context) {
+    public PlayersAdapter(String teamid, Context context) {
 
         this.mTeamID = teamid;
-        this.mClub = new Club(mTeamID);
+        this.mClub = new Club();
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
         query = AppicationCore.mPlayersDeftailsRef;
@@ -47,8 +47,8 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Players firebaseRequest = dataSnapshot.getValue(Players.class);
 
-            int playerTeamId = firebaseRequest.getTeamid();
-            if (playerTeamId == mTeamID) {
+            String playerTeamId = firebaseRequest.getTeamid();
+            if (playerTeamId.equals(mTeamID)) {
 
                 firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
                 mClub.getPlayer_list().add(0, firebaseRequest);

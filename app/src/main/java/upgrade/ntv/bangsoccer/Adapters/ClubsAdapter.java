@@ -48,7 +48,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
             Club firebaseRequest = dataSnapshot.getValue(Club.class);
 
             firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
-            mClubList.add(0, firebaseRequest);
+            getClubList().add(0, firebaseRequest);
 
             notifyDataSetChanged();
 

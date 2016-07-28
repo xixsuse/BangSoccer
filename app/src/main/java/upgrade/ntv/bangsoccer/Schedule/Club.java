@@ -1,6 +1,7 @@
 package upgrade.ntv.bangsoccer.Schedule;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -8,10 +9,11 @@ import java.util.List;
  */
 public class Club implements Cloneable {
 
-    private  int  pj, dg, points, rank, clubid;
+    private  int  pj, dg, points, rank;
     private String name, stadium, profile, division, team_image;
 
     private boolean isFavorite;
+    private HashMap<String, Boolean> players_ids = new HashMap<>();
     private List<Players> player_list = new ArrayList<Players>();
     private List<String> match_list = new ArrayList<String>();
 
@@ -24,19 +26,20 @@ public class Club implements Cloneable {
         //jackson object
     }
 
-    // public constructor
-    public Club(int clubid) {
-        this.clubid = clubid;
-  /*      onSaveTeam();
-        onCreateTeamMatch();*/
-    }
-
     //   Setters
 
 public Club getClub_clone() throws CloneNotSupportedException {
    club_clone = (Club) this.clone();
     return club_clone;
 }
+
+    public HashMap<String, Boolean> getPlayers_ids() {
+        return players_ids;
+    }
+
+    public void setPlayers_ids(HashMap<String, Boolean> players_ids) {
+        this.players_ids = players_ids;
+    }
 
     public String getmFireBaseKey() {
         return mFireBaseKey;
@@ -155,32 +158,6 @@ public Club getClub_clone() throws CloneNotSupportedException {
        return match_list.get(index);
     }
 
-
-/*    private void onSaveTeam(){
-        for (int i = 0; i < AppConstant.mTeamArrayList.length; i++)
-        {
-            if( Integer.valueOf(AppConstant.mTeamArrayList[i][0]) == this.teamid){
-                setName(AppConstant.mTeamArrayList[i][1]);
-                setStadium(AppConstant.mTeamArrayList[i][2]);
-                setTeam_image(AppConstant.mImageList[i]);
-            }
-        }
-    }
-
-    private void onCreateTeamMatch(){
-        for (int i = 0; i < AppConstant.mMatchArrayList.length-9 ; i++) {
-            for (int j = 0; j < AppConstant.mMatchArrayList[i].length  ; j++) {
-                String matchList = null;
-                if(AppConstant.mMatchArrayList[i][j][1] == teamid) {
-                    matchList = name + " VS " + AppConstant.mTeamArrayList[AppConstant.mMatchArrayList[i][j][2]][1] +" "+ AppConstant.mMatchTimeDateArray[i][j][0];
-                }else if( AppConstant.mMatchArrayList[i][j][2] == teamid){
-                    matchList = name + " VS " + AppConstant.mTeamArrayList[AppConstant.mMatchArrayList[i][j][1]][1]+" "+ AppConstant.mMatchTimeDateArray[i][j][0];
-                }
-
-                    addMatch(matchList);
-                }
-            }
-        }*/
 
     public String onCreateMatchListString(){
         String listToShow = "";

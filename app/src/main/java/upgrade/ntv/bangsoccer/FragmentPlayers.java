@@ -22,7 +22,7 @@ public class FragmentPlayers extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String TEAM_ID = "team-id";
-    private int mTeamID;
+    private String mTeamID;
     private PlayersAdapter mPlayerAdapter;
    private Context mContext;
     private OnListFragmentInteractionListener mListener;
@@ -36,10 +36,10 @@ public class FragmentPlayers extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static FragmentPlayers newInstance(int teamId) {
+    public static FragmentPlayers newInstance(String teamId) {
         FragmentPlayers fragment = new FragmentPlayers();
         Bundle args = new Bundle();
-        args.putInt(TEAM_ID, teamId);
+        args.putString(TEAM_ID, teamId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +49,7 @@ public class FragmentPlayers extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mTeamID = getArguments().getInt(TEAM_ID);
+            mTeamID = getArguments().getString(TEAM_ID);
         }
 
 

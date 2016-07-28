@@ -90,7 +90,7 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
             holder.vPlayerName.setText(mPlayersLeader.get(position).getName());
             holder.vPlayerNumber.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
             holder.vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon);
-            Club club = new Club(mPlayersLeader.get(position).getTeamid());
+            Club club = new Club();
             holder.vPlayerClub.setText(club.getName());
             holder.Id = mPlayersLeader.get(position).getTeamid();
         }
@@ -102,7 +102,7 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
         CircleImageView vPlayerAvatar;
         TextView vPlayerNumber;
         TextView vPlayerClub;
-        int Id;
+        String Id;
 
         public TeamHolder(View v) {
             super(v);

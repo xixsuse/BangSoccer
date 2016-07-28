@@ -50,7 +50,6 @@ public class FragmentTourneyStats extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        populateDummyClubsItems();
         if (getArguments() != null) {
             mTournamentID = getArguments().getInt(TOURNEY_ID);
         }
@@ -58,13 +57,7 @@ public class FragmentTourneyStats extends Fragment {
 
     }
 
-    //dummy data for the global news feed
-    public void populateDummyClubsItems() {
-        for (int i = 0; i < AppConstant.mTeamArrayList.length; i++) {
-            Club myClub = new Club(i);
-            clubItems.add(myClub);
-        }
-    }
+
 
 
     @Override

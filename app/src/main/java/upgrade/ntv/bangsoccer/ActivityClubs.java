@@ -1,6 +1,7 @@
 package upgrade.ntv.bangsoccer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import upgrade.ntv.bangsoccer.Adapters.ClubsAdapter;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.Schedule.Club;
 import upgrade.ntv.bangsoccer.Schedule.Players;
@@ -52,7 +54,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
      */
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
-    private int teamid;
+    private String teamid="";
     private Toolbar toolbar;
     private ViewPager mViewPager;
 
@@ -70,6 +72,8 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     private TextView vPlayerAliasNNumber;
     private String PlayerId;
 
+    private Club mClub;
+    private Query query;
 
 
     @Override
@@ -79,7 +83,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
         this.thisActivity = this;
 
-        getTeamId();
+
         BindActivity();
         BindSlidingPanel();
 
@@ -102,8 +106,11 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     }
 
-    private void getTeamId() {
-        teamid = (int) getIntent().getExtras().get("CLUBID");
+    private String getTeamId() {
+        if (teamid.length() < 1){
+            teamid = (String) getIntent().getExtras().get("CLUBID");
+        }
+      return  teamid ;
     }
 
     private void BindActivity() {
@@ -115,7 +122,21 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         //    mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         //toolbar team image
         ImageView img = (ImageView) findViewById(R.id.club_header_img);
-        Club selectedClub = new Club(teamid);
+
+        this.query = AppicationCore.mTeamsRef.child(getTeamId());
+        this.query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mClub = dataSnapshot.getValue(Club.class);
+                mClub.setmFireBaseKey(dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         if (img != null) {
             Picasso.with(this).
@@ -221,7 +242,8 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (slidingUpPanelLayout != null &&
-                (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
+                        || slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
             super.onBackPressed();
@@ -327,7 +349,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
             } else if (position == 1) {
 
-                FragmentPlayers fragmentPlayers = FragmentPlayers.newInstance(teamid);
+                FragmentPlayers fragmentPlayers = FragmentPlayers.newInstance(getTeamId());
                 mPageReferenceMap.put("2", tag);
                 return fragmentPlayers;
 

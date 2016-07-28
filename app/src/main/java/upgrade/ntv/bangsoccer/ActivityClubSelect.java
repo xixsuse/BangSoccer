@@ -69,10 +69,9 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
         recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(this, recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                clubsAdapter.getClubID(position);
 
                 Intent intent = DrawerSelector.onItemSelected(thisActivity, 100);
-                intent.putExtra("CLUBID", position);
+                intent.putExtra("CLUBID",  clubsAdapter.getClubID(position));
 
                 if (intent != null) {
                     startActivity(intent);

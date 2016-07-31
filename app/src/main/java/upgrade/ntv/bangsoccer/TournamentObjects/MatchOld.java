@@ -1,16 +1,16 @@
-package upgrade.ntv.bangsoccer.Schedule;
+package upgrade.ntv.bangsoccer.TournamentObjects;
 
 /**
  * Created by Jose on 3/15/2015.
  */
-public class Match {
+public class MatchOld {
 
     private final int mMatchID;
     private String mStadium, mTime, mDate;
     private boolean mTv;
     private Club mClub1, mClub2;
 
-    public Match(int mID, Club mClub1, Club mClub2) {
+    public MatchOld(int mID, Club mClub1, Club mClub2) {
         this.mMatchID = mID ;
         this.mClub1 = mClub1;
         this.mClub2 = mClub2;
@@ -125,7 +125,7 @@ public class Match {
     //to String
     @Override
     public String toString() {
-        return "Match{" +
+        return "MatchOld{" +
                 "mClub1='" + mClub1 + '\'' +
                 ", mClub2='" + mClub2 + '\'' +
                 ", mStadium='" + mStadium + '\'' +

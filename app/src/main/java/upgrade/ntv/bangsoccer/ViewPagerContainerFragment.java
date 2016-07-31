@@ -3,28 +3,20 @@ package upgrade.ntv.bangsoccer;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
-import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.Schedule.Match;
+import upgrade.ntv.bangsoccer.TournamentObjects.MatchOld;
 
 /**
  * Created by root on 7/10/16.
@@ -67,14 +59,14 @@ public class ViewPagerContainerFragment extends Fragment {
 
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
 
-        private List<Match> matchList = new ArrayList<>();
+        private List<MatchOld> matchOldList = new ArrayList<>();
 
-        public List<Match> getMatchList() {
-            return matchList;
+        public List<MatchOld> getMatchOldList() {
+            return matchOldList;
         }
 
-        public void setMatchList(List<Match> matchList) {
-            this.matchList = matchList;
+        public void setMatchOldList(List<MatchOld> matchOldList) {
+            this.matchOldList = matchOldList;
         }
 
         public TourneyCalendarPagerAdapter(FragmentManager fm) {

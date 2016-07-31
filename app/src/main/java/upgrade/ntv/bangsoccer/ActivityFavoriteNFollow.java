@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.Adapters.ClubsToFollowAdapter;
-import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
 import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
-import upgrade.ntv.bangsoccer.Schedule.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 
 
 public class ActivityFavoriteNFollow extends AppCompatActivity {

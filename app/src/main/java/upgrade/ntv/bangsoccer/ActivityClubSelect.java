@@ -15,13 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import upgrade.ntv.bangsoccer.Adapters.ClubsAdapter;
-import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.Schedule.Club;
 
 
 public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

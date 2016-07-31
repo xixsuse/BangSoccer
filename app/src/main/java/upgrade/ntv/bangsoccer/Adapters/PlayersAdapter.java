@@ -10,8 +10,8 @@ import android.widget.TextView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Players;
-import upgrade.ntv.bangsoccer.Schedule.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Players;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

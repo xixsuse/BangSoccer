@@ -1,12 +1,10 @@
 package upgrade.ntv.bangsoccer.AppConstants;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Club;
 
 /**
  * Created by Jose on 3/15/2015.

@@ -86,7 +86,7 @@ public class ActivityMain extends AppCompatActivity
             JsonReader reader = new JsonReader();
             mAreasArrayList = reader.readJsonStream(in);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.v("Loading Areas Failed: " , e.getMessage());
         }
 
     }

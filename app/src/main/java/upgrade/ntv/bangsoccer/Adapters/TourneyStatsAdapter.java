@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 
 
 /**
@@ -66,7 +66,7 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
         holder.vPoints.setText(String.valueOf((int) (Math.random() * ((9) + 1))));
 
 
-        holder.Id = mClubList.get(position).getmFireBaseKey();
+        holder.Id = mClubList.get(position).getFirebasekey();
 
     }
         // Provides a reference to the views for each data item

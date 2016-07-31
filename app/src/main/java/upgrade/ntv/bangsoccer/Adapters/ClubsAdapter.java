@@ -19,7 +19,7 @@ import java.util.List;
 
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 
 
 /**
@@ -47,7 +47,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Club firebaseRequest = dataSnapshot.getValue(Club.class);
 
-            firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
+            firebaseRequest.setFirebasekey(dataSnapshot.getKey());
             getClubList().add(0, firebaseRequest);
 
             notifyDataSetChanged();
@@ -78,7 +78,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
 
 
     public String getClubID(int position){
-        return mClubList.get(position).getmFireBaseKey();
+        return mClubList.get(position).getFirebasekey();
     }
 
     @Override
@@ -107,9 +107,10 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
 
         Picasso.with(mContext).
                 load(mClubList.get(position).getTeam_image()).
-                placeholder(R.drawable.ic_open_game_icon).
+                placeholder(R.drawable.ic_upgraden).
                 into(holder.vClubAvatar);
-        holder.Id = mClubList.get(position).getmFireBaseKey();
+
+        holder.Id = mClubList.get(position).getFirebasekey();
 
 
     }

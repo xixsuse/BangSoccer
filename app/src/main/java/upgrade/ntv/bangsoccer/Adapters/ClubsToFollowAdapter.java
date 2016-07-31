@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 
 
 /**
@@ -45,7 +45,7 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     }
 
     public String getClubID(int position) {
-        return mClubList.get(position).getmFireBaseKey();
+        return mClubList.get(position).getFirebasekey();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
                 load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
                 placeholder(R.drawable.ic_open_game_icon).
                 into(holder.vClubAvatar); //holder.vClubAvatar.setImageResource(mClubList.get(position).getTeam_image());
-        holder.Id = mClubList.get(position).getmFireBaseKey();
+        holder.Id = mClubList.get(position).getFirebasekey();
         holder.cCheckBox.setChecked(mClubList.get(position).isFavorite());
         holder.vCardView.setOnClickListener(new View.OnClickListener()
         {

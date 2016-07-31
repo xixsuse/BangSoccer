@@ -10,35 +10,85 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
+import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.WeeklySchedule;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Match;
 
 /**
  * Created by jfrom on 3/19/2016.
  */
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHolder>{
 
-    WeeklySchedule mWeeklySchedule;
-    Context mContext;
-    LayoutInflater inflater ;
-    int mWeeklyScheduleID;
+   private List<Match> mClubsMatches;
+    private Context mContext;
 
-    public MatchAdapter(int weeklySchedule, Context context) {
+    private Query query;
+    public MatchAdapter( Context context) {
 
-        this.mWeeklyScheduleID = weeklySchedule;
-        this.mWeeklySchedule = new WeeklySchedule(weeklySchedule);
+        this.mClubsMatches = new ArrayList<>();
         this.mContext = context;
-        this.inflater = LayoutInflater.from(context);
+        this.query = AppicationCore.mMatchRef;
+        this.query.addChildEventListener(new MatchEvenetListener());
 
     }
 
+    public List<Match> getMatchList() {
+        return mClubsMatches;
+    }
+
+    private class MatchEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Match firebaseRequest = dataSnapshot.getValue(Match.class);
+            Club a = dataSnapshot.child("clubida").getValue(Club.class);
+            Club b = dataSnapshot.child("clubidb").getValue(Club.class);
+            firebaseRequest.getClubIdA().setFirebasekey(a.getFirebasekey());
+            firebaseRequest.getClubIdB().setFirebasekey(b.getFirebasekey());
+            firebaseRequest.setMatchId(dataSnapshot.getKey());
+            getMatchList().add(0, firebaseRequest);
+
+            notifyDataSetChanged();
+
+
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
+
 @Override
 public int getItemCount() {
-    return (this.mWeeklySchedule.getmWeeklyMatch().size());
+    return (this.mClubsMatches.size());
         }
 
 @Override
@@ -52,25 +102,25 @@ public ScheduleHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         }
 
 @Override
-public void onBindViewHolder(ScheduleHolder holder, int position) {
+public void onBindViewHolder(ScheduleHolder holder, final int position) {
         // - get element from your dataset at this vPlayerPosition
         // - replace the contents of the view with that element
-final int pos = position;
-    holder.day.setText(mWeeklySchedule.getmWeeklyMatch().get(position).getTime());
+
+    holder.day.setText(mClubsMatches.get(position).getDate());
 
     //     holder.team2.setText( mTeam.getmWeeklyMatch().get(vPlayerPosition).getTeamName(2));
     Picasso.with(mContext).
-    load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
-            placeholder(R.drawable.ic_open_game_icon).
+            load(mClubsMatches.get(position).getClubIdA().getTeam_image()).
+            placeholder(R.drawable.ic_upgraden).
             into(holder.teamLogo1);
-    //holder.teamLogo1.setImageResource(mWeeklySchedule.getmWeeklyMatch().get(position).getTeamImage(1));
+    //holder.teamLogo1.setImageResource(mClubsMatches.getmWeeklyMatch().get(position).getTeamImage(1));
     holder.teamLogo1.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
         //calls the Team1 Screen based on the teamID
-            //TODO: replace with local DBSource
             Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
-            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmClub1().getmFireBaseKey());
+            String clubid=  mClubsMatches.get(position).getClubIdA().getFirebasekey();
+            intent.putExtra("CLUBID", clubid);
 
             if (intent != null) {
 
@@ -81,17 +131,17 @@ final int pos = position;
 
     });
     Picasso.with(mContext).
-            load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
-            placeholder(R.drawable.ic_open_game_icon).
+            load(mClubsMatches.get(position).getClubIdB().getTeam_image()).
+            placeholder(R.drawable.ic_upgraden).
             into(holder.teamLogo2);
-   // holder.teamLogo2.setImageResource(mWeeklySchedule.getmWeeklyMatch().get(position).getTeamImage(2));
+
     holder.teamLogo2.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             //calls the Team2 Screen based on the teamID
-            //TODO: replace with local DBSource
             Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
-            intent.putExtra("CLUBID", mWeeklySchedule.getmWeeklyMatch().get(pos).getmClub2().getmFireBaseKey());
+            String clubid=  mClubsMatches.get(position).getClubIdA().getFirebasekey();
+            intent.putExtra("CLUBID", clubid);
 
             if (intent != null) {
 
@@ -101,15 +151,12 @@ final int pos = position;
         }
 
     });
-    holder.day.setText(mWeeklySchedule.getmWeeklyMatch().get(position).getDate());
-
-    holder.stadium.setText(mWeeklySchedule.getmWeeklyMatch().get(position).getStadium());
+    holder.day.setText(mClubsMatches.get(position).getDate());
+    holder.stadium.setText(mClubsMatches.get(position).getStadium());
 
         }
 
 // Provides a reference to the views for each data item
-
-
     public static class ScheduleHolder extends RecyclerView.ViewHolder{
         TextView time;
         TextView team2;

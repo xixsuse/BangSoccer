@@ -42,11 +42,7 @@ public class FragmentMatches extends Fragment {
 
         int index = arg.getInt(ARG_SECTION_NUMBER);
 
-       // mScheduleText.setText("Semana " + index);
-        //  mListView = (ListView) rootView.findViewById(R.id.schedule_listview);
-     //   mWeeklyAdapter = new ScheduleAdapter(index, getActivity());
-     //   mListView.setAdapter(mWeeklyAdapter);
-        mMatchAdapter = new MatchAdapter(index, getActivity());
+        mMatchAdapter = new MatchAdapter(getActivity());
 
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.matches_recycleview);
@@ -56,9 +52,7 @@ public class FragmentMatches extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        recyclerView.setAdapter(mMatchAdapter);/*
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());*/
+        recyclerView.setAdapter(mMatchAdapter);
 
         return rootView;
     }

@@ -43,6 +43,7 @@ public class AppicationCore extends Application {
     private DatabaseReference databaseReference;
     public static DatabaseReference mPlayersDeftailsRef;
     public static DatabaseReference mTeamsRef;
+    public static DatabaseReference mMatchRef;
     private StorageReference storageReference;
     public static StorageReference mPrimeraRef;
     public static StorageReference mSegundaRef;
@@ -94,6 +95,7 @@ public class AppicationCore extends Application {
                 databaseReference = FirebaseDatabase.getInstance().getReference();
                 mPlayersDeftailsRef = databaseReference.child("Players");
                 mTeamsRef = databaseReference.child("Clubs");
+                mMatchRef = databaseReference.child("Match");
                 authReference =FirebaseAuth.getInstance();
                 mAuthListener = new FirebaseAuth.AuthStateListener() {
                     @Override

@@ -1,4 +1,4 @@
-package upgrade.ntv.bangsoccer.Schedule;
+package upgrade.ntv.bangsoccer.TournamentObjects;
 
 
 import upgrade.ntv.bangsoccer.R;

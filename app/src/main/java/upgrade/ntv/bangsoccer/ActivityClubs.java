@@ -1,7 +1,6 @@
 package upgrade.ntv.bangsoccer;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,10 +36,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import upgrade.ntv.bangsoccer.Adapters.ClubsAdapter;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.Schedule.Club;
-import upgrade.ntv.bangsoccer.Schedule.Players;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Players;
 
 public class ActivityClubs extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,
         FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnListFragmentInteractionListener {
@@ -82,7 +80,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         setContentView(R.layout.activity_clubs);
 
         this.thisActivity = this;
-
+        teamid = (String) getIntent().getExtras().get("CLUBID");
 
         BindActivity();
         BindSlidingPanel();
@@ -107,7 +105,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     }
 
     private String getTeamId() {
-        if (teamid.length() < 1){
+        if (teamid != null && teamid.length() < 2){
             teamid = (String) getIntent().getExtras().get("CLUBID");
         }
       return  teamid ;
@@ -121,14 +119,25 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         //  mTitleContainer = (LinearLayout) findViewById(R.id.main_linearlayout_title);
         //    mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         //toolbar team image
-        ImageView img = (ImageView) findViewById(R.id.club_header_img);
+        final ImageView img = (ImageView) findViewById(R.id.club_header_img);
 
-        this.query = AppicationCore.mTeamsRef.child(getTeamId());
+        String currentKey = getTeamId();
+        this.query = AppicationCore.mTeamsRef.child(currentKey);
+
         this.query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 mClub = dataSnapshot.getValue(Club.class);
-                mClub.setmFireBaseKey(dataSnapshot.getKey());
+                mClub.setFirebasekey(dataSnapshot.getKey());
+
+                if (img != null && mClub !=null) {
+                    Picasso.with(getApplication()).
+                            load(mClub.getTeam_image()).
+                            placeholder(R.drawable.ic_upgraden).
+                            into(img);
+                }
+
             }
 
             @Override
@@ -137,14 +146,6 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
             }
         });
 
-
-        if (img != null) {
-            Picasso.with(this).
-                    load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
-                    placeholder(R.drawable.ic_open_game_icon).
-                    into(img);
-           // img.setImageResource(selectedClub.getTeam_image());
-        }
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -203,26 +204,24 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     private void onClickedFragmentPlayer(final String playerid) {
         PlayerId=playerid;
-        Query query = AppicationCore.mPlayersDeftailsRef;
+        Query query = AppicationCore.mPlayersDeftailsRef.child(playerid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot playerSnapshot) {
-               String snapshotKey = playerSnapshot.child(PlayerId).getKey();
-
-                if (playerid.equals(snapshotKey)){
-                    Players playerDetails = playerSnapshot.child(PlayerId).getValue(Players.class);
+                    Players playerDetails = playerSnapshot.getValue(Players.class);
                     vPlayerName.setText( playerDetails.getName());
                     vPlayerFullName.setText(playerDetails.getName());
                     vPlayerAvatar.setImageResource(playerDetails.getAvatar());
                     vPlayerNationality.setText(playerDetails.getNationality());
                     vLeaderPosition.setText(playerDetails.getPosition());
+
                     vPlayerWeightNHeight.setText(playerDetails.getWeightNHeight());
                     vPlayerGoals.setText(playerDetails.getGoals());
                     vPlayerCards.setText(playerDetails.getCards());
                     vPlayerDominantFoot.setText(playerDetails.getDominant_foot());
                     vPlayerAliasNNumber.setText(playerDetails.getAliasNNumber());
                     vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon2);
-                }
+
             }
 
             @Override
@@ -355,22 +354,12 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
 
             } else {
-                FragmentHistory fragmentHistory = FragmentHistory.newInstance(position + 1);
+                FragmentHistory fragmentHistory = FragmentHistory.newInstance(getTeamId());
                 mPageReferenceMap.put("3", tag);
                 return fragmentHistory;
             }
 
         }
-
-
-        public
-        @Nullable
-        Fragment getFragmentForPosition(int position) {
-            String tag = makeFragmentName(mViewPager.getId(), (int) getItemId(position));
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-            return fragment;
-        }
-
 
         @Override
         public long getItemId(int position) {

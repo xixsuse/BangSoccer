@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -25,6 +26,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
@@ -32,11 +35,13 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.Adapters.NewsFeedAdapter;
@@ -73,6 +78,12 @@ public class ActivityMain extends AppCompatActivity
     private Activity thisActivity;
     private NewsFeedAdapter newsFeedAdapter;
     private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
+
+    private ProgressBar progressBar;
+    private MenuItem refreshButton;
+    private  RecyclerView recyclerView;
+    private List<String> mFacebookAccounts;
+    private boolean refreshStatus=false;  // true: when refresh newsfeeds is in progress
 
     private GridLayoutManager lLayout;
 
@@ -126,6 +137,11 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_main);
 
+
+        progressBar= (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+        mFacebookAccounts = Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
+
         //adds a dummy area and Attraction
         setDummyAreaNdAttraction();
 
@@ -162,12 +178,14 @@ public class ActivityMain extends AppCompatActivity
             @Override
             public void onItemClick(View view, int position) {
 
-                Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
-                intent.putExtra("newsFeedID", position+1);
+//                Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
+//                intent.putExtra("newsFeedID", position+1);
+//
+//                if (intent != null) {
+//                    startActivity(intent);
+//                }
 
-                if (intent != null) {
-                    startActivity(intent);
-                }
+                clickNewsFeed(position);
 
 
             }
@@ -192,6 +210,7 @@ public class ActivityMain extends AppCompatActivity
         //dummy data for the global news feed
     public void populateDummyNewsFeedItems(){
 
+        newsFeedItems.clear();
 
         List<DBNewsFeed> newsfeeds = AppicationCore.getAllNewsFeed();
         if(newsfeeds!=null && newsfeeds.size()>0){
@@ -318,7 +337,8 @@ public class ActivityMain extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_news_feeds, menu);
+        refreshButton = menu.findItem(R.id.action_reload);
 
 
         return true;
@@ -337,10 +357,16 @@ public class ActivityMain extends AppCompatActivity
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_favorites) {
-            intent = new Intent(this, ActivityFavoriteNFollow.class);
-            startActivity(intent);
-            return true;
+        switch (id){
+            case R.id.action_favorites:
+                intent = new Intent(this, ActivityFavoriteNFollow.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_reload:
+                progressBar.setVisibility(View.VISIBLE);
+                new RefreshNewsFeed().execute();
+                newsFeedAdapter.notifyDataSetChanged();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -392,4 +418,76 @@ public class ActivityMain extends AppCompatActivity
         options.inSampleSize = 2;
         return  BitmapFactory.decodeByteArray(b , 0, b .length, options);
     }
+
+    private class RefreshNewsFeed extends AsyncTask<Void, Integer, Integer> {
+
+
+
+        public RefreshNewsFeed() {
+            refreshButton.setVisible(false);
+            refreshStatus=true;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(thisActivity, "Actualizando...",
+                    Toast.LENGTH_SHORT).show();
+            progressBar.setMax(100);
+            AppicationCore.resetNewsFeedTable();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            FacebookClass fb = new FacebookClass();
+            for(int i=0; i<mFacebookAccounts.size(); i++){
+                publishProgress(i*(100/mFacebookAccounts.size()));
+                fb.getPost(mFacebookAccounts.get(i),2);
+            }
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            populateDummyNewsFeedItems();
+            newsFeedAdapter.notifyDataSetChanged();
+            Toast.makeText(thisActivity, "Las noticias se han actualizado !",
+                    Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.GONE);
+            refreshButton.setVisible(true);
+            refreshStatus=false;
+
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setProgress(values[0]);
+        }
+    }
+
+
+
+    private void clickNewsFeed(int position){
+
+        if(!refreshStatus){
+
+            Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
+            intent.putExtra("newsFeedID", position);
+
+            if (intent != null) {
+                startActivity(intent);
+            }
+
+        }
+
+    }
 }
+

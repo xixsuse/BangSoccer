@@ -61,15 +61,7 @@
             android:label="Clubes"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
-       <!-- <activity
-            android:name=".ActivityFacebook"
-            android:label="Facebook Login"
-            android:parentActivityName=".ActivityMain"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityMain" />
-        </activity>-->
+
 
         <activity
             android:name=".ActivityLogin"

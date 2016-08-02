@@ -153,4 +153,18 @@
         completions."
     </string>
 
+    <string-array name="fb_accounts">
+        <item>LaMediaCancha</item>
+        <item>atleticopantoja</item>
+        <item>1137323726286992</item>
+        <item>968428659905112</item>
+        <item>100008514909191</item>
+        <item>ClubBarcelonaAtletico</item>
+        <item>1591266437784811</item>
+        <item>atleticosancristobalfc</item>
+        <item>100009996696006</item>
+        <item>100008017605686</item>
+        <item>BaugerFC</item>
+    </string-array>
+
 </resources>

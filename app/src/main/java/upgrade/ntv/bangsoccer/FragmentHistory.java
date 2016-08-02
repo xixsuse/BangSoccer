@@ -20,10 +20,9 @@ import upgrade.ntv.bangsoccer.Adapters.HistoryAdapter;
 public class FragmentHistory extends Fragment {
 
     // TODO: Customize parameter argument names
-    private static final String TEAM_ID = "team-id";
-    private int mTeamID;
+    private static final String CLUB_ID = "CLUBID";
+    private String mClubId;
     private HistoryAdapter mHistoryAdapter;
-   private Context mContext;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -33,12 +32,14 @@ public class FragmentHistory extends Fragment {
     public FragmentHistory() {
     }
 
+
+
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static FragmentHistory newInstance(int teamId) {
+    public static FragmentHistory newInstance(String teamId) {
         FragmentHistory fragment = new FragmentHistory();
         Bundle args = new Bundle();
-        args.putInt(TEAM_ID, teamId);
+        args.putString(CLUB_ID, teamId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,10 +49,8 @@ public class FragmentHistory extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mTeamID = getArguments().getInt(TEAM_ID);
+            mClubId = getArguments().getString(CLUB_ID);
         }
-
-
     }
 
 
@@ -60,7 +59,7 @@ public class FragmentHistory extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        mHistoryAdapter = new HistoryAdapter(mTeamID, getActivity());
+        mHistoryAdapter = new HistoryAdapter(getActivity());
 
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);

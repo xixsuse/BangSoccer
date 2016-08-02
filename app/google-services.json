@@ -19,7 +19,7 @@
           "client_type": 1,
           "android_info": {
             "package_name": "upgrade.ntv.bangsoccer",
-            "certificate_hash": "E5105E7A0EAC3B7FB00BB672A235837655EF47ED"
+            "certificate_hash": "785F63D59B47E223B266A95A1E7CE7F38B441DA0"
           }
         },
         {
@@ -42,6 +42,13 @@
             {
               "client_id": "319371862941-rqpq1shtuh999t78qtg159k5p4bk7m5o.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "319371862941-ki10u6btphebarb9cjnnu06cqa21injn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "upgrade.ntv.BangSoccer"
+              }
             }
           ]
         },

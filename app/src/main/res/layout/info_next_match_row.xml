@@ -28,7 +28,7 @@
                         android:id="@+id/info_image_team1"
                         android:layout_width="80dp"
                         android:layout_height="70dp"
-                        android:src="@mipmap/pantojatransparent_copy"
+                        android:src="@drawable/ic_upgraden"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center"/>
@@ -91,7 +91,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/baugerfc2_copy"/>
+                        android:src="@drawable/ic_upgraden"/>
 
                     <TextView
 

@@ -38,7 +38,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:src="@mipmap/pantojatransparent_copy" />
+                    android:src="@drawable/ic_upgraden"/>
 
                 <TextView
 
@@ -94,7 +94,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:src="@mipmap/baugerfc2_copy" />
+                    android:src="@drawable/ic_upgraden"/>
 
                 <TextView
 

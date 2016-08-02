@@ -1,4 +1,4 @@
-package upgrade.ntv.bangsoccer.Schedule;
+package upgrade.ntv.bangsoccer.TournamentObjects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ public class Club implements Cloneable {
     private  int  pj, dg, points, rank;
     private String name, stadium, profile, division, team_image;
 
+
     private boolean isFavorite;
     private HashMap<String, Boolean> players_ids = new HashMap<>();
     private List<Players> player_list = new ArrayList<Players>();
@@ -19,7 +20,7 @@ public class Club implements Cloneable {
 
     private Club club_clone;
 
-    String mFireBaseKey;
+    String firebasekey;
 
 
     public Club() {
@@ -33,6 +34,19 @@ public Club getClub_clone() throws CloneNotSupportedException {
     return club_clone;
 }
 
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
+    }
+
     public HashMap<String, Boolean> getPlayers_ids() {
         return players_ids;
     }
@@ -41,12 +55,12 @@ public Club getClub_clone() throws CloneNotSupportedException {
         this.players_ids = players_ids;
     }
 
-    public String getmFireBaseKey() {
-        return mFireBaseKey;
+    public String getFirebasekey() {
+        return firebasekey;
     }
 
-    public void setmFireBaseKey(String mFireBaseKey) {
-        this.mFireBaseKey = mFireBaseKey;
+    public void setFirebasekey(String firebasekey) {
+        this.firebasekey = firebasekey;
     }
 
     public boolean isFavorite() {

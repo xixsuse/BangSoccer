@@ -33,7 +33,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="bottom|start"
                 android:layout_weight="1"
-                android:src="@mipmap/pantojatransparent_copy" />
+                android:src="@drawable/ic_upgraden"/>
 
             <TextView
                 android:id="@+id/history_team1_name"
@@ -81,7 +81,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="bottom|start"
                 android:layout_weight="1"
-                android:src="@mipmap/ic_garrincha_fc" />
+                android:src="@drawable/ic_upgraden" />
 
             <TextView
 

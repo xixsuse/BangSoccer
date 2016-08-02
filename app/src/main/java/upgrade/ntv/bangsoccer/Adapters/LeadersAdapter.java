@@ -18,8 +18,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Schedule.Club;
-import upgrade.ntv.bangsoccer.Schedule.Players;
+import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Players;
 
 
 /**

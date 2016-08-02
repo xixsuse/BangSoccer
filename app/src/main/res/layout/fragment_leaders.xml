@@ -19,7 +19,7 @@
             android:layout_marginTop="8dp"
             android:layout_weight="1.4"
             android:text="Jugador"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorAccentLight" />
 
         <TextView
             android:id="@+id/_info_next_game_date"
@@ -28,7 +28,7 @@
             android:layout_marginTop="8dp"
             android:layout_weight="0.2"
             android:text="Goles"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorAccentLight" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -34,7 +34,7 @@ android:clickable="false"
             android:layout_gravity="center"
             android:layout_weight="3"
             android:padding="8dp"
-            android:src="@mipmap/clubbarcelonatransparent_copy" />
+            android:src="@drawable/ic_upgraden" />
 
 
         <TextView

@@ -22,7 +22,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="center"
-        android:src="@mipmap/clubbarcelonatransparent_copy" />
+        android:src="@drawable/ic_upgraden"/>
 
     <TextView
         android:id="@+id/club_name_row"

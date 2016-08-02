@@ -37,6 +37,7 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
     private TextView tvTitle;
     private TextView tvDescription;
     private ImageView ivPicture;
+    private TextView tvUsername;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,9 +50,9 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
     @SuppressWarnings("unused")
     public static FragmentNewsFeeddetails newInstance(int newId) {
         FragmentNewsFeeddetails fragment = new FragmentNewsFeeddetails();
-         Bundle args = new Bundle();
-         args.putInt(NEWS_ID, newId);
-         fragment.setArguments(args);
+        Bundle args = new Bundle();
+        args.putInt(NEWS_ID, newId);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -59,10 +60,10 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       // mNewsFeed= AppicationCore.getNewsFeed(2);
+
         if (getArguments() != null) {
             long mNewsID = getArguments().getInt(NEWS_ID);
-            mNewsFeed= AppicationCore.getNewsFeed(mNewsID);
+            mNewsFeed= AppicationCore.getNewsFeed(mNewsID+1);
         }
 
 
@@ -103,6 +104,7 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
         tvTitle = (TextView) view.findViewById(R.id.newsfeeddetails_news_title);
         tvDescription = (TextView) view.findViewById(R.id.newsfeeddetails_news_description);
         ivPicture = (ImageView) view.findViewById(R.id.app_barr_news_details_imageheader);
+        tvUsername = (TextView) view.findViewById(R.id.newsfeeddetails_news_publisher);
 
 
 
@@ -117,6 +119,7 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
                 tvTitle.setText("Publicación");
 
 
+            tvUsername.setText(mNewsFeed.getUserName());
             tvDate.setText(mNewsFeed.getDate());
             tvDescription.setText(mNewsFeed.getMessage());
 

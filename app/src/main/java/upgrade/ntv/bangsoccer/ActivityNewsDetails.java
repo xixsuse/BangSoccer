@@ -58,13 +58,13 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        //dummy data
-       // populateDummyNewsFeedItems();
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(6);
+        mViewPager.setCurrentItem(newsFeedID);
+
 
        /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
@@ -94,18 +94,7 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
 
     }
 
-    public void populateDummyNewsFeedItems(){
-       //newsFeedItems.add(new NewsFeedItem(null, "PROBANDO DETALLES"));
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC defenderá título de Copa Regional en El Seibo"));
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC defenderá título de Copa Regional en El Seibo"));
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Domingo 27 abril será la Convivencia Fútbolera de Garrincha FC"));
-//        newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Garrincha FC logra primer Lugar en Copa Pempén de Media Cancha."));
-        //   newsFeedItems.add(new NewsFeedItem(R.drawable.bg_upgrade, "Upgrade, We Create // ActivityNewsDetails"));
 
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -174,26 +163,24 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        int qty;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            qty=AppicationCore.getAllNewsFeed().size();
+
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(newsFeedID!=-1)
-                return FragmentNewsFeeddetails.newInstance(newsFeedID);
-
             return FragmentNewsFeeddetails.newInstance(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-           // return newsFeedItems.size();
-            return AppicationCore.getAllNewsFeed().size();
+            return qty;
         }
 
         @Override

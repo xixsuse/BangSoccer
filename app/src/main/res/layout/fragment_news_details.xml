@@ -74,16 +74,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="bottom"
-                android:layout_weight="6">
+                android:layout_weight="6"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newsfeeddetails_news_publisher"
+                    android:text="Username"
+                    android:textColor="#ee0a0a"
+                    android:textStyle="bold" />
+
+
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/newsfeeddetails_news_description"
-                    android:text="El incansable garrinchero podría volver a los campos de juego el próximo mes para disputar los torneos de futbol 11 y futbol 5 en los que participa el Club.
-
-El juvenil es símbolo de combatividad y posee el respeto de compañeros y mayores.
-Carlos sufrió una lesión tras una caída estrepitosa en la.opa Loyola"/>
+                    android:text="Descripcion"
+                    android:layout_marginTop="20dp"/>
             </LinearLayout>
         </LinearLayout>
 

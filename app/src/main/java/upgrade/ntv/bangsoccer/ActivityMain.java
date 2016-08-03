@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -79,11 +80,10 @@ public class ActivityMain extends AppCompatActivity
     private NewsFeedAdapter newsFeedAdapter;
     private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
 
-    private ProgressBar progressBar;
-    private MenuItem refreshButton;
-    private  RecyclerView recyclerView;
     private List<String> mFacebookAccounts;
     private boolean refreshStatus=false;  // true: when refresh newsfeeds is in progress
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     private GridLayoutManager lLayout;
 
@@ -127,6 +127,16 @@ public class ActivityMain extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                                     @Override
+                                                     public void onRefresh() {
+                                                         if(!refreshStatus)
+                                                            new RefreshNewsFeed().execute();
+
+                                                     }
+                                                 });
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -137,9 +147,6 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_main);
 
-
-        progressBar= (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
         mFacebookAccounts = Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
 
         //adds a dummy area and Attraction
@@ -337,8 +344,7 @@ public class ActivityMain extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_news_feeds, menu);
-        refreshButton = menu.findItem(R.id.action_reload);
+        getMenuInflater().inflate(R.menu.main, menu);
 
 
         return true;
@@ -361,11 +367,6 @@ public class ActivityMain extends AppCompatActivity
             case R.id.action_favorites:
                 intent = new Intent(this, ActivityFavoriteNFollow.class);
                 startActivity(intent);
-                return true;
-            case R.id.action_reload:
-                progressBar.setVisibility(View.VISIBLE);
-                new RefreshNewsFeed().execute();
-                newsFeedAdapter.notifyDataSetChanged();
                 return true;
         }
 
@@ -424,17 +425,15 @@ public class ActivityMain extends AppCompatActivity
 
 
         public RefreshNewsFeed() {
-            refreshButton.setVisible(false);
-            refreshStatus=true;
 
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            refreshStatus=true;
             Toast.makeText(thisActivity, "Actualizando...",
                     Toast.LENGTH_SHORT).show();
-            progressBar.setMax(100);
             AppicationCore.resetNewsFeedTable();
         }
 
@@ -458,9 +457,9 @@ public class ActivityMain extends AppCompatActivity
             newsFeedAdapter.notifyDataSetChanged();
             Toast.makeText(thisActivity, "Las noticias se han actualizado !",
                     Toast.LENGTH_LONG).show();
-            progressBar.setVisibility(View.GONE);
-            refreshButton.setVisible(true);
             refreshStatus=false;
+            mSwipeRefreshLayout.setRefreshing(false);
+
 
 
 
@@ -469,7 +468,7 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            progressBar.setProgress(values[0]);
+
         }
     }
 

@@ -65,11 +65,8 @@ public class FacebookClass {
 
                                 if(imageURL!=null){
 
-
                                     DownloadImage(username, imageURL, message, story, date);
-
                                 }
-
 
                             }
 
@@ -87,8 +84,6 @@ public class FacebookClass {
         request.setParameters(parameters);
         //  request.executeAsync();
         request.executeAndWait();
-
-
 
     }
 

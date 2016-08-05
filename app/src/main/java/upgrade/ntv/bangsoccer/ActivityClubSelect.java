@@ -52,7 +52,7 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
         recyclerView.setHasFixedSize(true);
 
        // LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        lLayout = new GridLayoutManager(ActivityClubSelect.this, 4);
+        lLayout = new GridLayoutManager(ActivityClubSelect.this, 2);
         recyclerView.setLayoutManager(lLayout);
 
         clubsAdapter =new ClubsAdapter(this);

@@ -64,7 +64,6 @@
                 android:visibility="gone"
                 app:tabMode="scrollable"
                 app:tabTextColor="@color/colorAccentLight"
-
                 app:tabSelectedTextColor="@color/colorAccent" />
 
         </android.support.design.widget.AppBarLayout>

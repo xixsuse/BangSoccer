@@ -3,23 +3,30 @@
 
     // Base Colors
     <color name="colorBlack">#212121</color>
-    <color name="colorWhite">#ffff</color>
+    <color name="colorWhite">#f6f6f6</color>
 
     // Primary Colors
     <!--<color name="colorPrimary">#ff5722</color>
     <color name="colorPrimaryDark">#E64A19</color>
     <color name="colorPrimaryLight">#FF8A65</color>-->
     // Accent Colors
-    <!--  <color name="colorAccent">#a80022</color>-->
+  <!--    <color name="colorAccent">#a80022</color>-->
     <color name="colorAccent">#8c8906</color>
+    <color name="colorAccentLailai">#e4ea90</color>
     <!--<color name="colorAccent2">#35c1d3</color>-->
     <color name="colorAccentLight">#377b2b</color>
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>
 
+    <color name="grey_1">#B6B6B6</color>
+    <color name="grey_2">#767676</color>
+    <color name="grey_3">#DCDCDC</color>
+    <color name="black_1">#373737</color>
+
     // FAKE Primary Colors
-    <color name="colorPrimary">#fdfdfd</color>
-    <color name="colorPrimaryDark">#01483a</color>
+    <color name="colorPrimary">#f6f6f6</color>
+    <color name="colorPrimaryDark">#377b2b</color>
+
     <color name="colorNewsFeed">#e313110b</color>
     <color name="textColorPrimary">#66000000</color>
 

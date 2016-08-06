@@ -169,11 +169,11 @@ public void onBindViewHolder(ScheduleHolder holder, final int position) {
         super(v);
 
 
-        time = (TextView) v.findViewById(R.id.time);
+        time = (TextView) v.findViewById(R.id.match_club_b_name);
        // team2 = (TextView) v.findViewById(R.id.team_2_id);
         teamLogo1= (ImageView) v.findViewById(R.id.image_team1);
         teamLogo2= (ImageView) v.findViewById(R.id.image_team2);
-        day = (TextView) v.findViewById(R.id.day);
+        day = (TextView) v.findViewById(R.id.match_club_a_name);
         stadium = (TextView) v.findViewById(R.id.stadium);
 
     }

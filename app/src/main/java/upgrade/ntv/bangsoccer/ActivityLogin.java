@@ -87,26 +87,32 @@ public class ActivityLogin extends BaseActivity implements
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
 
-                    for (UserInfo profile : user.getProviderData()) {
-                        // Id of the provider (ex: google.com)
-                        String providerId = profile.getProviderId();
 
-                        // UID specific to the provider
-                        String uid = profile.getUid();
+                try{
+                    if (user != null) {
+                        // User is signed in
 
-                        // Name, email address, and profile photo Url
-                        String name = profile.getDisplayName();
-                        String email = profile.getEmail();
-                        Uri photoUrl = profile.getPhotoUrl();
+                        for (UserInfo profile : user.getProviderData()) {
+                            // Id of the provider (ex: google.com)
+                            String providerId = profile.getProviderId();
+
+                            // UID specific to the provider
+                            String uid = profile.getUid();
+
+                            // Name, email address, and profile photo Url
+                            String name = profile.getDisplayName();
+                            String email = profile.getEmail();
+                            Uri photoUrl = profile.getPhotoUrl();
+                        }
+
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    } else {
+                        // User is signed out
+                        Log.d(TAG, "onAuthStateChanged:signed_out");
                     }
-
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }catch (Exception e){
+                    Log.d(TAG, "onAuth: " + e.getMessage());
                 }
                 // [START_EXCLUDE]
                 updateUI(user);

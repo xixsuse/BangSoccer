@@ -206,8 +206,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         ImageView leadersButton = (ImageView) findViewById(R.id.matches_leaders);
         leadersButton.setOnClickListener(tourneyBarOthersListner());
 
-        ImageView newsButton = (ImageView) findViewById(R.id.matches_news);
-        newsButton.setOnClickListener(tourneyBarOthersListner());
     }
 
     private View.OnClickListener tourneyBarListner() {
@@ -301,7 +299,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
                     break;
 
-                case R.id.matches_news:
+/*                case R.id.matches_news:
                   if (tabLayout.isShown()) {
                         tabLayout.setVisibility(View.GONE);
                     }
@@ -317,7 +315,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                             .commit();
                     //TODO: replce null to back stack with name and methos for proper pop
                     setLastSpinnerSelectedItem(R.id.matches_news);
-                    break;
+                    break;*/
 
             }
 

@@ -34,14 +34,14 @@
             android:layout_height="48dp"
             android:clickable="false"
             android:focusable="false"
-            android:weightSum="10">
+            android:weightSum="9">
 
             <ImageView
                 android:id="@+id/matches_calendar"
                 android:layout_width="0dp"
-                android:layout_height="32dp"
+                android:layout_height="26dp"
                 android:layout_gravity="center"
-                android:layout_weight="2.50"
+                android:layout_weight="3"
                 android:src="@drawable/ic_match_vs"
                 android:focusable="true"
                 android:clickable="true"
@@ -50,9 +50,9 @@
             <ImageView
                 android:id="@+id/matches_stats"
                 android:layout_width="0dp"
-                android:layout_height="32dp"
+                android:layout_height="26dp"
                 android:layout_gravity="center"
-                android:layout_weight="2.50"
+                android:layout_weight="3"
                 android:src="@drawable/ic_club_stats"
                 android:focusable="true"
                 android:clickable="true"
@@ -60,23 +60,14 @@
             <ImageView
                 android:id="@+id/matches_leaders"
                 android:layout_width="0dp"
-                android:layout_height="32dp"
+                android:layout_height="26dp"
                 android:layout_gravity="center"
-                android:layout_weight="2.50"
+                android:layout_weight="3"
                 android:src="@drawable/ic_game_winner_celebration_on_podium"
                 android:focusable="true"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"/>
-            <ImageView
-                android:id="@+id/matches_news"
-                android:layout_width="0dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:layout_weight="2.50"
-                android:src="@drawable/ic_news_on_tv"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"/>
+
 
         </LinearLayout>
 

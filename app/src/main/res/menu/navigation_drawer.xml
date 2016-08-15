@@ -9,8 +9,7 @@
         <item
             android:id="@+id/nav_main"
             android:icon="@drawable/ic_soccer_journalist"
-            android:title="Noticias"
-            />
+            android:title="Noticias" />
         <item
             android:id="@+id/nav_clubs"
             android:icon="@drawable/ic_teams_icon"
@@ -18,9 +17,8 @@
 
         <item
             android:id="@+id/nav_dynamic_tourney"
-            android:title="Partidos"
             android:icon="@drawable/ic_drawer_games"
-            />
+            android:title="Partidos" />
         <!--app:actionLayout="@layout/drawer_switch"-->
         <item
             android:id="@+id/nav_location"
@@ -29,9 +27,6 @@
 
     </group>
 
-
-    <item android:title="Communicate"
-        >
         <menu><!--
             <item
                 android:id="@+id/nav_settings"
@@ -42,16 +37,24 @@
                 android:icon="@drawable/ic_facebook"
                 android:title="Facebook" />-->
 
-            <item
+<!--            <item
                 android:id="@+id/nav_email"
                 android:icon="@drawable/ic_player_name_icon2"
-                android:title="Auth" />
+                android:title="Auth" />-->
 
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_upgraden"
                 android:title="Upgrade" />
         </menu>
-    </item>
 
+    <group android:checkableBehavior="single"
+        android:id="@+id/user_nav_view_group"
+        android:menuCategory="alternative">
+    <item
+        android:id="@+id/users_nav_view_item"
+        android:icon="@drawable/ic_player_name_icon2"
+        android:title="Usuario"/>
+
+    </group>
 </menu>

@@ -10,7 +10,8 @@
  * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package upgrade.ntv.bangsoccer.Auth;
 
@@ -48,102 +49,37 @@ public class AuthUiActivity extends AppCompatActivity {
             "https://www.firebase.com/terms/terms-of-service.html";
 
     private static final int RC_SIGN_IN = 100;
-/*
 
-    @BindView(R.id.default_theme)
-    RadioButton mUseDefaultTheme;
-
-    @BindView(R.id.green_theme)
-    RadioButton mUseGreenTheme;
-
-    @BindView(R.id.purple_theme)
-    RadioButton mUsePurpleTheme;
-
-    @BindView(R.id.email_provider)
-    CheckBox mUseEmailProvider;
-
-    @BindView(R.id.google_provider)
-    CheckBox mUseGoogleProvider;
-
-    @BindView(R.id.facebook_provider)
-    CheckBox mUseFacebookProvider;
-
-    @BindView(R.id.google_tos)
-    RadioButton mUseGoogleTos;
-
-    @BindView(R.id.firebase_tos)
-    RadioButton mUseFirebaseTos;
-
-    @BindView(R.id.sign_in)
-    Button mSignIn;
-
-    @BindView(android.R.id.content)
-    View mRootView;
-
-    @BindView(R.id.firebase_logo)
-    RadioButton mFirebaseLogo;
-
-    @BindView(R.id.google_logo)
-    RadioButton mGoogleLogo;
-
-    @BindView(R.id.no_logo)
-    RadioButton mNoLogo;
-*/
-@BindView(android.R.id.content)
-View mRootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+     */
+/*
         if (auth.getCurrentUser() != null) {
             startActivity(SignedInActivity.createIntent(this));
             finish();
         }
+*//*
 
-       // setContentView(R.layout.auth_ui_layout);
+        //setContentView(R.layout.auth_ui_layout);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         ButterKnife.bind(this);
-
-       /* if (!isGoogleConfigured()) {
-            mUseGoogleProvider.setChecked(false);
-            mUseGoogleProvider.setEnabled(true);
-            mUseGoogleProvider.setText(R.string.google_label_missing_config);
-        }
-
-        if (!isFacebookConfigured()) {
-            mUseFacebookProvider.setChecked(false);
-            mUseFacebookProvider.setEnabled(true);
-            mUseFacebookProvider.setText(R.string.facebook_label_missing_config);
-        }
-
-        if (!isGoogleConfigured() || !isFacebookConfigured()) {
-            showSnackbar(R.string.configuration_required);
-        }*/
-
 
         startActivityForResult(
                 AuthUI.getInstance().createSignInIntentBuilder()
                         .setTheme(AuthUI.getDefaultTheme())
-                        .setLogo(R.drawable.logo_googleg_color_18dp)
+                        .setLogo(R.drawable.mcancha)
                         .setProviders(getSelectedProviders())
                         .setTosUrl(FIREBASE_TOS_URL)
+                        .setTheme(R.style.AppTheme)
                         .build(),
                 RC_SIGN_IN);
 
     }
 
-    /*@OnClick(R.id.sign_in)
-    public void signIn(View view) {
-        startActivityForResult(
-                AuthUI.getInstance().createSignInIntentBuilder()
-                        .setTheme(getSelectedTheme())
-                        .setLogo(getSelectedLogo())
-                        .setProviders(getSelectedProviders())
-                        .setTosUrl(getSelectedTosUrl())
-                        .build(),
-                RC_SIGN_IN);
-    }*/
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -186,10 +122,6 @@ View mRootView;
         return selectedProviders.toArray(new String[selectedProviders.size()]);
     }
 
-    @MainThread
-    private void showSnackbar(@StringRes int errorMessageRes) {
-        Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG).show();
-    }
 
     public static Intent createIntent(Context context) {
         Intent in = new Intent();
@@ -197,3 +129,4 @@ View mRootView;
         return in;
     }
 }
+*/

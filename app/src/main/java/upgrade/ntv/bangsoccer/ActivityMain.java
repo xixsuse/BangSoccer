@@ -23,18 +23,28 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -43,12 +53,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import butterknife.BindView;
 import upgrade.ntv.bangsoccer.Adapters.NewsFeedAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Attraction.Area;
 import upgrade.ntv.bangsoccer.Attraction.Attraction;
+import upgrade.ntv.bangsoccer.Auth.SignedInActivity;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
@@ -87,6 +100,10 @@ public class ActivityMain extends AppCompatActivity
 
     private GridLayoutManager lLayout;
 
+    @BindView(R.id.users_nav_view_item)
+    MenuItem mUserDisplayName;
+
+
 
     @Override
     protected void onResume() {
@@ -119,6 +136,11 @@ public class ActivityMain extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.thisActivity=this;
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+           SignedInActivity.createIntent(this);
+        }
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -341,6 +363,12 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
+    public static Intent createIntent(Context context) {
+        Intent in = new Intent();
+        in.setClass(context, ActivityMain.class);
+        return in;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -357,6 +385,7 @@ public class ActivityMain extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         Intent intent;
+
 
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();

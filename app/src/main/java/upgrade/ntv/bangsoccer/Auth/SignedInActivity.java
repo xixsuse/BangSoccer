@@ -39,17 +39,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.R;
 
-public class SignedInActivity extends AppCompatActivity {
 
-    @BindView(android.R.id.content)
-    View mRootView;
+
+public class SignedInActivity extends AppCompatActivity {
 
     @BindView(R.id.user_profile_picture)
     ImageView mUserProfilePicture;
@@ -63,20 +64,37 @@ public class SignedInActivity extends AppCompatActivity {
     @BindView(R.id.user_enabled_providers)
     TextView mEnabledProviders;
 
+    @BindView(android.R.id.content)
+    View mRootView;
+
+    private static final String FIREBASE_TOS_URL =
+            "https://www.firebase.com/terms/terms-of-service.html";
+
+    private static final int RC_SIGN_IN = 100;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
-            startActivity(AuthUiActivity.createIntent(this));
-            finish();
+            startActivityForResult(
+                    AuthUI.getInstance().createSignInIntentBuilder()
+                            .setTheme(AuthUI.getDefaultTheme())
+                            .setLogo(R.drawable.mcancha)
+                            .setProviders(getSelectedProviders())
+                            .setTosUrl(FIREBASE_TOS_URL)
+                            .setTheme(R.style.AppTheme)
+                            .build(),
+                    RC_SIGN_IN);
             return;
+        }else{
+            setContentView(R.layout.signed_in_layout);
+            ButterKnife.bind(this);
+            populateProfile();
         }
 
-        setContentView(R.layout.signed_in_layout);
-        ButterKnife.bind(this);
-        populateProfile();
     }
 
     @OnClick(R.id.sign_out)
@@ -87,8 +105,15 @@ public class SignedInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            startActivity(AuthUiActivity.createIntent(SignedInActivity.this));
-                            finish();
+                            startActivityForResult(
+                                    AuthUI.getInstance().createSignInIntentBuilder()
+                                            .setTheme(AuthUI.getDefaultTheme())
+                                            .setLogo(R.drawable.mcancha)
+                                            .setProviders(getSelectedProviders())
+                                            .setTosUrl(FIREBASE_TOS_URL)
+                                            .setTheme(R.style.AppTheme)
+                                            .build(),
+                                    RC_SIGN_IN);
                         } else {
                             showSnackbar(R.string.sign_out_failed);
                         }
@@ -121,8 +146,15 @@ public class SignedInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            startActivity(AuthUiActivity.createIntent(SignedInActivity.this));
-                            finish();
+                            startActivityForResult(
+                                    AuthUI.getInstance().createSignInIntentBuilder()
+                                            .setTheme(AuthUI.getDefaultTheme())
+                                            .setLogo(R.drawable.mcancha)
+                                            .setProviders(getSelectedProviders())
+                                            .setTosUrl(FIREBASE_TOS_URL)
+                                            .setTheme(R.style.AppTheme)
+                                            .build(),
+                                    RC_SIGN_IN);
                         } else {
                             showSnackbar(R.string.delete_account_failed);
                         }
@@ -172,6 +204,49 @@ public class SignedInActivity extends AppCompatActivity {
         }
 
         mEnabledProviders.setText(providerList);
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            handleSignInResponse(resultCode, data);
+            return;
+        }
+
+        showSnackbar(R.string.unknown_response);
+    }
+
+    @MainThread
+    private void handleSignInResponse(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            startActivity(ActivityMain.createIntent(this));
+            finish();
+            return;
+        }
+
+        if (resultCode == RESULT_CANCELED) {
+            showSnackbar(R.string.sign_in_cancelled);
+            return;
+        }
+
+        showSnackbar(R.string.unknown_sign_in_response);
+    }
+
+
+    @MainThread
+    private String[] getSelectedProviders() {
+        ArrayList<String> selectedProviders = new ArrayList<>();
+
+        //add providers
+        selectedProviders.add(AuthUI.EMAIL_PROVIDER);
+        selectedProviders.add(AuthUI.FACEBOOK_PROVIDER);
+        selectedProviders.add(AuthUI.GOOGLE_PROVIDER);
+
+
+        return selectedProviders.toArray(new String[selectedProviders.size()]);
     }
 
     @MainThread

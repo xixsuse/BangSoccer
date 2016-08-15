@@ -27,7 +27,7 @@
     <application
         android:name=".AppicationCore"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_media_cancha"
+        android:icon="@drawable/mcancha"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -50,21 +50,8 @@
             android:name=".ActivityMain"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
- <!--           <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-
-        <activity
-            android:name=".Auth.AuthUiActivity"
-            android:label="Auth_ui"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -73,7 +60,9 @@
             android:name=".Auth.SignedInActivity"
             android:label="Auth_ui"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
 
         <activity
             android:name=".ActivityClubSelect"

@@ -96,7 +96,7 @@ public class AppicationCore extends Application {
                 mPlayersDeftailsRef = databaseReference.child("Players");
                 mTeamsRef = databaseReference.child("Clubs");
                 mMatchRef = databaseReference.child("Match");
-                authReference =FirebaseAuth.getInstance();
+               /* authReference =FirebaseAuth.getInstance();
                 mAuthListener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -110,7 +110,7 @@ public class AppicationCore extends Application {
                         }
                         // ...
                     }
-                };authReference.addAuthStateListener(mAuthListener);
+                };authReference.addAuthStateListener(mAuthListener);*/
             }
         }
 
@@ -127,8 +127,6 @@ public class AppicationCore extends Application {
         dbTeamDao = daoSession.getDBTeamDao();
         dbTourneyDao = daoSession.getDBTourneyDao();
         dbNewsFeedDao = daoSession.getDBNewsFeedDao();
-
-
     }
 
 

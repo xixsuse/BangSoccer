@@ -24,6 +24,6 @@
         android:background="@color/colorPrimary"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/navigation_drawer"
-        app:itemTextColor="@color/colorAccentLight"
-        app:itemIconTint="@color/colorAccentLight"/>
+        app:itemTextColor="@color/colorPrimaryDark"
+        app:itemIconTint="@color/colorPrimaryDark"/>
 </android.support.v4.widget.DrawerLayout>

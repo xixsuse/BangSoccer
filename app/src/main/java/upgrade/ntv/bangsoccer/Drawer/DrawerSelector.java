@@ -12,6 +12,7 @@ import upgrade.ntv.bangsoccer.ActivityNewsDetails;
 import upgrade.ntv.bangsoccer.ActivityTour;
 import upgrade.ntv.bangsoccer.ActivityTourneyCalendar;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
+import upgrade.ntv.bangsoccer.Auth.SignedInActivity;
 import upgrade.ntv.bangsoccer.R;
 
 /**
@@ -72,8 +73,8 @@ public class DrawerSelector {
 //                break;
 
 
-            case R.id.nav_email:
-                intent = new Intent(callingActivity, ActivityLogin.class);
+            case R.id.users_nav_view_item:
+                intent = new Intent(callingActivity, SignedInActivity.class);
                 break;
 
 

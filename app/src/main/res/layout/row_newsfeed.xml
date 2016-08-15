@@ -5,43 +5,128 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/menu_newsfeed_cardView"
     android:layout_width="match_parent"
-    android:layout_height="262dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginEnd="4dp"
-    card_view:cardElevation="4dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:focusable="true"
     android:clickable="true"
+    android:focusable="true"
+    card_view:cardBackgroundColor="@color/com_facebook_button_background_color_focused"
     android:foreground="?android:attr/selectableItemBackground"
-    >
+    card_view:cardElevation="4dp">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:elevation="8dp"
-    android:layout_gravity="bottom"
-    android:backgroundTintMode="screen"
-    android:background="@drawable/news_feed_gradient">
-
-    <TextView
-        android:id="@+id/newsfeed_text_news_title"
+    <LinearLayout
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Equipos masculinos de Garrincha FC jugarán en City FC y Media Cancha."
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/newsfeed_imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_upgraden"/>
+            <ImageView
+                android:id="@+id/newsfeed_imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_upgraden" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="50dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorAccent"/>
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorAccentLight"
+                        android:layout_gravity="center_vertical"
+                        android:text="Upgrade FC"
+                        android:layout_height="24dp"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="end"
+                    android:layout_weight="1.5">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:id="@+id/matche_likes_button"
+
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_like_not_selected"/>
+
+                    <ImageView
+
+                        android:layout_width="24dp"
+
+                        android:id="@+id/match_share"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_share"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/newsfeed_text_news_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="start"
+                android:maxLength="100"
+                android:maxLines="3"
+                android:text="Equipos masculinos de Garrincha FC jugarán en City FC y Media Cancha."
+                android:textColor="@color/grey_2"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

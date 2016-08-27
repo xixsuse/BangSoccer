@@ -2,7 +2,6 @@ package upgrade.ntv.bangsoccer.Dialogs;
 
         import android.app.DialogFragment;
         import android.content.Context;
-        import android.content.Intent;
         import android.os.Bundle;
         import android.support.v7.widget.GridLayoutManager;
         import android.support.v7.widget.RecyclerView;
@@ -16,18 +15,13 @@ package upgrade.ntv.bangsoccer.Dialogs;
         import butterknife.BindView;
         import butterknife.ButterKnife;
         import butterknife.Unbinder;
-        import upgrade.ntv.bangsoccer.Adapters.ClubsToFollowAdapter;
         import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
         import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
-        import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
         import upgrade.ntv.bangsoccer.R;
-        import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
         import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 
-        import static upgrade.ntv.bangsoccer.ActivityTourneyCalendar.tourneyActivity;
-
 /**
- * Created by root on 8/25/16.
+ * Created by jfro on 8/25/16.
  */
 
 public class DivisionChooserFragment extends DialogFragment  {
@@ -36,7 +30,7 @@ public class DivisionChooserFragment extends DialogFragment  {
     private static final String TAG = DivisionChooserFragment.class.getSimpleName();
 
     private Unbinder unbinder;
-    @BindView(R.id.fav_n_follow_recuclerview)
+    @BindView(R.id.divisions_recyclerview)
     RecyclerView recyclerView;
 
     public List<Divisions> divisionsSelect = new ArrayList<>();
@@ -58,7 +52,7 @@ public class DivisionChooserFragment extends DialogFragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_activity_favorite_nfollow, container, false);
+        View view = inflater.inflate(R.layout.content_division_dialog, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         recyclerView.setHasFixedSize(true);

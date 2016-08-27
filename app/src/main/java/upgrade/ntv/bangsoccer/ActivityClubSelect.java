@@ -1,6 +1,8 @@
 package upgrade.ntv.bangsoccer;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,15 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import upgrade.ntv.bangsoccer.Adapters.ClubsAdapter;
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 
+import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
-public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DivisionChooserFragment.OnCreateClientDialogListener {
 
     // name of the file to preserve areas
     private Activity thisActivity;
@@ -101,8 +107,8 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-      //  getMenuInflater().inflate(R.menu.main, menu);
-        return false;
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
@@ -110,18 +116,44 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-      /*  int id = item.getItemId();
+        int id = item.getItemId();
         Intent intent;
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            intent = new Intent(this, ActivitySettings.class);
-            startActivity(intent);
-            return true;
+
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
         }
-*/
+        switch (id) {
+
+            case R.id.action_favorites:
+                intent = new Intent(this, ActivityFavoriteNFollow.class);
+                startActivity(intent);
+                break;
+
+            case R.id.action_divisiones:
+                onDvisionChoosertDialog();
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Displays Divisions Dialog Fragment
+     */
+    private void onDvisionChoosertDialog() {
+        Log.i("main", "Calling Create Client Dialog Fragment");
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DialogFragment prev = (DialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_CHOOSE_DIVISION);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = new DivisionChooserFragment();
+        newFragment.show(ft, FRAGMENT_CHOOSE_DIVISION);
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -150,5 +182,10 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void callDivisionsDialog() {
+
     }
 }

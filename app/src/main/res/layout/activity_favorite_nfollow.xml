@@ -4,32 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:theme="@style/AppTheme.AppBarOverlay"
+    android:fitsSystemWindows="true"
     tools:context=".ActivityFavoriteNFollow">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="Favoritos"
-            android:minHeight="?attr/actionBarSize"/>
-
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:elevation="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="Favoritos" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_activity_favorite_nfollow"
+    <include
+        layout="@layout/content_activity_favorite_nfollow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
 </android.support.design.widget.CoordinatorLayout>

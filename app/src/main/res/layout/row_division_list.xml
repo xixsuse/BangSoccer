@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/follow_clubs_row_layout"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="48dp"
         android:weightSum="10">
 
 
@@ -23,7 +23,7 @@
             android:layout_marginStart="56dp"
             android:layout_weight="2"
             android:clickable="false"
-            android:buttonTint="@color/colorAccentLight"
+            android:buttonTint="@color/colorPrimaryDark"
             android:gravity="center" />
 
 
@@ -31,11 +31,11 @@
         <TextView
             android:id="@+id/division_name_row"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_weight="8"
             android:gravity="start|center"
-            android:text="Club Barcelona Atletico"
+            android:text="Primera"
             android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 

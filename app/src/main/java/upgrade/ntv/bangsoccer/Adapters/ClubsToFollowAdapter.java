@@ -10,11 +10,16 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 
@@ -27,23 +32,53 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     private List<Club> mClubList = new ArrayList<>();
     private Context mContext;
     private LayoutInflater inflater;
-    private List<View> itemHolder = new ArrayList<>();
+    private Query query;
 
     public ClubsToFollowAdapter(List<Club> list, Context context) {
         this.mClubList = list;
         this.mContext = context;
+        this.query = ActivityMain.mTeamsRef;
+        this.query.addChildEventListener(new ClubsToFollowAdapter.TeamEvenetListener());
 
     }
 
-
-    public View getItemHolder(int pos) {
-        return itemHolder.get(pos);
+    public List<Club> getClubList() {
+        return mClubList;
     }
 
-    private void addItemHolder(View itemHolder) {
-        this.itemHolder.add(itemHolder);
-    }
+    private class TeamEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Club firebaseRequest = dataSnapshot.getValue(Club.class);
 
+            firebaseRequest.setFirebasekey(dataSnapshot.getKey());
+            getClubList().add(0, firebaseRequest);
+
+            notifyDataSetChanged();
+
+
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
     public String getClubID(int position) {
         return mClubList.get(position).getFirebasekey();
     }
@@ -69,10 +104,12 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
         holder.vClubName.setText(mClubList.get(position).getName());
+
         Picasso.with(mContext).
-                load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
-                placeholder(R.drawable.ic_open_game_icon).
-                into(holder.vClubAvatar); //holder.vClubAvatar.setImageResource(mClubList.get(position).getTeam_image());
+                load(mClubList.get(position).getTeam_image()).
+                placeholder(R.drawable.ic_upgraden).
+                into(holder.vClubAvatar);
+
         holder.Id = mClubList.get(position).getFirebasekey();
         holder.cCheckBox.setChecked(mClubList.get(position).isFavorite());
         holder.vCardView.setOnClickListener(new View.OnClickListener()

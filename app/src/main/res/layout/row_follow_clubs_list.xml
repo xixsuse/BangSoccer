@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
     card_view:cardBackgroundColor="@color/cardview_light_background">
 
     <LinearLayout
@@ -23,8 +22,8 @@
             android:layout_gravity="center"
             android:layout_marginStart="56dp"
             android:layout_weight="1"
-android:clickable="false"
-            android:buttonTint="@color/colorPrimary"
+            android:clickable="false"
+            android:buttonTint="@color/colorPrimaryDark"
             android:gravity="center" />
 
         <ImageView

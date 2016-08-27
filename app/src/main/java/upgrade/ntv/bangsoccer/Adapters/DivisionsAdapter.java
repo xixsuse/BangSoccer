@@ -34,9 +34,7 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
     private List<Divisions> mDivisions = new ArrayList<>();
     private Context mContext;
     private Query query;
-    private List<View> itemHolder = new ArrayList<>();
     private int currentPos = 0;
-    private TeamHolder teamHolder;
 
     public DivisionsAdapter(Context context) {
         this.mContext = context;

@@ -52,7 +52,7 @@ public class ActivityAbout extends AppCompatActivity implements CollapsingToolba
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_about);
+        navigationView.setSelected(true);
 
         TextView text = (TextView) findViewById(R.id.about_text);
         text.setText( "We’re a group of dominicans who are very different from one another, which is great for creative problem-solving and out-of-the-box"+

@@ -33,6 +33,10 @@ public class ActivityAttractionDetail extends AppCompatActivity {
         }
     }
 
+
+
+
+
     public static Intent getLaunchIntent(Context context, String attraction) {
         Intent intent = new Intent(context, ActivityAttractionDetail.class);
         intent.putExtra(EXTRA_ATTRACTION, attraction);

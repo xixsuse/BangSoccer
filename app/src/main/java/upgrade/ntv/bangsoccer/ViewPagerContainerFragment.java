@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import upgrade.ntv.bangsoccer.AppConstants.AppConstant;
-import upgrade.ntv.bangsoccer.TournamentObjects.MatchOld;
+import upgrade.ntv.bangsoccer.AppConstants.FirebaseUtils;
+import upgrade.ntv.bangsoccer.TournamentObjects.Match;
 
 /**
  * Created by root on 7/10/16.
@@ -59,13 +59,13 @@ public class ViewPagerContainerFragment extends Fragment {
 
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
 
-        private List<MatchOld> matchOldList = new ArrayList<>();
+        private List<Match> matchOldList = new ArrayList<>();
 
-        public List<MatchOld> getMatchOldList() {
+        public List<Match> getMatchOldList() {
             return matchOldList;
         }
 
-        public void setMatchOldList(List<MatchOld> matchOldList) {
+        public void setMatchOldList(List<Match> matchOldList) {
             this.matchOldList = matchOldList;
         }
 
@@ -74,7 +74,8 @@ public class ViewPagerContainerFragment extends Fragment {
         }
 
         public int getPagerCount() {
-            return AppConstant.mMatchArrayList.length;
+            //TODO : do this the propper way... the 10 is for testing
+            return 10;
         }
 
         private String makeFragmentName(int viewId, int index) {

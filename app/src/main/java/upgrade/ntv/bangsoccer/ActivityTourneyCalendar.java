@@ -80,6 +80,8 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @Override
     protected void onResume() {
         super.onResume();
+
+
         mViewPager = viewPagerContainerFragment.get().getViewPager();
         tabLayout.setupWithViewPager(mViewPager);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -27,7 +27,7 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     private List<Club> mClubList = new ArrayList<>();
     private Context mContext;
     private LayoutInflater inflater;
-    private List<View> itemHolder = new ArrayList<>(13);
+    private List<View> itemHolder = new ArrayList<>();
 
     public ClubsToFollowAdapter(List<Club> list, Context context) {
         this.mClubList = list;

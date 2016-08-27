@@ -45,7 +45,7 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_clubs);
+        navigationView.setSelected(true);
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.clubs_cardList);

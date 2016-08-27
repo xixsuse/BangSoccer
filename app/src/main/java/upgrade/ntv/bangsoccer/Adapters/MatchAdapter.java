@@ -13,14 +13,16 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.AppicationCore;
+import upgrade.ntv.bangsoccer.AppConstants.FirebaseUtils;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
@@ -33,14 +35,24 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHold
 
    private List<Match> mClubsMatches;
     private Context mContext;
+    private int[] mSelectied;
+    public DatabaseReference[] mMatchRef;
 
     private Query query;
-    public MatchAdapter( Context context) {
+    public MatchAdapter( Context context, int[] Selection) {
 
         this.mClubsMatches = new ArrayList<>();
         this.mContext = context;
-        this.query = AppicationCore.mMatchRef;
+        for (int index: mSelectied){
+            mMatchRef[index] = ActivityMain.databaseReference.
+                    child(FirebaseUtils.getDivisionRefNodeForSelection(index));
+        }
+        this.query = ActivityMain.mMatchRef;
         this.query.addChildEventListener(new MatchEvenetListener());
+        this.mSelectied = mSelectied;
+
+
+
 
     }
 
@@ -106,7 +118,7 @@ public void onBindViewHolder(ScheduleHolder holder, final int position) {
         // - get element from your dataset at this vPlayerPosition
         // - replace the contents of the view with that element
 
-    holder.day.setText(mClubsMatches.get(position).getDate());
+    holder.teamName1.setText(mClubsMatches.get(position).getClubIdA().getName());
 
     //     holder.team2.setText( mTeam.getmWeeklyMatch().get(vPlayerPosition).getTeamName(2));
     Picasso.with(mContext).
@@ -140,7 +152,7 @@ public void onBindViewHolder(ScheduleHolder holder, final int position) {
         public void onClick(View v) {
             //calls the Team2 Screen based on the teamID
             Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
-            String clubid=  mClubsMatches.get(position).getClubIdA().getFirebasekey();
+            String clubid=  mClubsMatches.get(position).getClubIdB().getFirebasekey();
             intent.putExtra("CLUBID", clubid);
 
             if (intent != null) {
@@ -151,29 +163,29 @@ public void onBindViewHolder(ScheduleHolder holder, final int position) {
         }
 
     });
-    holder.day.setText(mClubsMatches.get(position).getDate());
+    holder.teamName2.setText(mClubsMatches.get(position).getClubIdB().getName());
     holder.stadium.setText(mClubsMatches.get(position).getStadium());
 
         }
 
 // Provides a reference to the views for each data item
     public static class ScheduleHolder extends RecyclerView.ViewHolder{
+        TextView teamName2;
         TextView time;
-        TextView team2;
         ImageView teamLogo1;
         ImageView teamLogo2;
-        TextView day;
+        TextView teamName1;
         TextView stadium;
 
     public ScheduleHolder(View v){
         super(v);
 
 
-        time = (TextView) v.findViewById(R.id.match_club_b_name);
+        teamName2 = (TextView) v.findViewById(R.id.match_club_b_name);
        // team2 = (TextView) v.findViewById(R.id.team_2_id);
         teamLogo1= (ImageView) v.findViewById(R.id.image_team1);
         teamLogo2= (ImageView) v.findViewById(R.id.image_team2);
-        day = (TextView) v.findViewById(R.id.match_club_a_name);
+        teamName1 = (TextView) v.findViewById(R.id.match_club_a_name);
         stadium = (TextView) v.findViewById(R.id.place_n_time);
 
     }

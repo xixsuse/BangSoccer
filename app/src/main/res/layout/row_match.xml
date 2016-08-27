@@ -8,10 +8,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     card_view:cardBackgroundColor="@color/cardview_light_background"
-    card_view:cardElevation="4dp"
-
-
-    >
+    card_view:cardElevation="4dp">
     <!--  card_view:cardCornerRadius="10dp"-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -101,7 +98,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,6 +122,8 @@
             android:background="@color/colorPrimaryDark">
 
         </LinearLayout>
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"

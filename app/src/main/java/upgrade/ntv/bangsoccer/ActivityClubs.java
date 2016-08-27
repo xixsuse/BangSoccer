@@ -93,7 +93,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_clubs);
+        navigationView.setSelected(true);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -123,7 +123,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         final TextView txt = (TextView) findViewById(R.id.clubs_header_team_name);
 
         String currentKey = getTeamId();
-        this.query = AppicationCore.mTeamsRef.child(currentKey);
+        this.query = ActivityMain.mTeamsRef.child(currentKey);
 
         this.query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -207,7 +207,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     private void onClickedFragmentPlayer(final String playerid) {
         PlayerId=playerid;
-        Query query = AppicationCore.mPlayersDeftailsRef.child(playerid);
+        Query query = ActivityMain.mPlayersDeftailsRef.child(playerid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot playerSnapshot) {

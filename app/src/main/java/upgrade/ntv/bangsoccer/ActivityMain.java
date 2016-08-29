@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,8 +40,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -60,6 +65,7 @@ import upgrade.ntv.bangsoccer.Auth.SignedInActivity;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
+import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
@@ -106,10 +112,43 @@ public class ActivityMain extends AppCompatActivity
     public static StorageReference mSegundaRef;
     public static StorageReference mTerceraRef;
     public static StorageReference mCuartaRef;
-    public static FirebaseAuth authReference;
-    public static FirebaseAuth.AuthStateListener mAuthListener;
 
-    private GridLayoutManager lLayout;
+    private static List<Divisions> mDivisions = new ArrayList<>();
+    private Query query;
+
+    public static List<Divisions> getDivisionsList() {
+        return mDivisions;
+    }
+
+    private class DivisionEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Divisions firebaseRequest = dataSnapshot.getValue(Divisions.class);
+            firebaseRequest.setFirebasekey(dataSnapshot.getKey());
+            getDivisionsList().add(0, firebaseRequest);
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
 
     @BindView(R.id.users_nav_view_item)
     MenuItem mUserDisplayName;
@@ -188,6 +227,11 @@ public class ActivityMain extends AppCompatActivity
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
             SignedInActivity.createIntent(this);
+        }
+        //avoid duplication if has already been created
+        if (mDivisions.size() < 2) {
+            this.query = ActivityMain.mDivisionsRef;
+            this.query.addChildEventListener(new DivisionEvenetListener());
         }
 
         setContentView(R.layout.activity_main);
@@ -456,7 +500,7 @@ public class ActivityMain extends AppCompatActivity
     /**
      * Displays Divisions Dialog Fragment
      */
-    private void onDvisionChoosertDialog(){
+    private void onDvisionChoosertDialog() {
         Log.i("main", "Calling Create Client Dialog Fragment");
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();

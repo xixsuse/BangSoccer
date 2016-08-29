@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:textSize="12sp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Vegeta"/>
 
@@ -70,7 +70,7 @@
                     android:layout_gravity="start"
                     android:textSize="12sp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorAccentLailai" />
 
             </LinearLayout>
 

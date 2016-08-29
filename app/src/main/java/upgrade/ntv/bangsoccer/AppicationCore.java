@@ -1,6 +1,7 @@
 package upgrade.ntv.bangsoccer;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -79,6 +80,7 @@ public class AppicationCore extends Application {
         dbTourneyDao = daoSession.getDBTourneyDao();
         dbNewsFeedDao = daoSession.getDBNewsFeedDao();
     }
+
 
 
     /**

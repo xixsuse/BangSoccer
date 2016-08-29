@@ -39,14 +39,10 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHold
     public DatabaseReference[] mMatchRef;
 
     private Query query;
-    public MatchAdapter( Context context, int[] Selection) {
+    public MatchAdapter( Context context) {
 
         this.mClubsMatches = new ArrayList<>();
         this.mContext = context;
-        for (int index: mSelectied){
-            mMatchRef[index] = ActivityMain.databaseReference.
-                    child(FirebaseUtils.getDivisionRefNodeForSelection(index));
-        }
         this.query = ActivityMain.mMatchRef;
         this.query.addChildEventListener(new MatchEvenetListener());
         this.mSelectied = mSelectied;

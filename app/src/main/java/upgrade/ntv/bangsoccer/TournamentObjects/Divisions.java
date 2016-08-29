@@ -5,11 +5,19 @@ package upgrade.ntv.bangsoccer.TournamentObjects;
  */
 
 public class Divisions {
-    private String name, firebasekey;
+    private String name, firebasekey, node;
     private boolean isSelected;
 
     public boolean isSelected() {
         return isSelected;
+    }
+
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
     }
 
     public void setSelected(boolean selected) {

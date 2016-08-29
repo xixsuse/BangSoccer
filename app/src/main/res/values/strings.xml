@@ -21,10 +21,13 @@
     <string name="pref_header_map">Map</string>
     <!-- Shared Preferences keys -->
     <string name="pref_key_map_style" translatable="false">map_style</string>
+    <string name="pref_key_divisions" translatable="false">divisions</string>
     <!-- Shared  Preferences Titles-->
     <string name="pref_title_map_style">Map style</string>
+    <string name="pref_title_divisions">Divisiones</string>
     <!-- Shared  Preferences Defaults-->
     <string name="pref_default_map_style" translatable="false">101</string>
+    <string name="pref_default_divisions" translatable="false">Div1_Calendar</string>
     <!-- Shared Preferences Defaults-->
     <string-array name="pref_list_map_style">
         <item>Normal</item>

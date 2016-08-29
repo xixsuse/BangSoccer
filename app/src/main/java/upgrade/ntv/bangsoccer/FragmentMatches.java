@@ -41,9 +41,8 @@ public class FragmentMatches extends Fragment {
         Bundle arg = getArguments();
 
         int index = arg.getInt(ARG_SECTION_NUMBER);
-        int[] test ={0,1};
 
-        mMatchAdapter = new MatchAdapter(getActivity(), test);
+        mMatchAdapter = new MatchAdapter(getActivity());
 
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.matches_recycleview);

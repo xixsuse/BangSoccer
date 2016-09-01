@@ -2,9 +2,7 @@ package upgrade.ntv.bangsoccer;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -16,19 +14,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -40,7 +31,8 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 
 public class ActivityTourneyCalendar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener, FragmentTourneyStats.OnListFragmentInteractionListener {
+        FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener,
+        FragmentTourneyStats.OnListFragmentInteractionListener, DivisionChooserFragment.OnCreateClientDialogListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -111,7 +103,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tourney_matches);
+        setContentView(R.layout.activity_tourney);
 
         slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         //references to the activity
@@ -193,8 +185,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
                 }
                 if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-
-
                 }
                 Log.i("ActivityClubs", "onPanelStateChanged " + newState);
 
@@ -412,6 +402,11 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @Override
     public void onListFragmentInteraction() {
         onClickedFragmentLeaders();
+    }
+
+    @Override
+    public void callDivisionsDialog() {
+
     }
 
 

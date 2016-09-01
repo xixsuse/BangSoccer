@@ -65,10 +65,12 @@ import upgrade.ntv.bangsoccer.Auth.SignedInActivity;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
+import upgrade.ntv.bangsoccer.TournamentObjects.Day;
 import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
+import upgrade.ntv.bangsoccer.Utils.Preferences;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 import upgrade.ntv.bangsoccer.service.UtilityService;
 
@@ -107,19 +109,23 @@ public class ActivityMain extends AppCompatActivity
     public static DatabaseReference mTeamsRef;
     public static DatabaseReference mDivisionsRef;
     public static DatabaseReference mMatchRef;
-    private StorageReference storageReference;
+    public static DatabaseReference  mMatchesOfTheDayDiv1Ref ;
+    public static DatabaseReference  mMatchesOfTheDayDiv2Ref ;
+    public static DatabaseReference  mMatchesOfTheDayDiv3Ref ;
+    public static StorageReference storageReference;
     public static StorageReference mPrimeraRef;
     public static StorageReference mSegundaRef;
     public static StorageReference mTerceraRef;
     public static StorageReference mCuartaRef;
 
-    private static List<Divisions> mDivisions = new ArrayList<>();
-    private Query query;
+    public static List<Divisions> mDivisions = new ArrayList<>();
 
+    private Query query;
+//gets the list of divisions
     public static List<Divisions> getDivisionsList() {
         return mDivisions;
     }
-
+//firebase division listener
     private class DivisionEvenetListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -185,54 +191,19 @@ public class ActivityMain extends AppCompatActivity
         super.onCreate(savedInstanceState);
         this.thisActivity = this;
 
-        if (databaseReference == null) {
-            try {
-                if (!FirebaseApp.getApps(this).isEmpty()) {
-                    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-                }
-            } catch (Exception e) {
-                //  FirebaseCrash.log("firebase Crash reports  failed to initialize");
-                Log.i("firebase persistance: ", e.getMessage());
-            } finally {
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bangsoccer-1382.appspot.com/MediaCancha/");
-                mPrimeraRef = storageReference.child("primera");
-                mSegundaRef = storageReference.child("segunda");
-                mTerceraRef = storageReference.child("tercera");
-                mCuartaRef = storageReference.child("cuarta");
-                databaseReference = FirebaseDatabase.getInstance().getReference();
-                mPlayersDeftailsRef = databaseReference.child("Players");
-                mTeamsRef = databaseReference.child("Clubs");
-                mMatchRef = databaseReference.child("Match");
-                mDivisionsRef = databaseReference.child("Divisions");
-               /* authReference =FirebaseAuth.getInstance();
-                mAuthListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user != null) {
-                            // User is signed in
-                            Log.d("AUTH", "onAuthStateChanged:signed_in:" + user.getUid());
-                        } else {
-                            // User is signed out
-                            Log.d("AUTH", "onAuthStateChanged:signed_out");
-                        }
-                        // ...
-                    }
-                };authReference.addAuthStateListener(mAuthListener);*/
-            }
-        }
+        initFirebaseRefs();
 
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
             SignedInActivity.createIntent(this);
         }
-        //avoid duplication if has already been created
+        //avoid duplication if its  been created
         if (mDivisions.size() < 2) {
             this.query = ActivityMain.mDivisionsRef;
             this.query.addChildEventListener(new DivisionEvenetListener());
         }
+
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -327,6 +298,35 @@ public class ActivityMain extends AppCompatActivity
         AppEventsLogger.activateApp(this);
    /*    FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         FirebaseCrash.log("Activity created");*/
+    }
+
+    public void initFirebaseRefs(){
+        if (databaseReference == null) {
+            try {
+                if (!FirebaseApp.getApps(this).isEmpty()) {
+                    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+                }
+            } catch (Exception e) {
+                //  FirebaseCrash.log("firebase Crash reports  failed to initialize");
+                Log.i("firebase persistance: ", e.getMessage());
+            } finally {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bangsoccer-1382.appspot.com/MediaCancha/");
+                mPrimeraRef = storageReference.child("primera");
+                mSegundaRef = storageReference.child("segunda");
+                mTerceraRef = storageReference.child("tercera");
+                mCuartaRef = storageReference.child("cuarta");
+                databaseReference = FirebaseDatabase.getInstance().getReference();
+                mPlayersDeftailsRef = databaseReference.child("Players");
+                mTeamsRef = databaseReference.child("Clubs");
+                mMatchRef = databaseReference.child("Match");
+                mDivisionsRef = databaseReference.child("Divisions");
+                mMatchesOfTheDayDiv1Ref = databaseReference.child("Div1_Calendar");
+                mMatchesOfTheDayDiv2Ref = databaseReference.child("Div2_Calendar");
+                mMatchesOfTheDayDiv3Ref = databaseReference.child("Div3_Calendar");
+
+            }
+        }
     }
 
     //dummy data for the global news feed

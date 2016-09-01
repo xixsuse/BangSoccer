@@ -10,21 +10,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Map;
+
 import upgrade.ntv.bangsoccer.Adapters.MatchAdapter;
+import upgrade.ntv.bangsoccer.TournamentObjects.Day;
+import upgrade.ntv.bangsoccer.TournamentObjects.Match;
 
 /**
  * Created by Jose on 3/14/2015.
  */
 public class FragmentMatches extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_GAMES = "games";
 
-    MatchAdapter mMatchAdapter;
+    private MatchAdapter mMatchAdapter;
+    private Day gamesOfTheDay = new Day();
 
-    public static FragmentMatches newInstance(int sectionNumber) {
+    public static FragmentMatches newInstance(Day games) {
         FragmentMatches fragment = new FragmentMatches();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putParcelable(ARG_GAMES, games);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,19 +45,19 @@ public class FragmentMatches extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_matches_content, container, false);
         Bundle arg = getArguments();
 
-        int index = arg.getInt(ARG_SECTION_NUMBER);
+            gamesOfTheDay = arg.getParcelable(ARG_GAMES);
 
-        mMatchAdapter = new MatchAdapter(getActivity());
-
-
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.matches_recycleview);
-        recyclerView.setHasFixedSize(true);
+            mMatchAdapter = new MatchAdapter(getActivity(), gamesOfTheDay);
+            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.matches_recycleview);
+            recyclerView.setHasFixedSize(true);
 
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
 
-        recyclerView.setAdapter(mMatchAdapter);
+            recyclerView.setAdapter(mMatchAdapter);
+
+
 
         return rootView;
     }

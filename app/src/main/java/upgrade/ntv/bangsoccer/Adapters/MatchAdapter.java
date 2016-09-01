@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
@@ -26,6 +27,7 @@ import upgrade.ntv.bangsoccer.AppConstants.FirebaseUtils;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.TournamentObjects.Day;
 import upgrade.ntv.bangsoccer.TournamentObjects.Match;
 
 /**
@@ -35,62 +37,39 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHold
 
    private List<Match> mClubsMatches;
     private Context mContext;
-    private int[] mSelectied;
-    public DatabaseReference[] mMatchRef;
+    private int mSelectied;
+    public DatabaseReference mMatchRef;
 
     private Query query;
-    public MatchAdapter( Context context) {
+    public MatchAdapter( Context context, Day games) {
 
         this.mClubsMatches = new ArrayList<>();
         this.mContext = context;
-        this.query = ActivityMain.mMatchRef;
-        this.query.addChildEventListener(new MatchEvenetListener());
-        this.mSelectied = mSelectied;
+        for (Map.Entry<String, Match> entry :
+                games.getGames().entrySet()){
+
+            String key = entry.getKey();
+            Match value = entry.getValue();
+            value.setMatchId(key);
+            getMatchList().add(value);
+        }
 
 
+        Map<String, Match> matchMap = games.getGames();
+        for (Map.Entry<String, Match> entry :
+                matchMap.entrySet()) {
 
+            String key1 = entry.getKey();
+            Match value1 = entry.getValue();
+            value1.setMatchId(key1);
+            mClubsMatches.add(value1);
+            //getMatchList().add(value);
+        }
 
     }
 
     public List<Match> getMatchList() {
         return mClubsMatches;
-    }
-
-    private class MatchEvenetListener implements ChildEventListener {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Match firebaseRequest = dataSnapshot.getValue(Match.class);
-            Club a = dataSnapshot.child("clubida").getValue(Club.class);
-            Club b = dataSnapshot.child("clubidb").getValue(Club.class);
-            firebaseRequest.getClubIdA().setFirebasekey(a.getFirebasekey());
-            firebaseRequest.getClubIdB().setFirebasekey(b.getFirebasekey());
-            firebaseRequest.setMatchId(dataSnapshot.getKey());
-            getMatchList().add(0, firebaseRequest);
-
-            notifyDataSetChanged();
-
-
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
     }
 
 

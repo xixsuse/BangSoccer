@@ -82,7 +82,7 @@ public class DivisionChooserFragment extends DialogFragment  {
             mListener = (OnCreateClientDialogListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnCreateClientDialogListener");
         }
     }
 

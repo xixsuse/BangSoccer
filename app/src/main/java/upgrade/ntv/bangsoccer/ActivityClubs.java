@@ -1,6 +1,8 @@
 package upgrade.ntv.bangsoccer;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,12 +38,15 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 import upgrade.ntv.bangsoccer.TournamentObjects.Players;
 
+import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
+
 public class ActivityClubs extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,
-        FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnListFragmentInteractionListener {
+        FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnListFragmentInteractionListener, DivisionChooserFragment.OnCreateClientDialogListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout drawer;
@@ -52,20 +57,20 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
      */
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
-    private String teamid="";
+    private String teamid = "";
     private Toolbar toolbar;
     private ViewPager mViewPager;
 
     private Activity thisActivity;
 
-    private TextView vPlayerName ;
-    private TextView vPlayerFullName ;
-    private CircleImageView vPlayerAvatar ;
-    private TextView vPlayerNationality ;
-    private TextView vLeaderPosition ;
-    private TextView vPlayerWeightNHeight ;
-    private TextView vPlayerGoals ;
-    private TextView vPlayerCards ;
+    private TextView vPlayerName;
+    private TextView vPlayerFullName;
+    private CircleImageView vPlayerAvatar;
+    private TextView vPlayerNationality;
+    private TextView vLeaderPosition;
+    private TextView vPlayerWeightNHeight;
+    private TextView vPlayerGoals;
+    private TextView vPlayerCards;
     private TextView vPlayerDominantFoot;
     private TextView vPlayerAliasNNumber;
     private String PlayerId;
@@ -93,7 +98,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_clubs);
+        navigationView.setSelected(true);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -105,10 +110,10 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     }
 
     private String getTeamId() {
-        if (teamid != null && teamid.length() < 2){
+        if (teamid != null && teamid.length() < 2) {
             teamid = (String) getIntent().getExtras().get("CLUBID");
         }
-      return  teamid ;
+        return teamid;
     }
 
     private void BindActivity() {
@@ -123,7 +128,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         final TextView txt = (TextView) findViewById(R.id.clubs_header_team_name);
 
         String currentKey = getTeamId();
-        this.query = AppicationCore.mTeamsRef.child(currentKey);
+        this.query = ActivityMain.mTeamsRef.child(currentKey);
 
         this.query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -132,7 +137,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
                 mClub = dataSnapshot.getValue(Club.class);
                 mClub.setFirebasekey(dataSnapshot.getKey());
 
-                if (img != null && mClub !=null) {
+                if (img != null && mClub != null) {
                     Picasso.with(getApplication()).
                             load(mClub.getTeam_image()).
                             placeholder(R.drawable.ic_upgraden).
@@ -163,7 +168,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
 
     }
-    
+
     private void BindSlidingPanel() {
         slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -206,24 +211,24 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     }
 
     private void onClickedFragmentPlayer(final String playerid) {
-        PlayerId=playerid;
-        Query query = AppicationCore.mPlayersDeftailsRef.child(playerid);
+        PlayerId = playerid;
+        Query query = ActivityMain.mPlayersDeftailsRef.child(playerid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot playerSnapshot) {
-                    Players playerDetails = playerSnapshot.getValue(Players.class);
-                    vPlayerName.setText( playerDetails.getName());
-                    vPlayerFullName.setText(playerDetails.getName());
-                    vPlayerAvatar.setImageResource(playerDetails.getAvatar());
-                    vPlayerNationality.setText(playerDetails.getNationality());
-                    vLeaderPosition.setText(playerDetails.getPosition());
+                Players playerDetails = playerSnapshot.getValue(Players.class);
+                vPlayerName.setText(playerDetails.getName());
+                vPlayerFullName.setText(playerDetails.getName());
+                vPlayerAvatar.setImageResource(playerDetails.getAvatar());
+                vPlayerNationality.setText(playerDetails.getNationality());
+                vLeaderPosition.setText(playerDetails.getPosition());
 
-                    vPlayerWeightNHeight.setText(playerDetails.getWeightNHeight());
-                    vPlayerGoals.setText(playerDetails.getGoals());
-                    vPlayerCards.setText(playerDetails.getCards());
-                    vPlayerDominantFoot.setText(playerDetails.getDominant_foot());
-                    vPlayerAliasNNumber.setText(playerDetails.getAliasNNumber());
-                    vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon2);
+                vPlayerWeightNHeight.setText(playerDetails.getWeightNHeight());
+                vPlayerGoals.setText(playerDetails.getGoals());
+                vPlayerCards.setText(playerDetails.getCards());
+                vPlayerDominantFoot.setText(playerDetails.getDominant_foot());
+                vPlayerAliasNNumber.setText(playerDetails.getAliasNNumber());
+                vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon2);
 
             }
 
@@ -271,14 +276,37 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
         }
+        switch (id) {
 
-        if (id == R.id.action_favorites) {
-            intent = new Intent(this, ActivityFavoriteNFollow.class);
-            startActivity(intent);
+            case R.id.action_favorites:
+                intent = new Intent(this, ActivityFavoriteNFollow.class);
+                startActivity(intent);
+                break;
 
-            return true;
+            case R.id.action_divisiones:
+                onDvisionChoosertDialog();
+                break;
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Displays Divisions Dialog Fragment
+     */
+    private void onDvisionChoosertDialog() {
+        Log.i("main", "Calling Create Client Dialog Fragment");
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DialogFragment prev = (DialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_CHOOSE_DIVISION);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = new DivisionChooserFragment();
+        newFragment.show(ft, FRAGMENT_CHOOSE_DIVISION);
     }
 
     @Override
@@ -317,6 +345,11 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         //fragmentPayer interaction listener sends the player id
         Log.i("ActivityClubs", "onPanelStateChanged " + " FRAGMENTCLICk! ");
         onClickedFragmentPlayer(playerid);
+    }
+
+    @Override
+    public void callDivisionsDialog() {
+
     }
 
 

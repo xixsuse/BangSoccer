@@ -2,8 +2,11 @@ package upgrade.ntv.bangsoccer;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,37 +26,34 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,16 +62,23 @@ import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Attraction.Area;
 import upgrade.ntv.bangsoccer.Attraction.Attraction;
 import upgrade.ntv.bangsoccer.Auth.SignedInActivity;
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
+import upgrade.ntv.bangsoccer.TournamentObjects.Day;
+import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
+import upgrade.ntv.bangsoccer.Utils.Preferences;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 import upgrade.ntv.bangsoccer.service.UtilityService;
 
+import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
+
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback,
+        DivisionChooserFragment.OnCreateClientDialogListener {
 
 
     public static final int PERMISSION_REQUEST_INTERNET = 1;
@@ -94,16 +101,63 @@ public class ActivityMain extends AppCompatActivity
     private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
 
     private List<String> mFacebookAccounts;
-    private boolean refreshStatus=false;  // true: when refresh newsfeeds is in progress
+    private boolean refreshStatus = false;  // true: when refresh newsfeeds is in progress
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    public static DatabaseReference databaseReference;
+    public static DatabaseReference mPlayersDeftailsRef;
+    public static DatabaseReference mTeamsRef;
+    public static DatabaseReference mDivisionsRef;
+    public static DatabaseReference mMatchRef;
+    public static DatabaseReference  mMatchesOfTheDayDiv1Ref ;
+    public static DatabaseReference  mMatchesOfTheDayDiv2Ref ;
+    public static DatabaseReference  mMatchesOfTheDayDiv3Ref ;
+    public static StorageReference storageReference;
+    public static StorageReference mPrimeraRef;
+    public static StorageReference mSegundaRef;
+    public static StorageReference mTerceraRef;
+    public static StorageReference mCuartaRef;
 
-    private GridLayoutManager lLayout;
+    public static List<Divisions> mDivisions = new ArrayList<>();
+
+    private Query query;
+//gets the list of divisions
+    public static List<Divisions> getDivisionsList() {
+        return mDivisions;
+    }
+//firebase division listener
+    private class DivisionEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Divisions firebaseRequest = dataSnapshot.getValue(Divisions.class);
+            firebaseRequest.setFirebasekey(dataSnapshot.getKey());
+            getDivisionsList().add(0, firebaseRequest);
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
 
     @BindView(R.id.users_nav_view_item)
     MenuItem mUserDisplayName;
-
-
 
     @Override
     protected void onResume() {
@@ -114,7 +168,7 @@ public class ActivityMain extends AppCompatActivity
             JsonReader reader = new JsonReader();
             mAreasArrayList = reader.readJsonStream(in);
         } catch (IOException e) {
-            Log.v("Loading Areas Failed: " , e.getMessage());
+            Log.v("Loading Areas Failed: ", e.getMessage());
         }
 
     }
@@ -135,12 +189,21 @@ public class ActivityMain extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.thisActivity=this;
+        this.thisActivity = this;
+
+        initFirebaseRefs();
+
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
-           SignedInActivity.createIntent(this);
+            SignedInActivity.createIntent(this);
         }
+        //avoid duplication if its  been created
+        if (mDivisions.size() < 2) {
+            this.query = ActivityMain.mDivisionsRef;
+            this.query.addChildEventListener(new DivisionEvenetListener());
+        }
+
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -151,23 +214,24 @@ public class ActivityMain extends AppCompatActivity
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                                                     @Override
-                                                     public void onRefresh() {
-                                                         if(!refreshStatus)
-                                                            new RefreshNewsFeed().execute();
+            @Override
+            public void onRefresh() {
+                if (!refreshStatus)
+                    new RefreshNewsFeed().execute();
 
-                                                     }
-                                                 });
+            }
+        });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        drawer.setSelected(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_main);
+
 
         mFacebookAccounts = Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
 
@@ -191,7 +255,7 @@ public class ActivityMain extends AppCompatActivity
             onInternetPermissionGranted();
         }
 
-        populateDummyNewsFeedItems();
+        populateNewsFeed();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_newsfeed_cardList);
         recyclerView.setHasFixedSize(true);
@@ -236,21 +300,49 @@ public class ActivityMain extends AppCompatActivity
         FirebaseCrash.log("Activity created");*/
     }
 
-        //dummy data for the global news feed
-    public void populateDummyNewsFeedItems(){
+    public void initFirebaseRefs(){
+        if (databaseReference == null) {
+            try {
+                if (!FirebaseApp.getApps(this).isEmpty()) {
+                    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+                }
+            } catch (Exception e) {
+                //  FirebaseCrash.log("firebase Crash reports  failed to initialize");
+                Log.i("firebase persistance: ", e.getMessage());
+            } finally {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bangsoccer-1382.appspot.com/MediaCancha/");
+                mPrimeraRef = storageReference.child("primera");
+                mSegundaRef = storageReference.child("segunda");
+                mTerceraRef = storageReference.child("tercera");
+                mCuartaRef = storageReference.child("cuarta");
+                databaseReference = FirebaseDatabase.getInstance().getReference();
+                mPlayersDeftailsRef = databaseReference.child("Players");
+                mTeamsRef = databaseReference.child("Clubs");
+                mMatchRef = databaseReference.child("Match");
+                mDivisionsRef = databaseReference.child("Divisions");
+                mMatchesOfTheDayDiv1Ref = databaseReference.child("Div1_Calendar");
+                mMatchesOfTheDayDiv2Ref = databaseReference.child("Div2_Calendar");
+                mMatchesOfTheDayDiv3Ref = databaseReference.child("Div3_Calendar");
+
+            }
+        }
+    }
+
+    //dummy data for the global news feed
+    public void populateNewsFeed() {
 
         newsFeedItems.clear();
 
         List<DBNewsFeed> newsfeeds = AppicationCore.getAllNewsFeed();
-        if(newsfeeds!=null && newsfeeds.size()>0){
+        if (newsfeeds != null && newsfeeds.size() > 0) {
 
-            for(int i=0; i<newsfeeds.size(); i++){
+            for (int i = 0; i < newsfeeds.size(); i++) {
                 Bitmap bm = bitmapFromByte(newsfeeds.get(i).getPicture());
                 newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getMessage()));
-                bm=null;
+                bm = null;
             }
-        }
-        else{
+        } else {
             newsFeedItems.add(new NewsFeedItem(null, "Inicia sesion en Facebook! \n"));
         }
 
@@ -392,14 +484,35 @@ public class ActivityMain extends AppCompatActivity
         }
 
         //noinspection SimplifiableIfStatement
-        switch (id){
+        switch (id) {
             case R.id.action_favorites:
                 intent = new Intent(this, ActivityFavoriteNFollow.class);
                 startActivity(intent);
-                return true;
+                break;
+            case R.id.action_divisiones:
+                onDvisionChoosertDialog();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Displays Divisions Dialog Fragment
+     */
+    private void onDvisionChoosertDialog() {
+        Log.i("main", "Calling Create Client Dialog Fragment");
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DialogFragment prev = (DialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_CHOOSE_DIVISION);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = new DivisionChooserFragment();
+        newFragment.show(ft, FRAGMENT_CHOOSE_DIVISION);
     }
 
     public static List<Geofence> getGeofenceList() {
@@ -433,7 +546,7 @@ public class ActivityMain extends AppCompatActivity
             if (intent != null) {
 
                 startActivity(intent);
-              //  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+                //  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -442,15 +555,19 @@ public class ActivityMain extends AppCompatActivity
         return true;
     }
 
-    public Bitmap bitmapFromByte(byte[] b){
+    public Bitmap bitmapFromByte(byte[] b) {
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 2;
-        return  BitmapFactory.decodeByteArray(b , 0, b .length, options);
+        return BitmapFactory.decodeByteArray(b, 0, b.length, options);
+    }
+
+    @Override
+    public void callDivisionsDialog() {
+
     }
 
     private class RefreshNewsFeed extends AsyncTask<Void, Integer, Integer> {
-
 
 
         public RefreshNewsFeed() {
@@ -460,7 +577,7 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            refreshStatus=true;
+            refreshStatus = true;
             Toast.makeText(thisActivity, "Actualizando...",
                     Toast.LENGTH_SHORT).show();
             AppicationCore.resetNewsFeedTable();
@@ -470,9 +587,9 @@ public class ActivityMain extends AppCompatActivity
         protected Integer doInBackground(Void... voids) {
 
             FacebookClass fb = new FacebookClass();
-            for(int i=0; i<mFacebookAccounts.size(); i++){
-                publishProgress(i*(100/mFacebookAccounts.size()));
-                fb.getPost(mFacebookAccounts.get(i),2);
+            for (int i = 0; i < mFacebookAccounts.size(); i++) {
+                publishProgress(i * (100 / mFacebookAccounts.size()));
+                fb.getPost(mFacebookAccounts.get(i), 2);
             }
 
             return null;
@@ -482,14 +599,12 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            populateDummyNewsFeedItems();
+            populateNewsFeed();
             newsFeedAdapter.notifyDataSetChanged();
             Toast.makeText(thisActivity, "Las noticias se han actualizado !",
                     Toast.LENGTH_LONG).show();
-            refreshStatus=false;
+            refreshStatus = false;
             mSwipeRefreshLayout.setRefreshing(false);
-
-
 
 
         }
@@ -502,10 +617,9 @@ public class ActivityMain extends AppCompatActivity
     }
 
 
+    private void clickNewsFeed(int position) {
 
-    private void clickNewsFeed(int position){
-
-        if(!refreshStatus){
+        if (!refreshStatus) {
 
             Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
             intent.putExtra("newsFeedID", position);

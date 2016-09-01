@@ -9,13 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.Adapters.ClubsToFollowAdapter;
 import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
+import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+
+import static upgrade.ntv.bangsoccer.ActivityTourneyCalendar.tourneyActivity;
 
 
 public class ActivityFavoriteNFollow extends AppCompatActivity {
@@ -28,7 +32,7 @@ public class ActivityFavoriteNFollow extends AppCompatActivity {
 /*    public  void cloneClubsItems() throws CloneNotSupportedException {
         for (int i = 0; i < clubItems.size(); i++) {
             Club myClub =  clubItems.get(i);
-            clubsToSelect.add(myClub.getClub_clone());
+            divisionsSelect.add(myClub.getClub_clone());
         }
     }*/
     @Override
@@ -61,36 +65,6 @@ public class ActivityFavoriteNFollow extends AppCompatActivity {
        // recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
 
-  /*      recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(this, recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                clubsAdapter.getClubID(position);
-
-                Intent intent = DrawerSelector.onItemSelected(tourneyActivity, 100);
-                intent.putExtra("CLUBID", position);
-
-                ClubsToFollowAdapter.TeamHolder myholder   = (ClubsToFollowAdapter.TeamHolder) clubsAdapter.getItemHolder(position).getTag();
-
-
-                if( myholder != null){
-
-                    myholder.setCheckBoxState(!myholder.getCheckBox().isChecked());
-
-                }
-
-                if (intent != null) {
-                 //   startActivity(intent);
-                    // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-                }
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                // ...
-            }
-        }));*/
-
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,11 +87,11 @@ public class ActivityFavoriteNFollow extends AppCompatActivity {
 */
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
-      /*    for(int i = 0; AppConstant.clubItems.size() > i; i++);
+      /*    for(int i = 0; FirebaseUtils.clubItems.size() > i; i++);
             {
-                clubItems=clubsToSelect;
+                clubItems=divisionsSelect;
                 finish();
-              //  AppConstant.clubItems.size()
+              //  FirebaseUtils.clubItems.size()
             }*/
 
         }

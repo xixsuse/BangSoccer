@@ -83,22 +83,10 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
         toolbar = (Toolbar) collapsingToolbar.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-     /*   toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);*/
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 
-/*
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerView.setAdapter(newsFeedAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());*/
 
         tvDate = (TextView) view.findViewById(R.id.newsfeeddetails_news_timestamp);
         tvTitle = (TextView) view.findViewById(R.id.newsfeeddetails_news_title);

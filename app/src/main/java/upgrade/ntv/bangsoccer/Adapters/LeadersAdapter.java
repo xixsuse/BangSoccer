@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
@@ -34,7 +35,7 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
     public LeadersAdapter(Context context) {
 
         this.mContext = context;
-        queryLeaders = AppicationCore.mPlayersDeftailsRef;
+        queryLeaders = ActivityMain.mPlayersDeftailsRef;
         queryLeaders.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

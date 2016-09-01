@@ -104,7 +104,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.Schedule
         });
         holder.scoreTeam1.setText( result + " - " + result );
        // holder.scoreTeam2.setText(String.valueOf(5 + (int) (Math.random() * ((5) + 1))));
-       // holder.day.setText(mClubsMatches.getmWeeklyMatch().get(position).getDate());
+       // holder.teamName1.setText(mClubsMatches.getmWeeklyMatch().get(position).getDate());
 
         holder.stadium.setText(mClubsMatches.get(position).getStadium());
 

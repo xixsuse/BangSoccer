@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Players;
@@ -37,7 +38,7 @@ public class PlayersAdapter extends RecyclerView.Adapter<PlayersAdapter.TeamHold
         this.mClub = new Club();
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
-        query = AppicationCore.mPlayersDeftailsRef;
+        query = ActivityMain.mPlayersDeftailsRef;
         query.addChildEventListener(new PlayerEvenetListener());
     }
 

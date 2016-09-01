@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/follow_club_row_cardview"
+    android:id="@+id/division_row_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/follow_clubs_row_layout"
         android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:layout_height="48dp"
         android:weightSum="10">
 
 
@@ -21,29 +21,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="56dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:clickable="false"
             android:buttonTint="@color/colorPrimaryDark"
             android:gravity="center" />
 
-        <ImageView
-            android:id="@+id/club_image_row"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="3"
-            android:padding="8dp"
-            android:src="@drawable/ic_upgraden" />
 
 
         <TextView
-            android:id="@+id/club_name_row"
+            android:id="@+id/division_name_row"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:layout_weight="4.5"
+            android:layout_weight="8"
             android:gravity="start|center"
-            android:text="Club Barcelona Atletico"
+            android:text="Primera"
             android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 
@@ -51,12 +43,3 @@
     </LinearLayout>
 </android.support.v7.widget.CardView>
 
-    <!--
-    <TextView
-    android:id="@+id/club_name_row"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:gravity="center"
-    android:textSize="12sp"
-    android:text="Club Barcelona Atletico"
-    android:textAppearance="?android:attr/textAppearanceSmall"/>-->

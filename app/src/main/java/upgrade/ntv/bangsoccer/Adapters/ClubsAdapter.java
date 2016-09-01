@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
@@ -33,7 +34,7 @@ public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
 
     public ClubsAdapter(Context context) {
         this.mContext = context;
-        this.query = AppicationCore.mTeamsRef;
+        this.query = ActivityMain.mTeamsRef;
         this.query.addChildEventListener(new ClubsAdapter.TeamEvenetListener());
 
     }

@@ -1,6 +1,7 @@
 package upgrade.ntv.bangsoccer;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -40,18 +41,6 @@ import upgrade.ntv.bangsoccer.dao.DaoSession;
 
 public class AppicationCore extends Application {
 
-    private DatabaseReference databaseReference;
-    public static DatabaseReference mPlayersDeftailsRef;
-    public static DatabaseReference mTeamsRef;
-    public static DatabaseReference mMatchRef;
-    private StorageReference storageReference;
-    public static StorageReference mPrimeraRef;
-    public static StorageReference mSegundaRef;
-    public static StorageReference mTerceraRef;
-    public static StorageReference mCuartaRef;
-    public static FirebaseAuth authReference;
-    public static FirebaseAuth.AuthStateListener mAuthListener;
-
     //GreenDao variables
     private static DaoMaster daoMaster;
     private static SQLiteDatabase db;
@@ -64,55 +53,18 @@ public class AppicationCore extends Application {
     private static DBMatchesPlayerDetailsDao dbMatchesPlayerDetailsDao;
     private static DBNewsFeedDao dbNewsFeedDao;
 
-
+    public static String FRAGMENT_CHOOSE_DIVISION;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-      /*  Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+      /* Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
             @Override
             public void uncaughtException(Thread thread, Throwable ex) {
                 FirebaseCrash.report(ex);
             }
         });*/
-
-        if (databaseReference == null) {
-            try {
-                if (!FirebaseApp.getApps(this).isEmpty()) {
-                    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-                }
-            } catch (Exception e) {
-                //  FirebaseCrash.log("firebase Crash reports  failed to initialize");
-                Log.i("firebase persistance: ", e.getMessage());
-            } finally {
-               // FirebaseStorage storage = FirebaseStorage.getInstance();
-                storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bangsoccer-1382.appspot.com/MediaCancha/");
-                mPrimeraRef = storageReference.child("primera");
-                mSegundaRef = storageReference.child("segunda");
-                mTerceraRef = storageReference.child("tercera");
-                mCuartaRef = storageReference.child("cuarta");
-                databaseReference = FirebaseDatabase.getInstance().getReference();
-                mPlayersDeftailsRef = databaseReference.child("Players");
-                mTeamsRef = databaseReference.child("Clubs");
-                mMatchRef = databaseReference.child("Match");
-               /* authReference =FirebaseAuth.getInstance();
-                mAuthListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user != null) {
-                            // User is signed in
-                            Log.d("AUTH", "onAuthStateChanged:signed_in:" + user.getUid());
-                        } else {
-                            // User is signed out
-                            Log.d("AUTH", "onAuthStateChanged:signed_out");
-                        }
-                        // ...
-                    }
-                };authReference.addAuthStateListener(mAuthListener);*/
-            }
-        }
 
         // Database Initialization
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "soccerDB", null);
@@ -128,6 +80,7 @@ public class AppicationCore extends Application {
         dbTourneyDao = daoSession.getDBTourneyDao();
         dbNewsFeedDao = daoSession.getDBNewsFeedDao();
     }
+
 
 
     /**

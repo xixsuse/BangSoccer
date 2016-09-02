@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
@@ -38,12 +39,33 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
     private TextView tvDescription;
     private ImageView ivPicture;
     private TextView tvUsername;
+    private static List<DBNewsFeed> newsFeedList;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public FragmentNewsFeeddetails() {
+    }
+
+    public static List<DBNewsFeed> getNewsfeedList(){
+        return newsFeedList;
+    }
+
+    public static void updatingNewsfeedList(){
+        List<DBNewsFeed> temp = AppicationCore.getAllNewsFeed();
+
+        if(temp!=null && temp.size()>0) {
+
+            if(newsFeedList!= null)
+                newsFeedList.clear();
+            else
+                newsFeedList= new ArrayList<>();
+
+            for (int i = temp.size() - 1; i > -1; i--) {
+                newsFeedList.add(temp.get(i));
+            }
+        }
     }
 
     // TODO: Customize parameter initialization
@@ -63,7 +85,8 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
 
         if (getArguments() != null) {
             long mNewsID = getArguments().getInt(NEWS_ID);
-            mNewsFeed= AppicationCore.getNewsFeed(mNewsID+1);
+            // mNewsFeed= AppicationCore.getNewsFeed(mNewsID+1);
+            mNewsFeed = newsFeedList.get((int)(mNewsID));
         }
 
 
@@ -83,10 +106,22 @@ public class FragmentNewsFeeddetails extends Fragment implements CollapsingToolb
         toolbar = (Toolbar) collapsingToolbar.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     /*   toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);*/
 
+/*
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        recyclerView.setAdapter(newsFeedAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());*/
 
         tvDate = (TextView) view.findViewById(R.id.newsfeeddetails_news_timestamp);
         tvTitle = (TextView) view.findViewById(R.id.newsfeeddetails_news_title);

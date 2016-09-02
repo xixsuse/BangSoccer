@@ -32,7 +32,7 @@ public class FragmentNewsFeed extends Fragment {
     private static final String NEWS_ID = "news-id";
     private static int mNewsID;
     private NewsFeedAdapter newsFeedAdapter;
-   private Context mContext;
+    private Context mContext;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -46,9 +46,9 @@ public class FragmentNewsFeed extends Fragment {
     @SuppressWarnings("unused")
     public static FragmentNewsFeed newInstance() {
         FragmentNewsFeed fragment = new FragmentNewsFeed();
-       // Bundle args = new Bundle();
-       // args.putInt(NEWS_ID, newId);
-       // fragment.setArguments(args);
+        // Bundle args = new Bundle();
+        // args.putInt(NEWS_ID, newId);
+        // fragment.setArguments(args);
         return fragment;
     }
 
@@ -79,7 +79,7 @@ public class FragmentNewsFeed extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerView.setAdapter(newsFeedAdapter);
-       // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
+        // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(ActivityTourneyCalendar.getReference()

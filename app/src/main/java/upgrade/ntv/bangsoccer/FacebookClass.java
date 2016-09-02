@@ -1,25 +1,21 @@
 package upgrade.ntv.bangsoccer;
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.List;
 
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 
@@ -29,12 +25,22 @@ import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
  */
 public class FacebookClass {
 
+    private String postIDs="";
+    private int newPost;
+
     public FacebookClass(){
+        List<DBNewsFeed> newsFeeds = AppicationCore.getAllNewsFeed();
+
+        for(int i=0; i<newsFeeds.size(); i++){
+            postIDs=postIDs+", "+newsFeeds.get(i).getPostID();
+        }
 
     }
 
 
-    public void getPost(String user, final int qty){
+    public int getPost(String user, final int qty){
+
+        newPost=0;
 
         GraphRequest request = GraphRequest.newGraphPathRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -54,6 +60,7 @@ public class FacebookClass {
 
                             for(int i = 0; i < qty; i++){
                                 JSONObject obj = jarray.getJSONObject(i);
+                                String id= obj.optString("id");
                                 String message= obj.optString("message");
                                 String imageURL= obj.optString("full_picture");
                                 String date= obj.optString("created_time");
@@ -63,9 +70,9 @@ public class FacebookClass {
                                 //Cleaning Date/Time
                                 date = date.split("T")[0]+" ("+date.split("T")[1].substring(0,5)+")";
 
-                                if(imageURL!=null){
-
-                                    DownloadImage(username, imageURL, message, story, date);
+                                if(imageURL!=null && imageURL.length()>2 && !postIDs.contains(id)){
+                                    newPost++;
+                                    DownloadImage(id, username, imageURL, message, story, date);
                                 }
 
                             }
@@ -79,12 +86,13 @@ public class FacebookClass {
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "name,posts.limit("+(qty+1)+"){full_picture,message,created_time,story}");
+        parameters.putString("fields", "name,posts.limit("+(qty+1)+"){id,full_picture,message,created_time,story}");
 
         request.setParameters(parameters);
         //  request.executeAsync();
         request.executeAndWait();
 
+        return newPost;
     }
 
 
@@ -102,7 +110,7 @@ public class FacebookClass {
     /**
      * Not Async, so needs to be called from a non UI thread
      */
-    private  void DownloadImage(String username, String url, String msg, String story, String date) {
+    private  void DownloadImage(String id, String username, String url, String msg, String story, String date) {
 
 
         String urldisplay = url;
@@ -116,6 +124,7 @@ public class FacebookClass {
         }
 
         DBNewsFeed newsFeed = new DBNewsFeed();
+        newsFeed.setPostID(id);
         newsFeed.setUserName(username);
         newsFeed.setMessage(msg);
         newsFeed.setStory(story);
@@ -127,3 +136,4 @@ public class FacebookClass {
 
 
 }
+

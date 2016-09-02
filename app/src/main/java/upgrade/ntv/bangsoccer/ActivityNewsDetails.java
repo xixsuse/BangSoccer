@@ -2,26 +2,24 @@ package upgrade.ntv.bangsoccer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
+import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 
 
 public class ActivityNewsDetails extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentNewsFeeddetails.OnListFragmentInteractionListener {
@@ -51,7 +49,7 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
-          newsFeedID= extras.getInt("newsFeedID");
+            newsFeedID= extras.getInt("MynewsFeedID");
 
 
 
@@ -167,7 +165,11 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            qty=AppicationCore.getAllNewsFeed().size();
+            List<DBNewsFeed> temp = FragmentNewsFeeddetails.getNewsfeedList();
+            if(temp!=null)
+                qty=temp.size();
+            else
+                qty=AppicationCore.getAllNewsFeed().size();
 
         }
 

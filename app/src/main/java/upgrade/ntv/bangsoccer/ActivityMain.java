@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -32,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
@@ -100,9 +103,12 @@ public class ActivityMain extends AppCompatActivity
     private NewsFeedAdapter newsFeedAdapter;
     private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
 
-    private List<String> mFacebookAccounts;
+    private List<String> facebookAccounts;
     private boolean refreshStatus = false;  // true: when refresh newsfeeds is in progress
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private final int POST_QTY=1; //  quantity of post per club
+    private GridLayoutManager lLayout;
+
 
     public static DatabaseReference databaseReference;
     public static DatabaseReference mPlayersDeftailsRef;
@@ -216,8 +222,24 @@ public class ActivityMain extends AppCompatActivity
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!refreshStatus)
-                    new RefreshNewsFeed().execute();
+                if(! isNetworkAvailable()){
+                    Toast.makeText(thisActivity, "Revise su conexion a internet!",
+                            Toast.LENGTH_LONG).show();
+
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                }
+
+                else if(AccessToken.getCurrentAccessToken() == null || AccessToken.getCurrentAccessToken().getToken().length()<2 ){
+
+                    Toast.makeText(thisActivity, "Inicie sesion en Facebook!",
+                            Toast.LENGTH_LONG).show();
+
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
+                else if(!refreshStatus)
+                    new RefreshNewsFeed(0).execute();
 
             }
         });
@@ -233,7 +255,7 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        mFacebookAccounts = Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
+        facebookAccounts=Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
 
         //adds a dummy area and Attraction
         setDummyAreaNdAttraction();
@@ -255,7 +277,7 @@ public class ActivityMain extends AppCompatActivity
             onInternetPermissionGranted();
         }
 
-        populateNewsFeed();
+        populateDummyNewsFeedItems();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_newsfeed_cardList);
         recyclerView.setHasFixedSize(true);
@@ -330,20 +352,21 @@ public class ActivityMain extends AppCompatActivity
     }
 
     //dummy data for the global news feed
-    public void populateNewsFeed() {
+    public void populateDummyNewsFeedItems(){
 
         newsFeedItems.clear();
 
         List<DBNewsFeed> newsfeeds = AppicationCore.getAllNewsFeed();
-        if (newsfeeds != null && newsfeeds.size() > 0) {
+        if(newsfeeds!=null && newsfeeds.size()>0){
 
-            for (int i = 0; i < newsfeeds.size(); i++) {
+            for(int i=newsfeeds.size()-1; i>-1; i--){
                 Bitmap bm = bitmapFromByte(newsfeeds.get(i).getPicture());
-                newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getMessage()));
-                bm = null;
+                newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getMessage(),newsfeeds.get(i).getUserName()));
+                bm=null;
             }
-        } else {
-            newsFeedItems.add(new NewsFeedItem(null, "Inicia sesion en Facebook! \n"));
+        }
+        else{
+            newsFeedItems.add(new NewsFeedItem(null, "Inicia sesion en Facebook! \n",""));
         }
 
     }
@@ -570,59 +593,74 @@ public class ActivityMain extends AppCompatActivity
     private class RefreshNewsFeed extends AsyncTask<Void, Integer, Integer> {
 
 
-        public RefreshNewsFeed() {
+        private int count;
+
+        public RefreshNewsFeed(int count) {
+            this.count=count;
 
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            refreshStatus = true;
-            Toast.makeText(thisActivity, "Actualizando...",
-                    Toast.LENGTH_SHORT).show();
-            AppicationCore.resetNewsFeedTable();
+            refreshStatus=true;
+            if(count==0) {
+                Toast.makeText(thisActivity, "Actualizando...",
+                        Toast.LENGTH_SHORT).show();
+
+            }
         }
 
         @Override
         protected Integer doInBackground(Void... voids) {
 
             FacebookClass fb = new FacebookClass();
-            for (int i = 0; i < mFacebookAccounts.size(); i++) {
-                publishProgress(i * (100 / mFacebookAccounts.size()));
-                fb.getPost(mFacebookAccounts.get(i), 2);
-            }
+            int newPost=fb.getPost(facebookAccounts.get(count),POST_QTY);
+            return newPost;
 
-            return null;
         }
+
 
 
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            populateNewsFeed();
-            newsFeedAdapter.notifyDataSetChanged();
-            Toast.makeText(thisActivity, "Las noticias se han actualizado !",
-                    Toast.LENGTH_LONG).show();
-            refreshStatus = false;
+
+            if(result>0) {
+
+                updateNewsFeedUI(result);
+            }
+
+
             mSwipeRefreshLayout.setRefreshing(false);
 
+            count++;
+            if(count< facebookAccounts.size()){
+                new RefreshNewsFeed(count).execute();
+            }
+            else{
+                Toast.makeText(thisActivity, "Las noticias se han actualizado !",
+                        Toast.LENGTH_LONG).show();
+                refreshStatus=false;
+                updateDB();
+
+
+            }
 
         }
 
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-
-        }
     }
 
 
-    private void clickNewsFeed(int position) {
+    private void clickNewsFeed(int position){
 
-        if (!refreshStatus) {
+        if(!refreshStatus){
 
             Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
-            intent.putExtra("newsFeedID", position);
+            //  intent.putExtra("MynewsFeedID", newsFeedItems.size() -1-position);
+            intent.putExtra("MynewsFeedID", position);
+
+            FragmentNewsFeeddetails.updatingNewsfeedList();
 
             if (intent != null) {
                 startActivity(intent);
@@ -631,5 +669,57 @@ public class ActivityMain extends AppCompatActivity
         }
 
     }
-}
 
+
+    /**
+     * Refresh NewsFeed UI based on new Posts added
+     * @param newPost
+     */
+    private void updateNewsFeedUI(int newPost) {
+
+        List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+
+        for(int i=0; i<newPost; i++){
+            Bitmap bm = bitmapFromByte(list.get(list.size()-1-i).getPicture());
+            newsFeedItems.add(i, new NewsFeedItem(bm, list.get(list.size()-1-i).getMessage(), list.get(list.size()-1-i).getUserName()));
+            bm=null;
+            // newsFeedAdapter.notifyItemInserted(i);
+            newsFeedAdapter.notifyDataSetChanged();
+
+        }
+
+    }
+
+
+    /**
+     * Refresh NewsFeed DB based on new Posts added
+
+     */
+    private void updateDB(){
+
+        List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+        List<DBNewsFeed> newList = new ArrayList<>();
+        int size =  facebookAccounts.size() * POST_QTY;
+        int dif= list.size() - size;
+
+        if(dif>0) {
+
+            AppicationCore.resetNewsFeedTable();
+
+            for (int i = dif; i < list.size(); i++) {
+                newList.add(list.get(i));
+            }
+            AppicationCore.getDbNewsFeedDao().insertInTx(newList);
+        }
+
+    }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+    }
+}

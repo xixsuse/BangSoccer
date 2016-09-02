@@ -10,21 +10,15 @@ import android.os.Parcelable;
  */
 public class NewsFeedItem {
 
-    public int newsID;
     public String tittle;
-    public String description;
+    public String user;
     public Bitmap image;
 
-    public NewsFeedItem(Bitmap image, String tittle) {
+    public NewsFeedItem(Bitmap image, String tittle, String user) {
         this.image = image;
         this.tittle = tittle;
+        this.user=user;
     }
 
-    public int getNewsID() {
-        return newsID;
-    }
 
-    public void setNewsID(int newsID) {
-        this.newsID = newsID;
-    }
 }

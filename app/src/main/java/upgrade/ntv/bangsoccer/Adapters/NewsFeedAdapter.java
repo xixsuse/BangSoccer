@@ -46,6 +46,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.NewsFe
         holder.vImage.setImageBitmap(newsFeedItem.image);
         // holder.vImage.setImageResource(newsFeedItem.image);
         holder.vTitleTextView.setText(newsFeedItem.tittle);
+        holder.vClubNameTextView.setText(newsFeedItem.user);
         holder.ID =position;
     }
 
@@ -54,12 +55,14 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.NewsFe
 
         protected ImageView vImage;
         protected TextView vTitleTextView;
+        protected TextView vClubNameTextView;
         protected int ID;
 
         public NewsFeedViewHolder(View v){
             super(v);
             vImage = (ImageView) v.findViewById(R.id.newsfeed_imageView);
             vTitleTextView = (TextView) v.findViewById(R.id.newsfeed_text_news_title);
+            vClubNameTextView = (TextView) v.findViewById(R.id.newsfeed_facebook_club_name);
 
         }
     }

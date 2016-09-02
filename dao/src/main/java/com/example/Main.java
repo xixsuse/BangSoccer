@@ -8,7 +8,7 @@ import de.greenrobot.daogenerator.Schema;
 public class Main {
     public static void main(String[] args) throws Exception{
 
-        Schema schema  = new Schema(3,"upgrade.ntv.bangsoccer.dao"); // # is the Schema version
+        Schema schema  = new Schema(4,"upgrade.ntv.bangsoccer.dao"); // # is the Schema version
         schema.enableKeepSectionsByDefault();
         createDataBase(schema);
 
@@ -53,6 +53,7 @@ public class Main {
     private static Entity createNewsFeedTable(Schema schema) {
         Entity newsFeed = schema.addEntity("DBNewsFeed");
         newsFeed.addIdProperty();
+        newsFeed.addStringProperty("PostID");
         newsFeed.addStringProperty("UserName");
         newsFeed.addStringProperty("Message");
         newsFeed.addStringProperty("Story");
@@ -135,3 +136,4 @@ public class Main {
 
 
 }
+

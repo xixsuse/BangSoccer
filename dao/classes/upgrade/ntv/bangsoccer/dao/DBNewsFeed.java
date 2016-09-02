@@ -10,6 +10,7 @@ package upgrade.ntv.bangsoccer.dao;
 public class DBNewsFeed {
 
     private Long id;
+    private String PostID;
     private String UserName;
     private String Message;
     private String Story;
@@ -26,8 +27,9 @@ public class DBNewsFeed {
         this.id = id;
     }
 
-    public DBNewsFeed(Long id, String UserName, String Message, String Story, byte[] Picture, String Date) {
+    public DBNewsFeed(Long id, String PostID, String UserName, String Message, String Story, byte[] Picture, String Date) {
         this.id = id;
+        this.PostID = PostID;
         this.UserName = UserName;
         this.Message = Message;
         this.Story = Story;
@@ -41,6 +43,14 @@ public class DBNewsFeed {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPostID() {
+        return PostID;
+    }
+
+    public void setPostID(String PostID) {
+        this.PostID = PostID;
     }
 
     public String getUserName() {

@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.BuildConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -81,11 +82,13 @@ public class SignedInActivity extends AppCompatActivity {
         if (currentUser == null) {
             startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                             .setTheme(AuthUI.getDefaultTheme())
                             .setLogo(R.drawable.mcancha)
                             .setProviders(getSelectedProviders())
                             .setTosUrl(FIREBASE_TOS_URL)
                             .setTheme(R.style.AppTheme)
+                            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                             .build(),
                     RC_SIGN_IN);
             return;

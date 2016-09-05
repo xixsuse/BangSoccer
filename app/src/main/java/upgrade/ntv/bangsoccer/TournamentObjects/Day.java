@@ -14,11 +14,27 @@ import java.util.Map;
 
 public class Day implements Parcelable{
     private String id, date;
-    private Map<String,Match> games = new
-            HashMap<>();
+    private Map<String,Match> games = new HashMap<>();
 
     public Day() {
     }
+
+    protected Day(Parcel in) {
+        id = in.readString();
+        date = in.readString();
+    }
+
+    public static final Creator<Day> CREATOR = new Creator<Day>() {
+        @Override
+        public Day createFromParcel(Parcel in) {
+            return new Day(in);
+        }
+
+        @Override
+        public Day[] newArray(int size) {
+            return new Day[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -58,6 +74,7 @@ public class Day implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-
+        parcel.writeString(id);
+        parcel.writeString(date);
     }
 }

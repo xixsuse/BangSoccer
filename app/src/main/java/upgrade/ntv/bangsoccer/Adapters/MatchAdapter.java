@@ -45,15 +45,6 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHold
 
         this.mClubsMatches = new ArrayList<>();
         this.mContext = context;
-        for (Map.Entry<String, Match> entry :
-                games.getGames().entrySet()){
-
-            String key = entry.getKey();
-            Match value = entry.getValue();
-            value.setMatchId(key);
-            getMatchList().add(value);
-        }
-
 
         Map<String, Match> matchMap = games.getGames();
         for (Map.Entry<String, Match> entry :

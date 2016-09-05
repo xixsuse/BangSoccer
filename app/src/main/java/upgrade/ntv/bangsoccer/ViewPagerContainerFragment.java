@@ -17,7 +17,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -37,33 +39,18 @@ public class ViewPagerContainerFragment extends Fragment {
     private TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
     private ViewPager mViewPager;
     private Context mContext;
-    private  static List<Day> mMatchesOfTheDiv = new ArrayList<>();
-    private  List<Match> mMatchesOfTheDay= new ArrayList<>();
-    private  Query query ;
-    private  GenericTypeIndicator<Map<String,Match>> t = new GenericTypeIndicator<Map<String,Match>>() {};
-
+    private List<Day> mMatchesOfTheDiv = new ArrayList<>();
+    private List<Match> mMatchesOfTheDay = new ArrayList<>();
+    private Query query;
+    private GenericTypeIndicator<Map<String, Match>> t = new GenericTypeIndicator<Map<String, Match>>() {
+    };
+    private String date = new SimpleDateFormat("EEEEE dd").format(new Date());
     //empty cosntructor
     public ViewPagerContainerFragment() { //holds the tourney calendar
     }
 
     public static ViewPagerContainerFragment newInstance() {
-
-     /*   for (Divisions division : ActivityMain.mDivisions) {
-            if(division.isSelected()){
-                mMatchesOfTheDayRef.add(databaseReference.child(division.getNode()).orderByChild("date"));
-            }
-        }*/
-        //instantiates a new instance of this type
-        ViewPagerContainerFragment fragment = new ViewPagerContainerFragment();
-
-
-        return fragment;
-    }
-
-
-
-    public static List<Day> getMatchesOfTheDay () {
-        return mMatchesOfTheDiv;
+        return new ViewPagerContainerFragment();
     }
 
     @Override
@@ -80,140 +67,75 @@ public class ViewPagerContainerFragment extends Fragment {
         return root;
     }//2102
 
-    public ViewPager getViewPager()
-    {
+    public ViewPager getViewPager() {
         return this.mViewPager;
     }
 
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
 
-        public  Query referenceFinder(String id){
+        private void addEvelentListener(Query q) {
+            q.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Day d = dataSnapshot.getValue(Day.class);
+                    dataSnapshot.getChildren();
+                    d.setId(dataSnapshot.getKey());
+                    d.setGames(dataSnapshot.getValue(t));
+                    mMatchesOfTheDiv.add(d);
+                    notifyDataSetChanged();
 
-            Query q = null;
-            switch(id){
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        private Query referenceFinder(String id) {
+
+            Query queryMatchesOfTheDay = null;
+            switch (id) {
                 case "Div1_Calendar":
-                    q =   mMatchesOfTheDayDiv1Ref;
-                    q.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            Day d = dataSnapshot.getValue(Day.class);
-                            dataSnapshot.getChildren();
-                            d.setId(dataSnapshot.getKey());
-                            Map<String, Match> matchMap = (dataSnapshot.getValue(t));
-                            d.setGames(dataSnapshot.getValue(t)) ;
-                            mMatchesOfTheDiv.add(d);
-                            notifyDataSetChanged();
-
-
-
-                            for (Map.Entry<String, Match> entry :
-                                    matchMap.entrySet()) {
-
-                                String key = entry.getKey();
-                                Match value = entry.getValue();
-                                value.setMatchId(key);
-                                mMatchesOfTheDay.add(value);
-                                //getMatchList().add(value);
-                            }
-                            //    Match m = d.getGames().get();
-
-                        }
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
+                    addEvelentListener(queryMatchesOfTheDay);
                     break;
                 case "Div12_Calendar":
-                    q =   mMatchesOfTheDayDiv2Ref;
-                    q.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            Day d = dataSnapshot.getValue(Day.class);
-                            dataSnapshot.getChildren();
-                            d.setGames(dataSnapshot.getValue(t));
-                            d.setId(dataSnapshot.getKey());
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv2Ref;
+                    addEvelentListener(queryMatchesOfTheDay);
                     break;
                 case "Div3_Calendar":
-                    q =   mMatchesOfTheDayDiv3Ref;
-                    q.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            Day d = dataSnapshot.getValue(Day.class);
-                            dataSnapshot.getChildren();
-                            d.setGames(dataSnapshot.getValue(t));
-                            d.setId(dataSnapshot.getKey());
-                        }
-
-                        @Override
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
+                    addEvelentListener(queryMatchesOfTheDay);
                     break;
             }
-            return q;
+            return queryMatchesOfTheDay;
         }
 
         public TourneyCalendarPagerAdapter(FragmentManager fm) {
             super(fm);
-            query = referenceFinder("Div1_Calendar");
+            if (mMatchesOfTheDiv.size() == 0) {
+                query = referenceFinder("Div1_Calendar");
+            }
         }
 
         public int getPagerCount() {
-            //TODO : do this the propper way... the 10 is for testing
             return mMatchesOfTheDiv.size();
         }
 
@@ -226,8 +148,8 @@ public class ViewPagerContainerFragment extends Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             FragmentMatches frag = new FragmentMatches();
-            if(mMatchesOfTheDiv.size() > 0 ){
-               frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position));
+            if (mMatchesOfTheDiv.size() > 0) {
+                frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position));
             }
 
             return frag;
@@ -260,31 +182,18 @@ public class ViewPagerContainerFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
+            //Locale l = Locale.getDefault();
+          String x =  date ;
+            if (mMatchesOfTheDiv.size() > 0) {
 
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-                case 3:
-                    return getString(R.string.title_section4).toUpperCase(l);
-                case 4:
-                    return getString(R.string.title_section5).toUpperCase(l);
-                case 5:
-                    return getString(R.string.title_section6).toUpperCase(l);
-                case 6:
-                    return getString(R.string.title_section7).toUpperCase(l);
-                case 7:
-                    return getString(R.string.title_section8).toUpperCase(l);
-                case 8:
-                    return getString(R.string.title_section9).toUpperCase(l);
-                case 9:
-                    return getString(R.string.title_section10).toUpperCase(l);
+                Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
+                for (Map.Entry<String, Match> entry :
+                        matchMap.entrySet()) {
+                    Match value1 = entry.getValue();
+                    mMatchesOfTheDiv.get(position).setDate(value1.getDate());
+                }
 
-
+                return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
             }
             return null;
         }

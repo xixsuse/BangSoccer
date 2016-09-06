@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="upgrade.ntv.bangsoccer">
 
@@ -44,8 +45,7 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            tools:replace="theme, configChanges" />
+            tools:replace="configChanges" />
         <activity
             android:name=".ActivityMain"
             android:label="@string/app_name"
@@ -57,10 +57,10 @@
         </activity>
 
         <activity
-            android:name=".Auth.SignedInActivity"
+            android:name=".SignedInActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="Auth_ui"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:launchMode="singleTop">
 
         </activity>
 
@@ -71,15 +71,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
 
-        <activity
-            android:name=".ActivityLogin"
-            android:label="Email Login"
-            android:parentActivityName=".ActivityMain"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityMain" />
-        </activity>
         <activity
             android:name=".ActivityTourneyCalendar"
             android:label="Torneos"

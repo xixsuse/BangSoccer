@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package upgrade.ntv.bangsoccer.Auth;
+package upgrade.ntv.bangsoccer;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.BuildConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -46,9 +45,6 @@ import java.util.Iterator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import upgrade.ntv.bangsoccer.ActivityMain;
-import upgrade.ntv.bangsoccer.R;
-
 
 
 public class SignedInActivity extends AppCompatActivity {
@@ -82,13 +78,13 @@ public class SignedInActivity extends AppCompatActivity {
         if (currentUser == null) {
             startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                            //.setIsSmartLockEnabled(!BuildConfig.DEBUG)
                             .setTheme(AuthUI.getDefaultTheme())
                             .setLogo(R.drawable.mcancha)
                             .setProviders(getSelectedProviders())
                             .setTosUrl(FIREBASE_TOS_URL)
                             .setTheme(R.style.AppTheme)
-                            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                            //.setIsSmartLockEnabled(!BuildConfig.DEBUG)
                             .build(),
                     RC_SIGN_IN);
             return;

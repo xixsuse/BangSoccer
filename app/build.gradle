@@ -61,7 +61,6 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:9.4.0'
     compile 'com.google.firebase:firebase-database:9.4.0'
     compile 'com.google.firebase:firebase-messaging:9.4.0'
-    compile 'com.firebaseui:firebase-ui:0.5.1'
     compile 'com.android.support:design:24.2.0'
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:support-v4:24.2.0'
@@ -83,8 +82,9 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'de.greenrobot:greendao:2.1.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.14.0'
     compile 'io.reactivex:rxandroid:0.25.0'
+    compile 'com.firebaseui:firebase-ui:0.5.1'
+
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'

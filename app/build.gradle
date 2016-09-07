@@ -84,6 +84,7 @@ dependencies {
     compile 'de.greenrobot:greendao:2.1.0'
     compile 'io.reactivex:rxandroid:0.25.0'
     compile 'com.firebaseui:firebase-ui:0.5.1'
+    compile 'com.github.armcha:datehelper:2.2.0'
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'

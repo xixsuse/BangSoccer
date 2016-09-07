@@ -56,7 +56,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     private Menu mMenu;
 
     //fragment holders
-    private final ThreadLocal<ViewPagerContainerFragment> viewPagerContainerFragment = new ThreadLocal<>();
+    private final ThreadLocal<FragmentViewPagerContainer> viewPagerContainerFragment = new ThreadLocal<>();
     private final ThreadLocal<FragmentNewsFeed> fragmentNewsFeed = new ThreadLocal<>();
     private final ThreadLocal<FragmentTourneyStats> fragmentTourneyStats = new ThreadLocal<>();
     private final ThreadLocal<FragmentLeaders> fragmentLeaders = new ThreadLocal<>();
@@ -147,7 +147,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             tabLayout.setVisibility(View.VISIBLE);
         }
 
-        viewPagerContainerFragment.set(ViewPagerContainerFragment.newInstance());
+        viewPagerContainerFragment.set(FragmentViewPagerContainer.newInstance());
 
         if (ViewCompat.isLaidOut(tabLayout)) {
             tabLayout.setupWithViewPager(mViewPager);
@@ -215,9 +215,9 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                         tabLayout.setVisibility(View.VISIBLE);
                     }
                     if (getSupportFragmentManager().findFragmentByTag("matches") == null) {
-                        viewPagerContainerFragment.set(ViewPagerContainerFragment.newInstance());
+                        viewPagerContainerFragment.set(FragmentViewPagerContainer.newInstance());
                     } else {
-                        viewPagerContainerFragment.set((ViewPagerContainerFragment) getSupportFragmentManager().findFragmentByTag("matches"));
+                        viewPagerContainerFragment.set((FragmentViewPagerContainer) getSupportFragmentManager().findFragmentByTag("matches"));
                     }
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_holder, viewPagerContainerFragment.get(), "matches")

@@ -59,11 +59,6 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHold
 
     }
 
-    public List<Match> getMatchList() {
-        return mClubsMatches;
-    }
-
-
 @Override
 public int getItemCount() {
     return (this.mClubsMatches.size());

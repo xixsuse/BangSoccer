@@ -20,6 +20,8 @@ import java.util.List;
 import de.greenrobot.dao.query.QueryBuilder;
 import upgrade.ntv.bangsoccer.dao.DBClub;
 import upgrade.ntv.bangsoccer.dao.DBClubDao;
+import upgrade.ntv.bangsoccer.dao.DBFavorites;
+import upgrade.ntv.bangsoccer.dao.DBFavoritesDao;
 import upgrade.ntv.bangsoccer.dao.DBMatch;
 import upgrade.ntv.bangsoccer.dao.DBMatchDao;
 import upgrade.ntv.bangsoccer.dao.DBMatchesPlayerDetailsDao;
@@ -52,6 +54,7 @@ public class AppicationCore extends Application {
     private static DBPlayerDao dbPlayerDao;
     private static DBMatchesPlayerDetailsDao dbMatchesPlayerDetailsDao;
     private static DBNewsFeedDao dbNewsFeedDao;
+    private static DBFavoritesDao dbFavoritesDao;
 
     public static String FRAGMENT_CHOOSE_DIVISION;
 
@@ -79,6 +82,7 @@ public class AppicationCore extends Application {
         dbTeamDao = daoSession.getDBTeamDao();
         dbTourneyDao = daoSession.getDBTourneyDao();
         dbNewsFeedDao = daoSession.getDBNewsFeedDao();
+        dbFavoritesDao = daoSession.getDBFavoritesDao();
     }
 
 
@@ -97,6 +101,13 @@ public class AppicationCore extends Application {
      */
     public static void resetNewsFeedTable() {
         dbNewsFeedDao.deleteAll();
+    }
+
+    /**
+     * Reset values from a Favorites table
+     */
+    public static void resetFavoritesTable() {
+        dbFavoritesDao.deleteAll();
     }
 
 
@@ -130,8 +141,22 @@ public class AppicationCore extends Application {
         return dbNewsFeedDao;
     }
 
+    public static DBFavoritesDao getDbFavoritesDao() {
+        return dbFavoritesDao;
+    }
+
 
 // **************** General getter methods ****************
+
+
+    /**
+     * Get all the Favorites/ following clubs in te db
+     *
+     * @return a list of clubs
+     */
+    public static List<DBFavorites> getFavorites() {
+        return dbFavoritesDao.loadAll();
+    }
 
     /**
      * Get all the clubs in te db

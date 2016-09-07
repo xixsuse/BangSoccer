@@ -74,6 +74,7 @@ import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
+import upgrade.ntv.bangsoccer.dao.DBFavorites;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 import upgrade.ntv.bangsoccer.service.UtilityService;
 
@@ -255,7 +256,9 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        facebookAccounts=Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
+
+        facebookAccounts = new ArrayList<>();
+        updatefavoritesList();
 
         //adds a dummy area and Attraction
         setDummyAreaNdAttraction();
@@ -354,6 +357,7 @@ public class ActivityMain extends AppCompatActivity
     //dummy data for the global news feed
     public void populateDummyNewsFeedItems(){
 
+        updateDB();
         newsFeedItems.clear();
 
         List<DBNewsFeed> newsfeeds = AppicationCore.getAllNewsFeed();
@@ -603,10 +607,11 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            updatefavoritesList();
             refreshStatus=true;
             if(count==0) {
-                Toast.makeText(thisActivity, "Actualizando...",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(thisActivity, "Actualizando...",
+//                        Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -639,10 +644,12 @@ public class ActivityMain extends AppCompatActivity
                 new RefreshNewsFeed(count).execute();
             }
             else{
-                Toast.makeText(thisActivity, "Las noticias se han actualizado !",
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(thisActivity, "Las noticias se han actualizado !",
+//                        Toast.LENGTH_LONG).show();
                 refreshStatus=false;
-                updateDB();
+                if(newsFeedItems.get(newsFeedItems.size()-1).image==null){
+                    newsFeedItems.remove(newsFeedItems.size()-1);
+                }
 
 
             }
@@ -721,5 +728,21 @@ public class ActivityMain extends AppCompatActivity
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
+    }
+
+    private void updatefavoritesList(){
+
+        List<DBFavorites> favs = AppicationCore.getFavorites();
+        facebookAccounts.clear();
+
+        if(favs!=null && favs.size()>0){
+
+            for(int i=0; i<favs.size(); i++){
+                facebookAccounts.add(favs.get(i).getFb_id());
+            }
+        }
+        else{
+            facebookAccounts=Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
+        }
     }
 }

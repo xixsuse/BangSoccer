@@ -8,7 +8,7 @@ import de.greenrobot.daogenerator.Schema;
 public class Main {
     public static void main(String[] args) throws Exception{
 
-        Schema schema  = new Schema(4,"upgrade.ntv.bangsoccer.dao"); // # is the Schema version
+        Schema schema  = new Schema(5,"upgrade.ntv.bangsoccer.dao"); // # is the Schema version
         schema.enableKeepSectionsByDefault();
         createDataBase(schema);
 
@@ -28,6 +28,7 @@ public class Main {
         Entity player = createPlayerTable(schema);
         Entity matches_player_details = createMatchesPlayerDetailsTable(schema);
         Entity newsFeed = createNewsFeedTable(schema);
+        Entity favorites = createFavoritesTable(schema);
 
         // ******** Properties ********
         Property clubIDForTeam = team.addLongProperty("ClubID").notNull().getProperty();
@@ -47,6 +48,15 @@ public class Main {
         matches_player_details.addToOne(match, matchIDForMatchesPlayerDetails, "match");
         matches_player_details.addToOne(player, playerIDForMatchesPlayerDetails, "player");
         player.addToOne(team, teamIDForPlayer, "team");
+
+    }
+
+    private static Entity createFavoritesTable(Schema schema) {
+        Entity favorites = schema.addEntity("DBFavorites");
+        favorites.addIdProperty();
+        favorites.addStringProperty("fb_id");
+
+        return favorites;
 
     }
 

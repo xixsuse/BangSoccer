@@ -18,6 +18,7 @@ import upgrade.ntv.bangsoccer.Adapters.ClubsToFollowAdapter;
 import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.dao.DBFavorites;
 
 import static upgrade.ntv.bangsoccer.ActivityTourneyCalendar.tourneyActivity;
 
@@ -81,18 +82,33 @@ public class ActivityFavoriteNFollow extends AppCompatActivity {
         int id = item.getItemId();
         Intent intent;
 
-      /*  if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
-        }
-*/
+//        if (item.getItemId() == android.R.id.home) {
+//            super.onBackPressed();
+//        }
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
-      /*    for(int i = 0; FirebaseUtils.clubItems.size() > i; i++);
-            {
-                clubItems=divisionsSelect;
-                finish();
-              //  FirebaseUtils.clubItems.size()
-            }*/
+
+            List<Club> list = clubsAdapter.getClubList();
+            List<DBFavorites> newlist = new ArrayList<>();
+            AppicationCore.resetFavoritesTable();
+
+            for(int i=0; i< list.size(); i++){
+
+                if(list.get(i).isFavorite()){
+                    DBFavorites temp = new DBFavorites();
+                    temp.setFb_id(list.get(i).getFb_id());
+                    newlist.add(temp);
+                }
+            }
+
+            if(newlist!= null && newlist.size()>0){
+                AppicationCore.getDbFavoritesDao().insertInTx(newlist);
+            }
+
+            finish();
+
+
 
         }
 

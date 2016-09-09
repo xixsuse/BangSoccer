@@ -29,8 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 import upgrade.ntv.bangsoccer.TournamentObjects.Day;
+import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.TournamentObjects.Match;
+import upgrade.ntv.bangsoccer.Utils.Preferences;
 
+import static upgrade.ntv.bangsoccer.ActivityMain.mDivisions;
 import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv1Ref;
 import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv2Ref;
 import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv3Ref;
@@ -42,28 +45,31 @@ import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv3Ref;
 public class FragmentViewPagerContainer extends Fragment {
     private TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
     private ViewPager mViewPager;
-    private Context mContext;
     private List<Day> mMatchesOfTheDiv = new ArrayList<>();
-    private List<Match> mMatchesOfTheDay = new ArrayList<>();
+    private int dateInCurrentWeek = -1;
+    private final static String GAME_OF_THE_WEEK = "GAMES";
+
     private Query query;
-    StringBuilder dateBuilder = new StringBuilder();
-    private GenericTypeIndicator<Map<String, Match>> t = new GenericTypeIndicator<Map<String, Match>>() {
-    };
-    //new SimpleDateFormat("EEEEE dd").
+
+    private GenericTypeIndicator<Map<String, Match>> t =
+            new GenericTypeIndicator<Map<String, Match>>() {};
     private Date date = new Date();
     //empty cosntructor
     public FragmentViewPagerContainer() { //holds the tourney calendar
     }
 
     public static FragmentViewPagerContainer newInstance() {
-
-        return new FragmentViewPagerContainer();
+        FragmentViewPagerContainer frag = new FragmentViewPagerContainer();
+      /*  Bundle args = new Bundle();
+        args.putInt(GAME_OF_THE_WEEK, pos);
+        frag.setArguments(args);*/
+        return frag;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+       // dateInCurrentWeek = getArguments().getInt(GAME_OF_THE_WEEK);
 
         View root = inflater.inflate(R.layout.fragment_content_recivleview, container, false);
         mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getChildFragmentManager());
@@ -71,15 +77,17 @@ public class FragmentViewPagerContainer extends Fragment {
         // Set up the ViewPager, attaching the adapter and ...
         mViewPager = (ViewPager) root.findViewById(R.id.tourney_recycleview);
         mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
+        //sets the viewpager to the current week
 
         return root;
     }//2102
-
     public ViewPager getViewPager() {
         return this.mViewPager;
     }
 
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
+
+
 
         private void addEvelentListener(Query q) {
             q.addChildEventListener(new ChildEventListener() {
@@ -122,15 +130,15 @@ public class FragmentViewPagerContainer extends Fragment {
             switch (id) {
                 case "Div1_Calendar":
                     queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
-                    addEvelentListener(queryMatchesOfTheDay);
+                    addEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
                     break;
                 case "Div12_Calendar":
                     queryMatchesOfTheDay = mMatchesOfTheDayDiv2Ref;
-                    addEvelentListener(queryMatchesOfTheDay);
+                    addEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
                     break;
                 case "Div3_Calendar":
                     queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
-                    addEvelentListener(queryMatchesOfTheDay);
+                    addEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
                     break;
             }
             return queryMatchesOfTheDay;
@@ -139,7 +147,14 @@ public class FragmentViewPagerContainer extends Fragment {
         public TourneyCalendarPagerAdapter(FragmentManager fm) {
             super(fm);
             if (mMatchesOfTheDiv.size() == 0) {
-                query = referenceFinder("Div1_Calendar");
+                for (Divisions div : mDivisions) {
+                    //checks if its saved in the shared preferences
+                   if (Preferences.getPreferredDivisions(getActivity(), div.getNode()))
+                       //get the calendar for a given node
+                    query = referenceFinder(div.getNode());
+                }
+
+
             }
         }
 
@@ -153,13 +168,7 @@ public class FragmentViewPagerContainer extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-            Date today = new Date();
-
+            boolean selected = false;
 
             FragmentMatches frag = new FragmentMatches();
             if (mMatchesOfTheDiv.size() > 0) {
@@ -171,37 +180,38 @@ public class FragmentViewPagerContainer extends Fragment {
                         Match value1 = entry.getValue();
                         mMatchesOfTheDiv.get(position).setDate(value1.getDate());
                     }
-                //match day converted to Date to compare against the upcoming dates and setup the tablayout
-                //para utilizar DateConverter debes poner en tu gradle : compile 'com.github.armcha:datehelper:2.2.0'
-                date =  DateConverter.stringToDate(mMatchesOfTheDiv.get(position).getDate() , "dd-MM-yyyy");
-                Calendar calendar = Calendar.getInstance();
-                //default day is Sunday, set to Monday
-                calendar.setFirstDayOfWeek(Calendar.MONDAY);
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                //holds the monday pof the week
-                Date monday =  calendar.getTime();
-                //ensures GC on calendar
-                calendar = null;
-                //gets na new instance for Sunday
-                calendar = Calendar.getInstance();
-                calendar.setFirstDayOfWeek(Calendar.MONDAY);
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-                Date sunday = calendar.getTime();
-
-                //do action:
-                if (date.after(monday) || date.equals(monday)) {
-
-                    System.out.println("ronday monday");
-                }
-                if (date.before(sunday) || date.equals(sunday)){
-
-                    System.out.println("ronday sunday");
-                }
-
-                frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position));
+                //returns true if the match date is in the current week
+                frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position), selected);
             }
 
             return frag;
+        }
+
+        public boolean analizeDate(int position){
+            //match day converted to Date to compare against the upcoming dates and setup the tablayout
+            date =  DateConverter.stringToDate(mMatchesOfTheDiv.get(position).getDate() , "dd-MM-yyyy");
+            Calendar calendar = Calendar.getInstance();
+            //default day is Sunday, set to Monday
+            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            //holds the monday pof the week
+            Date monday =  calendar.getTime();
+            //ensures GC on calendar
+            calendar = null;
+            //gets na new instance for Sunday
+            calendar = Calendar.getInstance();
+            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            Date sunday = calendar.getTime();
+
+            //do action:
+            if ((date.equals(monday) || date.after(monday)) && (date.equals(sunday) || date.before(sunday))){
+
+                System.out.println(date.toString() + "sunday");
+                return true;
+            }
+
+            return false;
         }
 
         public
@@ -239,6 +249,14 @@ public class FragmentViewPagerContainer extends Fragment {
                         matchMap.entrySet()) {
                     Match value1 = entry.getValue();
                     mMatchesOfTheDiv.get(position).setDate(value1.getDate());
+                }
+                if(analizeDate(position)){
+                    dateInCurrentWeek = position;
+                }
+                // sets the viewpager to the games of the week.
+                // needs to be here to references the tab layout
+                if(dateInCurrentWeek !=-1){
+                    mViewPager.setCurrentItem(dateInCurrentWeek, true);
                 }
                 return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
             }

@@ -22,14 +22,19 @@ import upgrade.ntv.bangsoccer.TournamentObjects.Match;
 public class FragmentMatches extends Fragment {
 
     private static final String ARG_GAMES = "games";
+    private static final String ARG_IS_CURRENT = "Selected";
 
     private MatchAdapter mMatchAdapter;
     private Day gamesOfTheDay = new Day();
+    private boolean isCurrent = false;
 
-    public static FragmentMatches newInstance(Day games) {
+    public static FragmentMatches newInstance(Day games, boolean isInCurrentWeek) {
         FragmentMatches fragment = new FragmentMatches();
         Bundle args = new Bundle();
+
+        args.putBoolean(ARG_IS_CURRENT, isInCurrentWeek);
         args.putParcelable(ARG_GAMES, games);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,6 +51,7 @@ public class FragmentMatches extends Fragment {
         Bundle arg = getArguments();
 
             gamesOfTheDay = arg.getParcelable(ARG_GAMES);
+            isCurrent = arg.getBoolean(ARG_IS_CURRENT);
 
             mMatchAdapter = new MatchAdapter(getActivity(), gamesOfTheDay);
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.matches_recycleview);

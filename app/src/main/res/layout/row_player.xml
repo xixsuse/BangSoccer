@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_weight="2"
-            android:src="@drawable/ic_player_icon" />
+            android:src="@drawable/ic_add_follow" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:text="Josian Acevedo"
+                    android:text="Upgrade"
                     android:layout_marginBottom="2dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textSize="14sp" />
@@ -59,7 +59,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Vegeta"/>
+                    android:text="Dare to Improve"/>
 
 
 
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginBottom="12dp"
-                    android:text="Portero"
+                    android:text="reload"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:gravity="end|bottom"
-                    android:text="77"
+                    android:text="5"
                     android:textColor="@color/colorAccent"
                     android:textSize="20sp" />
 

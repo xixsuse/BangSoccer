@@ -34,7 +34,6 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
 
     private List<Divisions> mDivisions = ActivityMain.getDivisionsList();
     private Context mContext;
-    private Query query;
     private int currentPos = 0;
 
     public DivisionsAdapter(Context context) {

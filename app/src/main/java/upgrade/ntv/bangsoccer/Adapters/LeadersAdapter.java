@@ -1,6 +1,5 @@
 package upgrade.ntv.bangsoccer.Adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +14,11 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.ActivityMain;
-import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 import upgrade.ntv.bangsoccer.TournamentObjects.Players;
 
 
@@ -28,20 +27,19 @@ import upgrade.ntv.bangsoccer.TournamentObjects.Players;
  */
 public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHolder> {
 
-    public List<Players> mPlayersLeader = new ArrayList<Players>();;
-    private Context mContext;
+    public List<Players> mPlayersLeader = new ArrayList<>();
     private Query queryLeaders;
 
-    public LeadersAdapter(Context context) {
+    public LeadersAdapter() {
 
-        this.mContext = context;
         queryLeaders = ActivityMain.mPlayersDeftailsRef;
+        queryLeaders.orderByChild("goals");
         queryLeaders.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Players firebaseRequest = dataSnapshot.getValue(Players.class);
                 firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
-                mPlayersLeader.add(0, firebaseRequest);
+                mPlayersLeader.add(firebaseRequest);
                 notifyDataSetChanged();
             }
 
@@ -85,32 +83,31 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
 
     @Override
     public void onBindViewHolder(LeadersAdapter.TeamHolder holder, int position) {
-        // - get element from your dataset at this vTeamPosition
-        // - replace the contents of the view with that element
         if(mPlayersLeader.size() >0) {
-            holder.vPlayerName.setText(mPlayersLeader.get(position).getName());
-            holder.vPlayerNumber.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
+            Players player = mPlayersLeader.get(position);
+            holder.vPlayerName.setText(player.getName());
+            holder.vPlayerGoals.setText(String.valueOf(player.getGoals()));
             holder.vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon);
-            Club club = new Club();
-            holder.vPlayerClub.setText(club.getName());
+            holder.vPlayerClub.setText(player.getTeam());
             holder.Id = mPlayersLeader.get(position).getTeamid();
         }
     }
 
     // Provides a reference to the views for each data item
     public static class TeamHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.leaders_player_name)
         TextView vPlayerName;
+        @BindView(R.id.leaders_player_avatar)
         CircleImageView vPlayerAvatar;
-        TextView vPlayerNumber;
+        @BindView(R.id.leaders_player_goal)
+        TextView vPlayerGoals;
+        @BindView(R.id.leaders_player_club)
         TextView vPlayerClub;
         String Id;
 
         public TeamHolder(View v) {
             super(v);
-            vPlayerName = (TextView) v.findViewById(R.id.leaders_player_name);
-            vPlayerAvatar = (CircleImageView) v.findViewById(R.id.leaders_player_avatar);
-            vPlayerNumber = (TextView) v.findViewById(R.id.leaders_player_number);
-            vPlayerClub = (TextView) v.findViewById(R.id.leaders_player_club);
+            ButterKnife.bind(this, v);
         }
     }
 }

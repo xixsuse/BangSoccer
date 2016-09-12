@@ -11,7 +11,7 @@ public class Match {
     private String tournamentid;
     private String mFireBaseKey;
     private String stadium;
-    private String date;
+    private String date, time;
 
     public Match(String matchId) {
         this.matchid = matchId;
@@ -20,6 +20,14 @@ public class Match {
     }
 
     public Match() {
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setStadium(String stadium) {

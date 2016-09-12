@@ -42,7 +42,7 @@ public class FragmentLeaders extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leaders, container, false);
 
-        mLeadersAdapter = new LeadersAdapter(getActivity());
+        mLeadersAdapter = new LeadersAdapter();
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);

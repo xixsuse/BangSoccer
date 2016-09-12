@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="2.5"
-            android:src="@drawable/ic_player_icon" />
+            android:src="@drawable/ic_player_name_icon2" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -42,7 +42,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:id="@+id/leaders_player_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                     android:text="Garrincha FC"
                     android:textSize="12sp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/colorPrimaryDark" />
 
             </LinearLayout>
 
@@ -76,11 +76,11 @@
 
                 <TextView
                     android:layout_marginTop="12dp"
-                    android:id="@+id/leaders_player_number"
+                    android:id="@+id/leaders_player_goal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorAccentLailai"
                     android:text="11"
                     android:textSize="26sp"/>
 

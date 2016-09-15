@@ -16,6 +16,7 @@ public class DBNewsFeed {
     private String Story;
     private byte[] Picture;
     private String Date;
+    private Boolean Like;
 
     // KEEP FIELDS - put your custom fields here
     // KEEP FIELDS END
@@ -27,7 +28,7 @@ public class DBNewsFeed {
         this.id = id;
     }
 
-    public DBNewsFeed(Long id, String PostID, String UserName, String Message, String Story, byte[] Picture, String Date) {
+    public DBNewsFeed(Long id, String PostID, String UserName, String Message, String Story, byte[] Picture, String Date, Boolean Like) {
         this.id = id;
         this.PostID = PostID;
         this.UserName = UserName;
@@ -35,6 +36,7 @@ public class DBNewsFeed {
         this.Story = Story;
         this.Picture = Picture;
         this.Date = Date;
+        this.Like = Like;
     }
 
     public Long getId() {
@@ -91,6 +93,14 @@ public class DBNewsFeed {
 
     public void setDate(String Date) {
         this.Date = Date;
+    }
+
+    public Boolean getLike() {
+        return Like;
+    }
+
+    public void setLike(Boolean Like) {
+        this.Like = Like;
     }
 
     // KEEP METHODS - put your custom methods here

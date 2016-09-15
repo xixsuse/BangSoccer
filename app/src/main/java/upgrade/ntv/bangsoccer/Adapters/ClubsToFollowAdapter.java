@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.ActivityMain;
+import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.dao.DBFavorites;
 
 
 /**
@@ -33,13 +35,37 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     private Context mContext;
     private LayoutInflater inflater;
     private Query query;
+    private List<DBFavorites> favorites;
 
     public ClubsToFollowAdapter(List<Club> list, Context context) {
         this.mClubList = list;
         this.mContext = context;
         this.query = ActivityMain.mTeamsRef;
         this.query.addChildEventListener(new ClubsToFollowAdapter.TeamEvenetListener());
+        favorites = AppicationCore.getFavorites();
 
+    }
+
+    /**
+     * Updates check box for those clubs already followed by the user
+     */
+    private void updatingCheckBox(){
+
+        String ids="";
+
+        if(favorites!= null && favorites.size()>0){
+
+            for(int i=0; i<favorites.size(); i++){
+                ids=ids+favorites.get(i).getFb_id()+", ";
+            }
+
+            for(int i=0; i<mClubList.size(); i++){
+
+                if(ids.contains(mClubList.get(i).getFb_id())){
+                    mClubList.get(i).setFavorite(true);
+                }
+            }
+        }
     }
 
     public List<Club> getClubList() {
@@ -103,6 +129,8 @@ public class ClubsToFollowAdapter extends RecyclerView.Adapter<ClubsToFollowAdap
     public void onBindViewHolder(final ClubsToFollowAdapter.TeamHolder holder,final int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
+    //    holder.vClubName.setText(mClubList.get(position).getName());
+        updatingCheckBox();
         holder.vClubName.setText(mClubList.get(position).getName());
 
         Picasso.with(mContext).

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ public class FacebookClass {
 
     private String postIDs="";
     private int newPost;
+    private boolean success;
 
     public FacebookClass(){
         List<DBNewsFeed> newsFeeds = AppicationCore.getAllNewsFeed();
@@ -130,8 +132,59 @@ public class FacebookClass {
         newsFeed.setStory(story);
         newsFeed.setDate(date);
         newsFeed.setPicture(bitmapToByte(mIcon11));
+        newsFeed.setLike(false);
         AppicationCore.getDbNewsFeedDao().insertInTx(newsFeed);
 
+    }
+
+
+
+    public boolean likePost(String postID){
+
+        success=false;
+
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                postID+"/likes",
+                null,
+                HttpMethod.POST,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+
+                        if (response!=null) {
+                            if (response.getRawResponse().contains("true")) {
+                                success = true;
+                            }
+                        }
+                    }
+                }
+        ).executeAndWait();
+
+        return success;
+    }
+
+
+
+    public boolean disLikePost(String postID){
+
+        success=false;
+
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                postID+"/likes",
+                null,
+                HttpMethod.DELETE,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+
+                        if (response.getRawResponse().contains("true")){
+                            success=true;
+                        }
+                    }
+                }
+        ).executeAndWait();
+
+        return success;
     }
 
 

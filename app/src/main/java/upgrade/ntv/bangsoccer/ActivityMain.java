@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -57,6 +58,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -82,7 +84,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback,
-        DivisionChooserFragment.OnCreateClientDialogListener {
+        DivisionChooserFragment.OnCreateClientDialogListener, NewsFeedAdapter.ClickListener {
 
 
     public static final int PERMISSION_REQUEST_INTERNET = 1;
@@ -107,7 +109,7 @@ public class ActivityMain extends AppCompatActivity
     private List<String> facebookAccounts;
     private boolean refreshStatus = false;  // true: when refresh newsfeeds is in progress
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private final int POST_QTY=1; //  quantity of post per club
+    private final int POST_QTY=2; //  quantity of post per club
     private GridLayoutManager lLayout;
 
 
@@ -132,7 +134,32 @@ public class ActivityMain extends AppCompatActivity
     public static List<Divisions> getDivisionsList() {
         return mDivisions;
     }
-//firebase division listener
+
+    @Override
+    public void itemClicked(View view, int position) {
+
+        switch (view.getId()){
+
+            case R.id.newsfeed_likes_button:
+                Toast.makeText(thisActivity, "Likes!!!",
+                        Toast.LENGTH_SHORT).show();
+                //Async task needed
+                //updateLikes(position);
+                break;
+
+            case R.id.newsfeed_share:
+                Toast.makeText(thisActivity, "Shares!!!",
+                    Toast.LENGTH_SHORT).show();
+
+                break;
+
+            default:
+                clickNewsFeed(position);
+                break;
+        }
+    }
+
+    //firebase division listener
     private class DivisionEvenetListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -288,31 +315,12 @@ public class ActivityMain extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        newsFeedAdapter = new NewsFeedAdapter(newsFeedItems);
+        newsFeedAdapter = new NewsFeedAdapter(newsFeedItems, this );
         recyclerView.setAdapter(newsFeedAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(this, recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
+        newsFeedAdapter.setClickListener(this);
 
-//                Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
-//                intent.putExtra("newsFeedID", position+1);
-//
-//                if (intent != null) {
-//                    startActivity(intent);
-//                }
-
-                clickNewsFeed(position);
-
-
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                // ...
-            }
-        }));
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
@@ -365,12 +373,12 @@ public class ActivityMain extends AppCompatActivity
 
             for(int i=newsfeeds.size()-1; i>-1; i--){
                 Bitmap bm = bitmapFromByte(newsfeeds.get(i).getPicture());
-                newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getMessage(),newsfeeds.get(i).getUserName()));
+                newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getMessage(),newsfeeds.get(i).getUserName(), newsfeeds.get(i).getPostID(), newsfeeds.get(i).getLike()));
                 bm=null;
             }
         }
         else{
-            newsFeedItems.add(new NewsFeedItem(null, "Inicia sesion en Facebook! \n",""));
+            newsFeedItems.add(new NewsFeedItem(null, "Inicia sesion en Facebook! \n","","", false));
         }
 
     }
@@ -688,7 +696,7 @@ public class ActivityMain extends AppCompatActivity
 
         for(int i=0; i<newPost; i++){
             Bitmap bm = bitmapFromByte(list.get(list.size()-1-i).getPicture());
-            newsFeedItems.add(i, new NewsFeedItem(bm, list.get(list.size()-1-i).getMessage(), list.get(list.size()-1-i).getUserName()));
+            newsFeedItems.add(i, new NewsFeedItem(bm, list.get(list.size()-1-i).getMessage(), list.get(list.size()-1-i).getUserName(),list.get(list.size()-1-i).getPostID(), list.get(list.size()-1-i).getLike()));
             bm=null;
             // newsFeedAdapter.notifyItemInserted(i);
             newsFeedAdapter.notifyDataSetChanged();
@@ -742,7 +750,51 @@ public class ActivityMain extends AppCompatActivity
             }
         }
         else{
-            facebookAccounts=Arrays.asList(getResources().getStringArray(R.array.fb_accounts));
+            facebookAccounts=new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts)));
+        }
+    }
+
+
+    private void updateLikes(int position){
+
+        List<DBNewsFeed> newsFeeds = AppicationCore.getAllNewsFeed();
+        DBNewsFeed newsFeed = newsFeeds.get(newsFeeds.size() -1 - position);
+
+        FacebookClass fb = new FacebookClass();
+        String id = newsFeed.getPostID();
+        boolean result=false;
+
+        //Confirming is the same post
+        if( newsFeedItems.get(position).postID.equals(id)){
+
+            if(newsFeed.getLike()){
+
+                result=fb.disLikePost(id);
+
+            }else{
+
+                result=fb.likePost(id);
+            }
+        }
+
+        if(result){
+
+            //Change Like icon
+        }
+
+        else{
+            Toast.makeText(thisActivity, "Error: Intente mas tarde",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+    private class FbLikesAsync extends AsyncTask<Void, Integer, Integer> {
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return null;
         }
     }
 }

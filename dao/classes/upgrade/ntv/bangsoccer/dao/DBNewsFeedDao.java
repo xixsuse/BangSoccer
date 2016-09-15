@@ -30,6 +30,7 @@ public class DBNewsFeedDao extends AbstractDao<DBNewsFeed, Long> {
         public final static Property Story = new Property(4, String.class, "Story", false, "STORY");
         public final static Property Picture = new Property(5, byte[].class, "Picture", false, "PICTURE");
         public final static Property Date = new Property(6, String.class, "Date", false, "DATE");
+        public final static Property Like = new Property(7, Boolean.class, "Like", false, "LIKE");
     };
 
 
@@ -51,7 +52,8 @@ public class DBNewsFeedDao extends AbstractDao<DBNewsFeed, Long> {
                 "\"MESSAGE\" TEXT," + // 3: Message
                 "\"STORY\" TEXT," + // 4: Story
                 "\"PICTURE\" BLOB," + // 5: Picture
-                "\"DATE\" TEXT);"); // 6: Date
+                "\"DATE\" TEXT," + // 6: Date
+                "\"LIKE\" INTEGER);"); // 7: Like
     }
 
     /** Drops the underlying database table. */
@@ -99,6 +101,11 @@ public class DBNewsFeedDao extends AbstractDao<DBNewsFeed, Long> {
         if (Date != null) {
             stmt.bindString(7, Date);
         }
+ 
+        Boolean Like = entity.getLike();
+        if (Like != null) {
+            stmt.bindLong(8, Like ? 1L: 0L);
+        }
     }
 
     /** @inheritdoc */
@@ -117,7 +124,8 @@ public class DBNewsFeedDao extends AbstractDao<DBNewsFeed, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // Message
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // Story
             cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5), // Picture
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // Date
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // Date
+            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0 // Like
         );
         return entity;
     }
@@ -132,6 +140,7 @@ public class DBNewsFeedDao extends AbstractDao<DBNewsFeed, Long> {
         entity.setStory(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setPicture(cursor.isNull(offset + 5) ? null : cursor.getBlob(offset + 5));
         entity.setDate(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setLike(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
      }
     
     /** @inheritdoc */

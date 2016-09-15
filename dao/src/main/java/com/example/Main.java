@@ -8,7 +8,7 @@ import de.greenrobot.daogenerator.Schema;
 public class Main {
     public static void main(String[] args) throws Exception{
 
-        Schema schema  = new Schema(5,"upgrade.ntv.bangsoccer.dao"); // # is the Schema version
+        Schema schema  = new Schema(6,"upgrade.ntv.bangsoccer.dao"); // # is the Schema version
         schema.enableKeepSectionsByDefault();
         createDataBase(schema);
 
@@ -69,6 +69,7 @@ public class Main {
         newsFeed.addStringProperty("Story");
         newsFeed.addByteArrayProperty("Picture");
         newsFeed.addStringProperty("Date");
+        newsFeed.addBooleanProperty("Like");
 
         return newsFeed;
     }

@@ -39,6 +39,7 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.FirebaseApp;
@@ -143,8 +144,8 @@ public class ActivityMain extends AppCompatActivity
             case R.id.newsfeed_likes_button:
                 Toast.makeText(thisActivity, "Likes!!!",
                         Toast.LENGTH_SHORT).show();
-                //Async task needed
-                //updateLikes(position);
+                new FbLikesAsync(position).execute();
+
                 break;
 
             case R.id.newsfeed_share:
@@ -331,6 +332,9 @@ public class ActivityMain extends AppCompatActivity
         AppEventsLogger.activateApp(this);
    /*    FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         FirebaseCrash.log("Activity created");*/
+
+
+        facebookPermissions();
     }
 
     public void initFirebaseRefs(){
@@ -755,7 +759,7 @@ public class ActivityMain extends AppCompatActivity
     }
 
 
-    private void updateLikes(int position){
+    private boolean updateLikes(int position){
 
         List<DBNewsFeed> newsFeeds = AppicationCore.getAllNewsFeed();
         DBNewsFeed newsFeed = newsFeeds.get(newsFeeds.size() -1 - position);
@@ -777,24 +781,59 @@ public class ActivityMain extends AppCompatActivity
             }
         }
 
-        if(result){
-
-            //Change Like icon
-        }
-
-        else{
-            Toast.makeText(thisActivity, "Error: Intente mas tarde",
-                    Toast.LENGTH_SHORT).show();
-        }
+       return result;
     }
 
 
 
 
-    private class FbLikesAsync extends AsyncTask<Void, Integer, Integer> {
-        @Override
-        protected Integer doInBackground(Void... voids) {
-            return null;
+    private class FbLikesAsync extends AsyncTask<Void, Integer, Boolean> {
+
+        int position;
+
+        public FbLikesAsync(int position){
+            this.position=position;
         }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            return updateLikes(position);
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+
+            if(result) {
+                List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+                DBNewsFeed item = list.get(list.size() -1 - position);
+
+                item.setLike(!item.getLike());
+                AppicationCore.getDbNewsFeedDao().update(item);
+
+                //Modify UI
+                 newsFeedItems.get(position).setLike(! newsFeedItems.get(position).like );
+                 newsFeedAdapter.notifyDataSetChanged();
+            }
+
+        }
+    }
+
+
+    private void facebookPermissions(){
+
+        //Permission for Likes
+        LoginManager.getInstance().logInWithPublishPermissions(
+                this,
+                Arrays.asList("publish_actions"));
+
     }
 }

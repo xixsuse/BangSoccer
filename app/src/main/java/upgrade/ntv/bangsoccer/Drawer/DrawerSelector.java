@@ -6,13 +6,12 @@ import android.content.Intent;
 import upgrade.ntv.bangsoccer.ActivityAbout;
 import upgrade.ntv.bangsoccer.ActivityClubSelect;
 import upgrade.ntv.bangsoccer.ActivityClubs;
-import upgrade.ntv.bangsoccer.ActivityLogin;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.ActivityNewsDetails;
 import upgrade.ntv.bangsoccer.ActivityTour;
 import upgrade.ntv.bangsoccer.ActivityTourneyCalendar;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.Auth.SignedInActivity;
+import upgrade.ntv.bangsoccer.SignedInActivity;
 import upgrade.ntv.bangsoccer.R;
 
 /**

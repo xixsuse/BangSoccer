@@ -10,8 +10,7 @@ import java.util.List;
 public class Club implements Cloneable {
 
     private  int  pj, dg, points, rank;
-    private String name, stadium, profile, division, team_image,  fb_id;
-
+    private String name, stadium, profile, division, team_image, goles = " - ", status, fb_id;
 
     private boolean isFavorite;
     private HashMap<String, Boolean> players_ids = new HashMap<>();
@@ -34,6 +33,25 @@ public Club getClub_clone() throws CloneNotSupportedException {
     return club_clone;
 }
 
+    public void setFb_id(String fb_id) {
+        this.fb_id = fb_id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getGoles() {
+        return goles;
+    }
+
+    public void setGoles(String goles) {
+        this.goles = goles;
+    }
 
     public String getProfile() {
         return profile;

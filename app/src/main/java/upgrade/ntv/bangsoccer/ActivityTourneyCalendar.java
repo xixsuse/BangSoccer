@@ -56,7 +56,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     private Menu mMenu;
 
     //fragment holders
-    private final ThreadLocal<ViewPagerContainerFragment> viewPagerContainerFragment = new ThreadLocal<>();
+    private final ThreadLocal<FragmentViewPagerContainer> viewPagerContainerFragment = new ThreadLocal<>();
     private final ThreadLocal<FragmentNewsFeed> fragmentNewsFeed = new ThreadLocal<>();
     private final ThreadLocal<FragmentTourneyStats> fragmentTourneyStats = new ThreadLocal<>();
     private final ThreadLocal<FragmentLeaders> fragmentLeaders = new ThreadLocal<>();
@@ -76,26 +76,12 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @Override
     protected void onResume() {
         super.onResume();
-
-
         mViewPager = viewPagerContainerFragment.get().getViewPager();
-        tabLayout.setupWithViewPager(mViewPager);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.setCheckedItem(Constants.TOURNAMENT_ACTIVITY);
-        //dynamically adds the tourneys to follow
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {/*  actionBar.setSelectedNavigationItem(position);*/}
         });
+       // mViewPager.setCurrentItem(viewPagerContainerFragment.get().getDateInCurrentWeek());
 
 
     }
@@ -117,29 +103,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-  /*      // Setup spinner
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new MyAdapter(
-                toolbar.getContext(),
-                new String[]{
-                        "Section 1",
-                        "Section 2",
-                        "Section 3",
-                }));
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // When the given dropdown item is selected, show its contents in the
-                // container view.
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });*/
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         // tabLayout.setupWithViewPager(mViewPager);
         assert tabLayout != null;
@@ -147,7 +110,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             tabLayout.setVisibility(View.VISIBLE);
         }
 
-        viewPagerContainerFragment.set(ViewPagerContainerFragment.newInstance());
+        viewPagerContainerFragment.set(FragmentViewPagerContainer.newInstance());
 
         if (ViewCompat.isLaidOut(tabLayout)) {
             tabLayout.setupWithViewPager(mViewPager);
@@ -160,6 +123,19 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                 }
             });
         }
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.setCheckedItem(Constants.TOURNAMENT_ACTIVITY);
+        //dynamically adds the tourneys to follow
 
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -215,9 +191,9 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                         tabLayout.setVisibility(View.VISIBLE);
                     }
                     if (getSupportFragmentManager().findFragmentByTag("matches") == null) {
-                        viewPagerContainerFragment.set(ViewPagerContainerFragment.newInstance());
+                        viewPagerContainerFragment.set(FragmentViewPagerContainer.newInstance());
                     } else {
-                        viewPagerContainerFragment.set((ViewPagerContainerFragment) getSupportFragmentManager().findFragmentByTag("matches"));
+                        viewPagerContainerFragment.set((FragmentViewPagerContainer) getSupportFragmentManager().findFragmentByTag("matches"));
                     }
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_holder, viewPagerContainerFragment.get(), "matches")
@@ -242,7 +218,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
         });
     }
-
     private View.OnClickListener tourneyBarOthersListner() {
         return (new View.OnClickListener() {
             @Override
@@ -252,7 +227,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             }
         });
     }
-
 
     public void onOtherButtonBarSelected(int id) {
 

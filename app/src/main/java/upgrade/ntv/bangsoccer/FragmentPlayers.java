@@ -61,7 +61,7 @@ public class FragmentPlayers extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_players, container, false);
 
-        mPlayerAdapter = new PlayersAdapter(mTeamID, getActivity());
+        mPlayerAdapter = new PlayersAdapter(mTeamID);
 
 
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);

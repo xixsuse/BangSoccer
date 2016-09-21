@@ -24,5 +24,9 @@ public class NewsFeedItem {
         this.like=like;
     }
 
+    public  void setLike(boolean like){
+        this.like=like;
+    }
+
 
 }

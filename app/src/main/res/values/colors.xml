@@ -24,7 +24,6 @@
     <color name="black_1">#373737</color>
 
     // FAKE Primary Colors
-    <color name="colorPrimary">#f6f6f6</color>
     <color name="colorPrimaryDark">#377b2b</color>
 
     <color name="colorNewsFeed">#e313110b</color>

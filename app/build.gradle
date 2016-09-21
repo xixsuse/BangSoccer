@@ -18,6 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
         }
+        debug {
+            debuggable false
+        }
     }
 
     signingConfigs {

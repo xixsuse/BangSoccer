@@ -70,7 +70,7 @@ public class FragmentNewsFeed extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsfeed, container, false);
 
-        newsFeedAdapter = new NewsFeedAdapter(newsFeedItems);
+        newsFeedAdapter = new NewsFeedAdapter(newsFeedItems, getActivity());
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ public class FacebookClass {
 
     private String postIDs="";
     private int newPost;
+    private boolean success;
 
     public FacebookClass(){
         List<DBNewsFeed> newsFeeds = AppicationCore.getAllNewsFeed();
@@ -66,13 +68,16 @@ public class FacebookClass {
                                 String date= obj.optString("created_time");
                                 String story= obj.optString("story");
 
+                                //Likes
+                                String likes=obj.optString("likes");
+
 
                                 //Cleaning Date/Time
                                 date = date.split("T")[0]+" ("+date.split("T")[1].substring(0,5)+")";
 
                                 if(imageURL!=null && imageURL.length()>2 && !postIDs.contains(id)){
                                     newPost++;
-                                    DownloadImage(id, username, imageURL, message, story, date);
+                                    DownloadImage(id, username, imageURL, message, story, date,likes);
                                 }
 
                             }
@@ -86,7 +91,7 @@ public class FacebookClass {
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "name,posts.limit("+(qty+1)+"){id,full_picture,message,created_time,story}");
+        parameters.putString("fields", "name,posts.limit("+(qty+1)+"){id,full_picture,message,created_time,story,likes}");
 
         request.setParameters(parameters);
         //  request.executeAsync();
@@ -110,7 +115,7 @@ public class FacebookClass {
     /**
      * Not Async, so needs to be called from a non UI thread
      */
-    private  void DownloadImage(String id, String username, String url, String msg, String story, String date) {
+    private  void DownloadImage(String id, String username, String url, String msg, String story, String date, String likes) {
 
 
         String urldisplay = url;
@@ -130,8 +135,64 @@ public class FacebookClass {
         newsFeed.setStory(story);
         newsFeed.setDate(date);
         newsFeed.setPicture(bitmapToByte(mIcon11));
+
+        if(likes.contains(AccessToken.getCurrentAccessToken().getUserId()))
+            newsFeed.setLike(true);
+        else
+            newsFeed.setLike(false);
+
         AppicationCore.getDbNewsFeedDao().insertInTx(newsFeed);
 
+    }
+
+
+
+    public boolean likePost(String postID){
+
+        success=false;
+
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                postID+"/likes",
+                null,
+                HttpMethod.POST,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+
+                        if (response!=null) {
+                            if (response.getRawResponse().contains("true")) {
+                                success = true;
+                            }
+                        }
+                    }
+                }
+        ).executeAndWait();
+
+        return success;
+    }
+
+
+
+    public boolean disLikePost(String postID){
+
+        success=false;
+
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                postID+"/likes",
+                null,
+                HttpMethod.DELETE,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+
+                        if (response.getRawResponse().contains("true")){
+                            success=true;
+                        }
+                    }
+                }
+        ).executeAndWait();
+
+        return success;
     }
 
 

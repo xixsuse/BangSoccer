@@ -13,11 +13,19 @@ public class NewsFeedItem {
     public String tittle;
     public String user;
     public Bitmap image;
+    public String postID;
+    public boolean like;
 
-    public NewsFeedItem(Bitmap image, String tittle, String user) {
+    public NewsFeedItem(Bitmap image, String tittle, String user, String postID, boolean like) {
         this.image = image;
         this.tittle = tittle;
         this.user=user;
+        this.postID=postID;
+        this.like=like;
+    }
+
+    public  void setLike(boolean like){
+        this.like=like;
     }
 
 

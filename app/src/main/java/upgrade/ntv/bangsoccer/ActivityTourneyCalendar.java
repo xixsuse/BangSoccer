@@ -32,7 +32,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 public class ActivityTourneyCalendar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener,
-        FragmentTourneyStats.OnListFragmentInteractionListener, DivisionChooserFragment.OnCreateClientDialogListener {
+        FragmentTourneyStats.OnListFragmentInteractionListener, DivisionChooserFragment.onDivisionFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -379,8 +379,9 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     }
 
     @Override
-    public void callDivisionsDialog() {
-
+    public void onDivisionSelected(String node) {
+        //updates the viewpager adapater
+    viewPagerContainerFragment.get().updateBasedOnDivisionSelection(node);
     }
 
 

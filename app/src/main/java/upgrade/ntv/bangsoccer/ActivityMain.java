@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -73,7 +72,6 @@ import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
-import upgrade.ntv.bangsoccer.Utils.Preferences;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 import upgrade.ntv.bangsoccer.service.UtilityService;
@@ -81,8 +79,9 @@ import upgrade.ntv.bangsoccer.service.UtilityService;
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback,
-        DivisionChooserFragment.OnCreateClientDialogListener, NewsFeedAdapter.ClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ActivityCompat.OnRequestPermissionsResultCallback, NewsFeedAdapter.ClickListener,
+        DivisionChooserFragment.onDivisionFragmentInteractionListener {
 
 
     public static final int PERMISSION_REQUEST_INTERNET = 1;
@@ -155,6 +154,11 @@ public class ActivityMain extends AppCompatActivity
                 clickNewsFeed(position);
                 break;
         }
+    }
+
+    @Override
+    public void onDivisionSelected(String node) {
+
     }
 
     //firebase division listener
@@ -598,10 +602,6 @@ public class ActivityMain extends AppCompatActivity
         return BitmapFactory.decodeByteArray(b, 0, b.length, options);
     }
 
-    @Override
-    public void callDivisionsDialog() {
-
-    }
 
     private class RefreshNewsFeed extends AsyncTask<Void, Integer, Integer> {
 

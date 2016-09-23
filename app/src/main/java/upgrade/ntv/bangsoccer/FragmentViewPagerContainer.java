@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.TournamentObjects.Day;
 import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.TournamentObjects.Match;
@@ -42,12 +43,14 @@ import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv3Ref;
  * Created by root on 7/10/16.
  */
 
-public class FragmentViewPagerContainer extends Fragment {
+public class FragmentViewPagerContainer extends Fragment  {
     private TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
     private ViewPager mViewPager;
     private List<Day> mMatchesOfTheDiv = new ArrayList<>();
     private int dateInCurrentWeek = -1;
     private final static String GAME_OF_THE_WEEK = "GAMES";
+
+
 
     private Query query;
 
@@ -81,9 +84,26 @@ public class FragmentViewPagerContainer extends Fragment {
 
         return root;
     }//2102
+
     public ViewPager getViewPager() {
         return this.mViewPager;
     }
+
+    public void updateBasedOnDivisionSelection(String node) {
+
+       if( Preferences.getPreferredDivisions(getContext(), node)){
+
+
+       }else {
+
+           mTourneyCalendarPagerAdapter.referenceFinder(node);
+           mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+       }
+
+    }
+
+
+
 
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
 
@@ -143,6 +163,8 @@ public class FragmentViewPagerContainer extends Fragment {
             }
             return queryMatchesOfTheDay;
         }
+
+
 
         public TourneyCalendarPagerAdapter(FragmentManager fm) {
             super(fm);

@@ -51,12 +51,3 @@
     </LinearLayout>
 </android.support.v7.widget.CardView>
 
-    <!--
-    <TextView
-    android:id="@+id/club_name_row"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:gravity="center"
-    android:textSize="12sp"
-    android:text="Club Barcelona Atletico"
-    android:textAppearance="?android:attr/textAppearanceSmall"/>-->

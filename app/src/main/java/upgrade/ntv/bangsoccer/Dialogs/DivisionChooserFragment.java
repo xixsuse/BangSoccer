@@ -17,7 +17,9 @@ package upgrade.ntv.bangsoccer.Dialogs;
         import butterknife.Unbinder;
         import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
         import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
+        import upgrade.ntv.bangsoccer.FragmentViewPagerContainer;
         import upgrade.ntv.bangsoccer.R;
+        import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
         import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 
 /**
@@ -37,7 +39,8 @@ public class DivisionChooserFragment extends DialogFragment  {
     private DivisionsAdapter divisionsAdapter;
     private GridLayoutManager lLayout;
 
-    private OnCreateClientDialogListener mListener;
+
+    private onDivisionFragmentInteractionListener mListener ;
 
     @Override
     public void onResume() {
@@ -66,6 +69,24 @@ public class DivisionChooserFragment extends DialogFragment  {
         // recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
 
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(getActivity(), recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // mPlayerAdapter.getPlayerID(position);
+                //  String x =  mPlayerAdapter.getPlayerId(position);
+                mListener.onDivisionSelected(divisionsAdapter.getDivisionNode(position));
+
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                // ...
+            }
+        }));
+
+
         return view;
     }
 
@@ -78,11 +99,11 @@ public class DivisionChooserFragment extends DialogFragment  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnCreateClientDialogListener) {
-            mListener = (OnCreateClientDialogListener) context;
+       if (context instanceof onDivisionFragmentInteractionListener) {
+            mListener = (onDivisionFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnCreateClientDialogListener");
+                    + " must implement OnDivisionDialogListener");
         }
     }
 
@@ -95,7 +116,8 @@ public class DivisionChooserFragment extends DialogFragment  {
         super.onDetach();
     }
 
-    public interface OnCreateClientDialogListener {
-        void callDivisionsDialog();
+
+    public interface onDivisionFragmentInteractionListener {
+        void onDivisionSelected(String node);
     }
 }

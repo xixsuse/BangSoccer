@@ -18,11 +18,13 @@ import android.view.View;
 
 import java.util.List;
 
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 
 
-public class ActivityNewsDetails extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentNewsFeeddetails.OnListFragmentInteractionListener {
+public class ActivityNewsDetails extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        FragmentNewsFeeddetails.OnListFragmentInteractionListener, DivisionChooserFragment.onDivisionFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -154,6 +156,11 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
         }else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onDivisionSelected(String node) {
+
     }
 
     /**

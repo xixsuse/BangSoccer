@@ -15,10 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 
 
-public class ActivityAbout extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class ActivityAbout extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener,
+        DivisionChooserFragment.onDivisionFragmentInteractionListener {
 
 
     @Override
@@ -102,5 +104,10 @@ public class ActivityAbout extends AppCompatActivity implements CollapsingToolba
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onDivisionSelected(String node) {
+
     }
 }

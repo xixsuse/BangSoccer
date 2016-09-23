@@ -27,6 +27,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.Utils.Tools;
 import upgrade.ntv.bangsoccer.service.UtilityService;
@@ -34,7 +35,7 @@ import upgrade.ntv.bangsoccer.service.UtilityService;
 public class ActivityTour extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         FragmentAttractionsList.OnFragmentInteractionListener, FragmentMap.OnFragmentInteractionListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,DivisionChooserFragment.onDivisionFragmentInteractionListener {
 
 
     // for log porpuses
@@ -306,6 +307,11 @@ public class ActivityTour extends AppCompatActivity implements
             //   overridePendingTransition(R.anim.animation_enter, R.anim.animation_leave);
             //   finish();
         }
+    }
+
+    @Override
+    public void onDivisionSelected(String node) {
+
     }
 
 

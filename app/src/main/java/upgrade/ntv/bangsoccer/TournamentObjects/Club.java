@@ -12,6 +12,7 @@ public class Club implements Cloneable {
     private  int  pj, dg, points, rank;
     private String name, stadium, profile, division, team_image, goles = " - ", status, fb_id;
 
+
     private boolean isFavorite;
     private HashMap<String, Boolean> players_ids = new HashMap<>();
     private List<Players> player_list = new ArrayList<Players>();

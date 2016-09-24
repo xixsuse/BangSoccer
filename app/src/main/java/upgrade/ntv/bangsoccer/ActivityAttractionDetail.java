@@ -11,13 +11,14 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.TourList.FragmentAttractionDetail;
 
 /**
  * The tourist attraction detail activity screen which contains the details of
  * a single attraction.
  */
-public class ActivityAttractionDetail extends AppCompatActivity {
+public class ActivityAttractionDetail extends AppCompatActivity implements DivisionChooserFragment.onDivisionFragmentInteractionListener {
 
     private static final String EXTRA_ATTRACTION = "attraction";
 
@@ -56,5 +57,15 @@ public class ActivityAttractionDetail extends AppCompatActivity {
                     .add(R.id.container_attraction_detail, FragmentAttractionDetail.createInstance(attraction))
                     .commit();
         }
+    }
+
+    @Override
+    public void onDivisionSelected(String node) {
+
+    }
+
+    @Override
+    public void onDivisionUnselected(String node) {
+
     }
 }

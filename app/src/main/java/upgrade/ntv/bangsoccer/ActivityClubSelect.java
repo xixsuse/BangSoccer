@@ -25,7 +25,7 @@ import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 
-public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DivisionChooserFragment.OnCreateClientDialogListener {
+public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     // name of the file to preserve areas
     private Activity thisActivity;
@@ -184,8 +184,4 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
         }
     }
 
-    @Override
-    public void callDivisionsDialog() {
-
-    }
 }

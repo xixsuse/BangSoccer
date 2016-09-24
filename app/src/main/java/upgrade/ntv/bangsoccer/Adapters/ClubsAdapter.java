@@ -26,7 +26,7 @@ import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 /**
  * Created by jfrom on 3/22/2016.
  */
-public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder>{
+public class ClubsAdapter extends RecyclerView.Adapter<ClubsAdapter.TeamHolder> {
 
     private List<Club> mClubList = new ArrayList<>();
     private Context mContext;

@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import upgrade.ntv.bangsoccer.ActivityMain;
+import upgrade.ntv.bangsoccer.FragmentViewPagerContainer;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
@@ -45,6 +46,10 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
         return ActivityMain.getDivisionsList().get(position).getFirebasekey();
     }
 
+    public String getDivisionNode(int position) {
+        return mDivisions.get(position).getNode();
+    }
+
     @Override
     public int getItemCount() {
         return (this.mDivisions.size());
@@ -56,42 +61,46 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_division_list, parent, false);
-
         return new TeamHolder(v);
     }
 
 
     @Override
-    public void onBindViewHolder(final DivisionsAdapter.TeamHolder holder, final int position) {
+    public void onBindViewHolder(final DivisionsAdapter.TeamHolder holder, int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
         holder.vDivisionName.setText(mDivisions.get(position).getName());
         holder.Id = mDivisions.get(position).getFirebasekey();
         holder.cCheckBox.setChecked(Preferences.getPreferredDivisions(mContext, mDivisions.get(position).getNode()));
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
-                if (holder.cCheckBox.isChecked() == true) {
-
+                String node =mDivisions.get(holder.getAdapterPosition()).getNode();
+                if (holder.cCheckBox.isChecked()) {
                     mDivisions.get(currentPos).setSelected(true);
                     //saves the divisions to the shared preferences
-                    Preferences.setPreferredDivisions(mContext, mDivisions.get(position).getNode());
+
+                    Preferences.setPreferredDivisions(mContext, node);
 
                 } else {
                     mDivisions.get(currentPos).setSelected(false);
                     //removes the divisions from the shared preferences
-                    Preferences.removePreferredDivisions(mContext,mDivisions.get(position).getNode());
+                    Preferences.removePreferredDivisions(mContext, node);
                 }
 
             }
         });
     }
 
+
     public static class TeamHolder extends FavoritesViewHolder {
+
+        String Id;
         @BindView(R.id.division_name_row)
         TextView vDivisionName;
-        String Id;
+
         @BindView(R.id.checkBox)
         CheckBox cCheckBox;
         @BindView(R.id.division_row_cardview)

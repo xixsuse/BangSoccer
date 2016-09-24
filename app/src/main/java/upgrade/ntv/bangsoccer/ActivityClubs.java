@@ -352,6 +352,11 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     }
 
+    @Override
+    public void onDivisionUnselected(String node) {
+
+    }
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 

@@ -21,6 +21,9 @@ package upgrade.ntv.bangsoccer.Dialogs;
         import upgrade.ntv.bangsoccer.R;
         import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
         import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
+        import upgrade.ntv.bangsoccer.Utils.Preferences;
+
+        import static upgrade.ntv.bangsoccer.ActivityMain.mDivisions;
 
 /**
  * Created by jfro on 8/25/16.
@@ -35,7 +38,6 @@ public class DivisionChooserFragment extends DialogFragment  {
     @BindView(R.id.divisions_recyclerview)
     RecyclerView recyclerView;
 
-    public List<Divisions> divisionsSelect = new ArrayList<>();
     private DivisionsAdapter divisionsAdapter;
     private GridLayoutManager lLayout;
 
@@ -75,7 +77,12 @@ public class DivisionChooserFragment extends DialogFragment  {
             public void onItemClick(View view, int position) {
                 // mPlayerAdapter.getPlayerID(position);
                 //  String x =  mPlayerAdapter.getPlayerId(position);
-                mListener.onDivisionSelected(divisionsAdapter.getDivisionNode(position));
+                if(Preferences.getPreferredDivisions(getActivity(), mDivisions.get(position).getNode())){
+                    mListener.onDivisionSelected(divisionsAdapter.getDivisionNode(position));
+                }else {
+                    mListener.onDivisionUnselected(divisionsAdapter.getDivisionID(position));
+                }
+
 
 
             }
@@ -119,5 +126,6 @@ public class DivisionChooserFragment extends DialogFragment  {
 
     public interface onDivisionFragmentInteractionListener {
         void onDivisionSelected(String node);
+        void onDivisionUnselected(String divisionKey);
     }
 }

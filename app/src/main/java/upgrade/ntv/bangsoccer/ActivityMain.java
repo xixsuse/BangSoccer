@@ -161,6 +161,11 @@ public class ActivityMain extends AppCompatActivity
 
     }
 
+    @Override
+    public void onDivisionUnselected(String node) {
+
+    }
+
     //firebase division listener
     private class DivisionEvenetListener implements ChildEventListener {
         @Override
@@ -518,10 +523,6 @@ public class ActivityMain extends AppCompatActivity
         int id = item.getItemId();
         Intent intent;
 
-
-        if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
-        }
 
         //noinspection SimplifiableIfStatement
         switch (id) {

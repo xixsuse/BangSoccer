@@ -72,13 +72,13 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
         holder.vDivisionName.setText(mDivisions.get(position).getName());
         holder.Id = mDivisions.get(position).getFirebasekey();
         holder.cCheckBox.setChecked(Preferences.getPreferredDivisions(mContext, mDivisions.get(position).getNode()));
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
                 String node =mDivisions.get(holder.getAdapterPosition()).getNode();
                 if (holder.cCheckBox.isChecked()) {
-
                     mDivisions.get(currentPos).setSelected(true);
                     //saves the divisions to the shared preferences
 
@@ -96,9 +96,11 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
 
 
     public static class TeamHolder extends FavoritesViewHolder {
+
+        String Id;
         @BindView(R.id.division_name_row)
         TextView vDivisionName;
-        String Id;
+
         @BindView(R.id.checkBox)
         CheckBox cCheckBox;
         @BindView(R.id.division_row_cardview)

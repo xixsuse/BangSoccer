@@ -314,6 +314,11 @@ public class ActivityTour extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onDivisionUnselected(String node) {
+
+    }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

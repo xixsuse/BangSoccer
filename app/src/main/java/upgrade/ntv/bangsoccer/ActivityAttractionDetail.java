@@ -63,4 +63,9 @@ public class ActivityAttractionDetail extends AppCompatActivity implements Divis
     public void onDivisionSelected(String node) {
 
     }
+
+    @Override
+    public void onDivisionUnselected(String node) {
+
+    }
 }

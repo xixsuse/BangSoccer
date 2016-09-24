@@ -381,17 +381,14 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @Override
     public void onDivisionSelected(String node) {
         //updates the viewpager adapater
-    viewPagerContainerFragment.get().updateBasedOnDivisionSelection(node);
+    viewPagerContainerFragment.get().addSelectedDivision(node);
     }
 
+    @Override
+    public void onDivisionUnselected(String divisionKey) {
+        //updates the viewpager adapater
+    viewPagerContainerFragment.get().removeUnselectedDivision(divisionKey);
+    }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     * <p/>
-     * <p/>
-     * /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
 
 }

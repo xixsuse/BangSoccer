@@ -22,7 +22,7 @@
             android:id="@+id/collapse_toolbar"
             android:layout_width="match_parent"
             android:layout_height="256dp"
-            android:elevation="4dp"
+            android:clickable="false"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -31,6 +31,7 @@
                 android:id="@+id/app_barr_news_details_imageheader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="false"
                 android:background="@drawable/bg_upgrade"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
@@ -40,13 +41,10 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                android:elevation="8dp"/>
+                app:layout_collapseMode="pin"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

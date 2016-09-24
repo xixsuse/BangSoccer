@@ -3,10 +3,12 @@ package upgrade.ntv.bangsoccer;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +65,6 @@ public class FragmentViewPagerContainer extends Fragment  {
 
     public static FragmentViewPagerContainer newInstance() {
         FragmentViewPagerContainer frag = new FragmentViewPagerContainer();
-      /*  Bundle args = new Bundle();
-        args.putInt(GAME_OF_THE_WEEK, pos);
-        frag.setArguments(args);*/
         return frag;
     }
 
@@ -89,16 +88,17 @@ public class FragmentViewPagerContainer extends Fragment  {
         return this.mViewPager;
     }
 
-    public void updateBasedOnDivisionSelection(String node) {
-
-       if( Preferences.getPreferredDivisions(getContext(), node)){
-
-
-       }else {
+    public void addSelectedDivision(String node) {
 
            mTourneyCalendarPagerAdapter.referenceFinder(node);
            mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-       }
+
+    }
+
+    public void removeUnselectedDivision(String divisionKey) {
+
+        mTourneyCalendarPagerAdapter.removeFromTheList(divisionKey);
+        mTourneyCalendarPagerAdapter.notifyDataSetChanged();
 
     }
 
@@ -106,6 +106,29 @@ public class FragmentViewPagerContainer extends Fragment  {
 
 
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
+
+        private boolean removeFromTheList(String divisionKey){
+            int index = 0;
+            for (Day day :
+                    mMatchesOfTheDiv) {
+                    Map<String, Match> matchMap = day.getGames();
+                    for (Map.Entry<String, Match> entry :
+                            matchMap.entrySet()) {
+                        Match value1 = entry.getValue();
+                      if(divisionKey.equals(value1.getTournamentId())){
+                          //removes the tourney from the list
+
+                             mMatchesOfTheDiv.remove(day);
+                            // removeTabPage(index);
+                             notifyDataSetChanged();
+
+                      }
+                    }
+
+            }
+
+            return  true;
+        }
 
 
 
@@ -187,6 +210,7 @@ public class FragmentViewPagerContainer extends Fragment  {
         private String makeFragmentName(int viewId, int index) {
             return "android:switcher:" + viewId + ":" + index;
         }
+
 
         @Override
         public Fragment getItem(int position) {

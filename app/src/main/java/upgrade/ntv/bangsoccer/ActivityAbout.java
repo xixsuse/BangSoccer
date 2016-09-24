@@ -110,4 +110,9 @@ public class ActivityAbout extends AppCompatActivity implements CollapsingToolba
     public void onDivisionSelected(String node) {
 
     }
+
+    @Override
+    public void onDivisionUnselected(String node) {
+
+    }
 }

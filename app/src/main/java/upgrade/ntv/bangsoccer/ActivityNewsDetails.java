@@ -35,8 +35,6 @@ public class ActivityNewsDetails extends AppCompatActivity implements
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private DrawerLayout drawer;
-    private Activity thisActivity;
     private int newsFeedID=-1;
 
     //private List<NewsFeedItem> newsFeedItems = new ArrayList<>();

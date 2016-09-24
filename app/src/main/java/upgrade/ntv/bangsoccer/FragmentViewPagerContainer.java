@@ -120,7 +120,6 @@ public class FragmentViewPagerContainer extends Fragment  {
             }
             return array;
         }
-
        boolean removeDay( List<Day> array){
            boolean result = false;
 
@@ -135,10 +134,12 @@ public class FragmentViewPagerContainer extends Fragment  {
            return  result;
        }
 
+            //remove a division.
         boolean nukeElement(String divisionKey){
             return removeDay(matchScanner(divisionKey));
         }
 
+        //query the division calendar based on the firebase node name
         private void addEvelentListener(Query q) {
             q.addChildEventListener(new ChildEventListener() {
                 @Override
@@ -173,7 +174,7 @@ public class FragmentViewPagerContainer extends Fragment  {
                 }
             });
         }
-
+        // returns the pertinent query to firebase by node name
         private Query referenceFinder(String id) {
 
             Query queryMatchesOfTheDay = null;
@@ -188,6 +189,10 @@ public class FragmentViewPagerContainer extends Fragment  {
                     break;
                 case "Div3_Calendar":
                     queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
+                    addEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                    break;
+                default:
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
                     addEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
                     break;
             }

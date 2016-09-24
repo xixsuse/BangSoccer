@@ -18,11 +18,13 @@ import android.view.View;
 
 import java.util.List;
 
+import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 
 
-public class ActivityNewsDetails extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentNewsFeeddetails.OnListFragmentInteractionListener {
+public class ActivityNewsDetails extends AppCompatActivity implements
+        FragmentNewsFeeddetails.OnListFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -33,8 +35,6 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private DrawerLayout drawer;
-    private Activity thisActivity;
     private int newsFeedID=-1;
 
     //private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
@@ -51,8 +51,6 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
         if(extras!=null)
             newsFeedID= extras.getInt("MynewsFeedID");
 
-
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -64,96 +62,11 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
         mViewPager.setCurrentItem(newsFeedID);
 
 
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
-       /* getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);*/
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, FragmentNewsFeeddetails.getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_main);
-
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-
-
-
-    }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_news_details, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-
-        Intent intent = DrawerSelector.onItemSelected(this, id);
-
-        if (intent != null) {
-
-            startActivity(intent);
-            //  overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
     }
 
     @Override
     public void onListFragmentInteraction() {
 
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-
-        }else{
-            super.onBackPressed();
-        }
     }
 
     /**
@@ -185,17 +98,5 @@ public class ActivityNewsDetails extends AppCompatActivity implements Navigation
             return qty;
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
-        }
     }
 }

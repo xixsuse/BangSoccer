@@ -1,6 +1,5 @@
 package upgrade.ntv.bangsoccer;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,11 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.luseen.datelibrary.DateConverter;
-import com.luseen.datelibrary.DateHelper;
-import com.luseen.datelibrary.DatePatterns;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,12 +37,14 @@ import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv3Ref;
  * Created by root on 7/10/16.
  */
 
-public class FragmentViewPagerContainer extends Fragment {
+public class FragmentViewPagerContainer extends Fragment  {
     private TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
     private ViewPager mViewPager;
     private List<Day> mMatchesOfTheDiv = new ArrayList<>();
     private int dateInCurrentWeek = -1;
     private final static String GAME_OF_THE_WEEK = "GAMES";
+
+
 
     private Query query;
 
@@ -60,9 +57,6 @@ public class FragmentViewPagerContainer extends Fragment {
 
     public static FragmentViewPagerContainer newInstance() {
         FragmentViewPagerContainer frag = new FragmentViewPagerContainer();
-      /*  Bundle args = new Bundle();
-        args.putInt(GAME_OF_THE_WEEK, pos);
-        frag.setArguments(args);*/
         return frag;
     }
 
@@ -81,14 +75,71 @@ public class FragmentViewPagerContainer extends Fragment {
 
         return root;
     }//2102
+
     public ViewPager getViewPager() {
         return this.mViewPager;
     }
 
+    public void addSelectedDivision(String node) {
+
+           mTourneyCalendarPagerAdapter.referenceFinder(node);
+           mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+
+    }
+
+    public void removeUnselectedDivision(String divisionKey) {
+
+        mTourneyCalendarPagerAdapter.nukeElement(divisionKey);
+        mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+
+    }
+
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
 
+       synchronized  List<Day> matchScanner(String divisionKey){
+           List<Day> array = new ArrayList<>();
+            if (mMatchesOfTheDiv.size() >0) {
 
+                for (Day day : mMatchesOfTheDiv) {
+                    //iterate thru the map to pull all the
+                    Map<String, Match> matchMap = day.getGames();
+                    for (Map.Entry<String, Match> entry :
+                            matchMap.entrySet()) {
+                        Match value1 = entry.getValue();
 
+                        if (divisionKey.equals(value1.getTournamentId())) {
+                            //removes the tourney from the list
+                            if(!array.contains(day)){
+
+                                array.add(day);
+                            }
+                        }
+                    }
+
+                }
+            }
+            return array;
+        }
+       boolean removeDay( List<Day> array){
+           boolean result = false;
+
+           for (Day day :  array
+                ) {
+
+               mMatchesOfTheDiv.remove(day);
+               // removeTabPage(index);
+               notifyDataSetChanged();
+           }
+
+           return  result;
+       }
+
+            //remove a division.
+        boolean nukeElement(String divisionKey){
+            return removeDay(matchScanner(divisionKey));
+        }
+
+        //query the division calendar based on the firebase node name
         private void addEvelentListener(Query q) {
             q.addChildEventListener(new ChildEventListener() {
                 @Override
@@ -123,7 +174,7 @@ public class FragmentViewPagerContainer extends Fragment {
                 }
             });
         }
-
+        // returns the pertinent query to firebase by node name
         private Query referenceFinder(String id) {
 
             Query queryMatchesOfTheDay = null;
@@ -140,9 +191,15 @@ public class FragmentViewPagerContainer extends Fragment {
                     queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
                     addEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
                     break;
+                default:
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
+                    addEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                    break;
             }
             return queryMatchesOfTheDay;
         }
+
+
 
         public TourneyCalendarPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -165,6 +222,7 @@ public class FragmentViewPagerContainer extends Fragment {
         private String makeFragmentName(int viewId, int index) {
             return "android:switcher:" + viewId + ":" + index;
         }
+
 
         @Override
         public Fragment getItem(int position) {

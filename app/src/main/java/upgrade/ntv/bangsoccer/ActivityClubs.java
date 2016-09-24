@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
@@ -45,8 +44,9 @@ import upgrade.ntv.bangsoccer.TournamentObjects.Players;
 
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
-public class ActivityClubs extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,
-        FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnListFragmentInteractionListener, DivisionChooserFragment.OnCreateClientDialogListener {
+public class ActivityClubs extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener,
+        NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,DivisionChooserFragment.onDivisionFragmentInteractionListener,
+        FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnListFragmentInteractionListener{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout drawer;
@@ -348,7 +348,12 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     }
 
     @Override
-    public void callDivisionsDialog() {
+    public void onDivisionSelected(String node) {
+
+    }
+
+    @Override
+    public void onDivisionUnselected(String node) {
 
     }
 

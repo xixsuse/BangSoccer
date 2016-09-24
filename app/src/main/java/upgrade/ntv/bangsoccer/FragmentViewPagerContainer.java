@@ -1,14 +1,11 @@
 package upgrade.ntv.bangsoccer;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +16,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.luseen.datelibrary.DateConverter;
-import com.luseen.datelibrary.DateHelper;
-import com.luseen.datelibrary.DatePatterns;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.TournamentObjects.Day;
 import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.TournamentObjects.Match;
@@ -97,40 +89,55 @@ public class FragmentViewPagerContainer extends Fragment  {
 
     public void removeUnselectedDivision(String divisionKey) {
 
-        mTourneyCalendarPagerAdapter.removeFromTheList(divisionKey);
+        mTourneyCalendarPagerAdapter.nukeElement(divisionKey);
         mTourneyCalendarPagerAdapter.notifyDataSetChanged();
 
     }
 
-
-
-
     public class TourneyCalendarPagerAdapter extends FragmentPagerAdapter {
 
-        private boolean removeFromTheList(String divisionKey){
-            int index = 0;
-            for (Day day :
-                    mMatchesOfTheDiv) {
+       synchronized  List<Day> matchScanner(String divisionKey){
+           List<Day> array = new ArrayList<>();
+            if (mMatchesOfTheDiv.size() >0) {
+
+                for (Day day : mMatchesOfTheDiv) {
+                    //iterate thru the map to pull all the
                     Map<String, Match> matchMap = day.getGames();
                     for (Map.Entry<String, Match> entry :
                             matchMap.entrySet()) {
                         Match value1 = entry.getValue();
-                      if(divisionKey.equals(value1.getTournamentId())){
-                          //removes the tourney from the list
 
-                             mMatchesOfTheDiv.remove(day);
-                            // removeTabPage(index);
-                             notifyDataSetChanged();
+                        if (divisionKey.equals(value1.getTournamentId())) {
+                            //removes the tourney from the list
+                            if(!array.contains(day)){
 
-                      }
+                                array.add(day);
+                            }
+                        }
                     }
 
+                }
             }
-
-            return  true;
+            return array;
         }
 
+       boolean removeDay( List<Day> array){
+           boolean result = false;
 
+           for (Day day :  array
+                ) {
+
+               mMatchesOfTheDiv.remove(day);
+               // removeTabPage(index);
+               notifyDataSetChanged();
+           }
+
+           return  result;
+       }
+
+        boolean nukeElement(String divisionKey){
+            return removeDay(matchScanner(divisionKey));
+        }
 
         private void addEvelentListener(Query q) {
             q.addChildEventListener(new ChildEventListener() {

@@ -77,7 +77,7 @@ public class DivisionChooserFragment extends DialogFragment  {
             public void onItemClick(View view, int position) {
                 // mPlayerAdapter.getPlayerID(position);
                 //  String x =  mPlayerAdapter.getPlayerId(position);
-                if(Preferences.getPreferredDivisions(getActivity(), mDivisions.get(position).getNode())){
+                if(!Preferences.getPreferredDivisions(getActivity(), mDivisions.get(position).getNode())){
                     mListener.onDivisionSelected(divisionsAdapter.getDivisionNode(position));
                 }else {
                     mListener.onDivisionUnselected(divisionsAdapter.getDivisionID(position));

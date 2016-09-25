@@ -1,11 +1,16 @@
+/*
 package upgrade.ntv.bangsoccer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import upgrade.ntv.bangsoccer.TournamentObjects.Day;
 import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.TournamentObjects.Match;
@@ -33,18 +41,27 @@ import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv1Ref;
 import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv2Ref;
 import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv3Ref;
 
+*/
 /**
  * Created by root on 7/10/16.
- */
+ *//*
 
-public class FragmentViewPagerContainer extends Fragment  {
+
+    class FragmentViewPagerContainer extends Fragment  {
     private TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
     private ViewPager mViewPager;
     private List<Day> mMatchesOfTheDiv = new ArrayList<>();
     private int dateInCurrentWeek = -1;
     private final static String GAME_OF_THE_WEEK = "GAMES";
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
+
+
+    private Unbinder unbinder;
 
     private Query query;
 
@@ -63,9 +80,55 @@ public class FragmentViewPagerContainer extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       // dateInCurrentWeek = getArguments().getInt(GAME_OF_THE_WEEK);
 
-        View root = inflater.inflate(R.layout.fragment_content_recivleview, container, false);
+        //declares the toolbar
+  */
+/*      toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        //enables the toolbar home button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // terminates the activity when the home button is pressed
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });*//*
+
+
+        View root = inflater.inflate(R.layout.app_bar_matches, container, false);
+        ButterKnife.bind(this, root);
+
+        //declares the toolbar
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        //enables the toolbar home button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+*/
+/*        // terminates the activity when the home button is pressed
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });*//*
+
+
+        if (toolbar != null) {
+            toolbar.setTitle("Torneo");
+        }
+
+        // tabLayout.setupWithViewPager(mViewPager);
+        assert tabLayout != null;
+        if (!tabLayout.isShown()) {
+            tabLayout.setVisibility(View.VISIBLE);
+        }
+
+
         mTourneyCalendarPagerAdapter = new TourneyCalendarPagerAdapter(getChildFragmentManager());
 
         // Set up the ViewPager, attaching the adapter and ...
@@ -73,13 +136,35 @@ public class FragmentViewPagerContainer extends Fragment  {
         mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
         //sets the viewpager to the current week
 
-        return root;
-    }//2102
+        if (ViewCompat.isLaidOut(tabLayout)) {
+            tabLayout.setupWithViewPager(mViewPager);
+        } else {
+            tabLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    tabLayout.setupWithViewPager(mViewPager);
+                    tabLayout.removeOnLayoutChangeListener(this);
+                }
+            });
+        }
 
-    public ViewPager getViewPager() {
-        return this.mViewPager;
+
+
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {*/
+/*  actionBar.setSelectedNavigationItem(position);*//*
+}
+        });
+        // mViewPager.setCurrentItem(viewPagerContainerFragment.get().getDateInCurrentWeek());
+
+        return root;
     }
 
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
     public void addSelectedDivision(String node) {
 
            mTourneyCalendarPagerAdapter.referenceFinder(node);
@@ -322,3 +407,4 @@ public class FragmentViewPagerContainer extends Fragment  {
         }
     }
 }
+*/

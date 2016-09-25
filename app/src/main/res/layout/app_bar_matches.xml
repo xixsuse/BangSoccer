@@ -25,38 +25,61 @@
         <include
             layout="@layout/content_tourney"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:elevation="4dp"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_gravity="bottom"
+            android:clickable="false"
+            android:focusable="false"
+            app:cardBackgroundColor="@color/colorAccentLight">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                android:layout_height="48dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:weightSum="9">
 
-            </android.support.v7.widget.Toolbar>
+                <ImageView
+                    android:id="@+id/matches_calendar"
+                    android:layout_width="0dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:src="@drawable/ic_match_vs"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"/>
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollIndicators="bottom"
-                android:visibility="gone"
-                app:tabMode="scrollable"
-                app:tabSelectedTextColor="@color/colorAccent"
-                app:tabTextColor="@color/colorAccentLight" />
+                <ImageView
+                    android:id="@+id/matches_stats"
+                    android:layout_width="0dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:src="@drawable/ic_club_stats"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"/>
+                <ImageView
+                    android:id="@+id/matches_leaders"
+                    android:layout_width="0dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:src="@drawable/ic_game_winner_celebration_on_podium"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"/>
 
-        </android.support.design.widget.AppBarLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
     </android.support.design.widget.CoordinatorLayout>
 

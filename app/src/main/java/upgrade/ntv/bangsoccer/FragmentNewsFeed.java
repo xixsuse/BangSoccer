@@ -82,12 +82,12 @@ public class FragmentNewsFeed extends Fragment {
         // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(ActivityTourneyCalendar.getReference()
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(getActivity()
                 , recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
 
-                Intent intent = DrawerSelector.onItemSelected(ActivityTourneyCalendar.getReference(),
+                Intent intent = DrawerSelector.onItemSelected(getActivity(),
                         Constants.NEWS_FEED_DETAILS_ACTIVITY);
 
                 //will be used to identify and go back to the  calling fragment newsfeedfragment (#1)

@@ -150,7 +150,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityMain" />
         </activity>
-        <activity android:name=".FireTestActivity" />
 
     </application>
 

@@ -17,7 +17,6 @@ package upgrade.ntv.bangsoccer.Dialogs;
         import butterknife.Unbinder;
         import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
         import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
-        import upgrade.ntv.bangsoccer.FragmentViewPagerContainer;
         import upgrade.ntv.bangsoccer.R;
         import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
         import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;

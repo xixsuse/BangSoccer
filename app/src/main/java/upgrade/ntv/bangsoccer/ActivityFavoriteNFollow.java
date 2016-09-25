@@ -20,8 +20,6 @@ import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.TournamentObjects.Club;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 
-import static upgrade.ntv.bangsoccer.ActivityTourneyCalendar.tourneyActivity;
-
 
 public class ActivityFavoriteNFollow extends AppCompatActivity {
 

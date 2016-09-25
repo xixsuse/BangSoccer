@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import upgrade.ntv.bangsoccer.ActivityMain;
-import upgrade.ntv.bangsoccer.FragmentViewPagerContainer;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;

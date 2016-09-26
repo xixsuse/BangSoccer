@@ -9,9 +9,6 @@ package upgrade.ntv.bangsoccer.Dialogs;
         import android.view.View;
         import android.view.ViewGroup;
 
-        import java.util.ArrayList;
-        import java.util.List;
-
         import butterknife.BindView;
         import butterknife.ButterKnife;
         import butterknife.Unbinder;
@@ -19,7 +16,6 @@ package upgrade.ntv.bangsoccer.Dialogs;
         import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
         import upgrade.ntv.bangsoccer.R;
         import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
-        import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
         import upgrade.ntv.bangsoccer.Utils.Preferences;
 
         import static upgrade.ntv.bangsoccer.ActivityMain.mDivisions;

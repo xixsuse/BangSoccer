@@ -18,8 +18,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.ActivityMain;
+import upgrade.ntv.bangsoccer.Entities.LeadersIndex;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Players;
+import upgrade.ntv.bangsoccer.Entities.Players;
 
 
 /**
@@ -40,6 +41,48 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
                 Players firebaseRequest = dataSnapshot.getValue(Players.class);
                 firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
                 mPlayersLeader.add(firebaseRequest);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public LeadersAdapter(final List<LeadersIndex> list) {
+
+        queryLeaders = ActivityMain.mPlayersDeftailsRef;
+        queryLeaders.orderByChild("goals");
+        queryLeaders.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Players player = dataSnapshot.getValue(Players.class);
+                String playerid = dataSnapshot.getKey();
+
+                for (LeadersIndex index : list) {
+
+                    if (playerid.equals(index.getPlayerid())) {
+                        player.setmFireBaseKey(dataSnapshot.getKey());
+                        mPlayersLeader.add(player);
+                        notifyDataSetChanged();
+                    }
+                }
                 notifyDataSetChanged();
             }
 

@@ -9,21 +9,13 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
+import upgrade.ntv.bangsoccer.Entities.Divisions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
 
 

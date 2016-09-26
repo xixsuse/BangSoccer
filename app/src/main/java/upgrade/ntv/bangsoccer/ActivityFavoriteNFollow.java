@@ -9,15 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.Adapters.ClubsToFollowAdapter;
 import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
-import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.Entities.Club;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 
 

@@ -39,8 +39,8 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.TournamentObjects.Club;
-import upgrade.ntv.bangsoccer.TournamentObjects.Players;
+import upgrade.ntv.bangsoccer.Entities.Club;
+import upgrade.ntv.bangsoccer.Entities.Players;
 
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 

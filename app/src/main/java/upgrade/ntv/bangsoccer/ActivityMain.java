@@ -68,7 +68,7 @@ import upgrade.ntv.bangsoccer.Attraction.Attraction;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
-import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
+import upgrade.ntv.bangsoccer.Entities.Divisions;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
@@ -115,6 +115,7 @@ public class ActivityMain extends AppCompatActivity
     public static DatabaseReference mTeamsRef;
     public static DatabaseReference mDivisionsRef;
     public static DatabaseReference mMatchRef;
+    public static DatabaseReference  mLeadersofTheDayDiv1Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv1Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv2Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv3Ref ;
@@ -362,12 +363,11 @@ public class ActivityMain extends AppCompatActivity
                 databaseReference = FirebaseDatabase.getInstance().getReference();
                 mPlayersDeftailsRef = databaseReference.child("Players");
                 mTeamsRef = databaseReference.child("Clubs");
-                mMatchRef = databaseReference.child("Match");
                 mDivisionsRef = databaseReference.child("Divisions");
                 mMatchesOfTheDayDiv1Ref = databaseReference.child("Div1_Calendar");
                 mMatchesOfTheDayDiv2Ref = databaseReference.child("Div2_Calendar");
                 mMatchesOfTheDayDiv3Ref = databaseReference.child("Div3_Calendar");
-
+                mLeadersofTheDayDiv1Ref = databaseReference.child("Div1_Leader");
             }
         }
     }

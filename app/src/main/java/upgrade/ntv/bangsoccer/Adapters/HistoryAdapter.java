@@ -18,7 +18,7 @@ import java.util.List;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Match;
+import upgrade.ntv.bangsoccer.Entities.Match;
 
 /**
  * Created by jfrom on 3/19/2016.

@@ -3,6 +3,7 @@ package upgrade.ntv.bangsoccer;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import upgrade.ntv.bangsoccer.Adapters.HistoryAdapter;
+import upgrade.ntv.bangsoccer.Adapters.MatchAdapter;
+import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
 
 /**
  * A fragment representing a list of Items.
@@ -20,8 +23,10 @@ import upgrade.ntv.bangsoccer.Adapters.HistoryAdapter;
 public class FragmentHistory extends Fragment {
 
     // TODO: Customize parameter argument names
-    private static final String CLUB_ID = "CLUBID";
+    private static final String CLUB_ID = "club_id";
+    private static final String DIVISION_ID = "division_id";
     private String mClubId;
+    private String mDivision;
     private HistoryAdapter mHistoryAdapter;
     private OnListFragmentInteractionListener mListener;
 
@@ -32,14 +37,13 @@ public class FragmentHistory extends Fragment {
     public FragmentHistory() {
     }
 
-
-
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static FragmentHistory newInstance(String teamId) {
+    public static FragmentHistory newInstance(String clubId) {
         FragmentHistory fragment = new FragmentHistory();
         Bundle args = new Bundle();
-        args.putString(CLUB_ID, teamId);
+        args.putString(CLUB_ID, clubId);
+        args.putString(DIVISION_ID, "Div1");
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,6 +54,7 @@ public class FragmentHistory extends Fragment {
 
         if (getArguments() != null) {
             mClubId = getArguments().getString(CLUB_ID);
+            mDivision = getArguments().getString(DIVISION_ID);
         }
     }
 
@@ -59,18 +64,18 @@ public class FragmentHistory extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        mHistoryAdapter = new HistoryAdapter(getActivity());
+        mHistoryAdapter = new HistoryAdapter(getContext(), mClubId, mDivision);
 
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        recyclerView.setAdapter(mHistoryAdapter);/*
+        recyclerView.setAdapter(mHistoryAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());*/
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         return view;
     }

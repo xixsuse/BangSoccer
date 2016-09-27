@@ -38,15 +38,16 @@ public class FragmentLeaders extends Fragment {
     public FragmentLeaders() {
     }
 
-    public static FragmentLeaders newInstance() {
+  /*  public static FragmentLeaders newInstance() {
         FragmentLeaders fragment = new FragmentLeaders();
         return fragment;
-    }
+    }*/
 
     public static FragmentLeaders newInstance(List<LeadersIndex> mLeadList) {
         FragmentLeaders fragment = new FragmentLeaders();
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_LEADER_INDEX, (ArrayList<? extends Parcelable>) mLeadList);
+        fragment.setArguments(args);
         return fragment;
     }
 

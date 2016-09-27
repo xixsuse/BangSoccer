@@ -159,7 +159,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourney);
-
+// TODO: PUT THE TOOLBAR IN THE ACTIVITY AND THE TABLAYOUT IN THE FRAGMENT.
         //fragment type id
         int id = R.id.matches_calendar;
 
@@ -856,14 +856,13 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
                     if (leaderMaps.size() > 0) {
                         switch (position) {
-                            case 0:
+                            case  1:
                                 list = leaderMaps.get("goals");
                                 break;
-                            case 1:
+                            case 0:
                                 list = leaderMaps.get("cards");
                                 break;
                         }
-
                         frag = FragmentLeaders.newInstance(list);
                     }
 

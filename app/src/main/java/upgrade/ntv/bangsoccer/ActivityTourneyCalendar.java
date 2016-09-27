@@ -86,7 +86,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @BindView(R.id.matches_leaders)
     ImageView leadersButton;
 
-    private static Map<Integer, String> mBottomBarButtonID = new HashMap<>();
+    //private static Map<Integer, String> mBottomBarButtonID = new HashMap<>();
 
     @Optional
     @OnClick({R.id.matches_calendar, R.id.matches_stats, R.id.matches_leaders})
@@ -94,16 +94,12 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         final int id = view.getId();
         if (getLastSelectedItem() != view.getId()) {
 
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            mFragmentContainer = FragmentViewPagerContainer.newInstance(id);
+            ft.replace(R.id.fragment_holder, mFragmentContainer);
+            //ft.add(R.id.fragment_holder, mFragmentContainer, makePagerFragmentTag(id));
+            ft.commit();
             setLastSpinnerSelectedItem(id);
-
-            Intent mIntent = getIntent();
-            Bundle mBundle = new Bundle();
-            mBundle.putInt(FRAGMENT_TYPE, id);
-            mIntent.putExtras(mBundle);
-
-            recreate();
-            // mFragmentContainer.mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-            startActivity(mIntent);
 
         }
     }
@@ -130,32 +126,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(Constants.TOURNAMENT_ACTIVITY);
     }
-/*
-    public void onOtherButtonBarSelected(int id) {
-
-        switch (id) {
-            case R.id.matches_stats:
-
-                mFragmentContainer.setButtonId(R.id.matches_stats);
-
-                setLastSpinnerSelectedItem(R.id.matches_stats);
-                break;
-
-            case R.id.matches_leaders:
-
-                mFragmentContainer.newCalendarPagerAdapater();
-                setLastSpinnerSelectedItem(R.id.matches_leaders);
-
-                break;
-
-
-            case R.id.matches_calendar:
-                mFragmentContainer.setButtonId(R.id.matches_calendar);
-                setLastSpinnerSelectedItem(R.id.matches_calendar);
-
-                break;
-        }
-    }*/
 
     private void onClickedFragmentLeaders() {
         try {
@@ -482,7 +452,8 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
             for (int i = 0; i < mTourneyCalendarPagerAdapter.getCount(); i++) {
                 //mTourneyCalendarPagerAdapter.getFragmentForPosition(i);
-                mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+               // getFragmentManager().beginTransaction().remove(mTourneyCalendarPagerAdapter.getFragmentForPosition(i)).commit();
+              //  mTourneyCalendarPagerAdapter.notifyDataSetChanged();
             }
 
         }

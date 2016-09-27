@@ -69,6 +69,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener,
         FragmentTourneyStats.OnListFragmentInteractionListener, DivisionChooserFragment.onDivisionFragmentInteractionListener {
 
+    private static final String FRAGMENT_TYPE = "type";
     private static DrawerLayout drawer;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private int mLastSelectedItem;
@@ -85,14 +86,33 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
     @BindView(R.id.matches_leaders)
     ImageView leadersButton;
 
+    private static Map<Integer, String> mBottomBarButtonID = new HashMap<>();
+
     @Optional
     @OnClick({R.id.matches_calendar, R.id.matches_stats, R.id.matches_leaders})
     public void onBottomBarClickListner(View view) {
-        int id = view.getId();
+        final int id = view.getId();
         if (getLastSelectedItem() != view.getId()) {
 
-            onOtherButtonBarSelected(id);
+            setLastSpinnerSelectedItem(id);
+
+            Intent mIntent = getIntent();
+            Bundle mBundle = new Bundle();
+            mBundle.putInt(FRAGMENT_TYPE, id);
+            mIntent.putExtras(mBundle);
+
+            recreate();
+            // mFragmentContainer.mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+            startActivity(mIntent);
+
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Save the user's current game state
+        outState.putInt(FRAGMENT_TYPE, getLastSelectedItem());
+        super.onSaveInstanceState(outState);
     }
 
     public int getLastSelectedItem() {
@@ -110,7 +130,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(Constants.TOURNAMENT_ACTIVITY);
     }
-
+/*
     public void onOtherButtonBarSelected(int id) {
 
         switch (id) {
@@ -135,7 +155,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
                 break;
         }
-    }
+    }*/
 
     private void onClickedFragmentLeaders() {
         try {
@@ -149,21 +169,47 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
+    public String makePagerFragmentTag(int id) {
+        String i = "string";
+        switch (id) {
+            case R.id.matches_calendar:
+                i = "match";
+                break;
+            case R.id.matches_stats:
+                i = "stats";
+                break;
+            case R.id.matches_leaders:
+                i = "leader";
+                break;
+        }
+        return i;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourney);
-        mFragmentContainer = FragmentViewPagerContainer.newInstance();
+
+        //fragment type id
+        int id = R.id.matches_calendar;
+
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            id = savedInstanceState.getInt(FRAGMENT_TYPE, R.id.matches_calendar);
+            setLastSpinnerSelectedItem(id);
+        }
+        mFragmentContainer = FragmentViewPagerContainer.newInstance(id);
 
         ButterKnife.bind(this);
         slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
         BindActivity();
 
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_holder, mFragmentContainer, "matches");
+        ft.add(R.id.fragment_holder, mFragmentContainer, makePagerFragmentTag(id));
         ft.commit();
-        setLastSpinnerSelectedItem(R.id.matches_calendar);
+        setLastSpinnerSelectedItem(id);
 
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 
@@ -308,7 +354,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         ViewPager mViewPager;
 
         private Unbinder unbinder;
-        private int buttonId;
+        private int fragmentId;
         private GenericTypeIndicator<Map<String, Match>> t =
                 new GenericTypeIndicator<Map<String, Match>>() {
                 };
@@ -318,32 +364,27 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
         public FragmentViewPagerContainer() { //holds the tourney calendar
         }
 
-        public static FragmentViewPagerContainer newInstance() {
+        public static FragmentViewPagerContainer newInstance(int id) {
             FragmentViewPagerContainer frag = new FragmentViewPagerContainer();
+            Bundle args = new Bundle();
+            args.putInt("id", id);
+            frag.setArguments(args);
+
             return frag;
         }
 
-        public void newCalendarPagerAdapater() {
+     /*   public void newCalendarPagerAdapater() {
             //removeAll();
             mViewPager.removeAllViews();
             mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-            setButtonId(R.id.matches_leaders);
+            //setButtonId(R.id.matches_leaders);
             FragmentViewPagerContainer.TourneyCalendarPagerAdapter calendarPagerAdapter = new FragmentViewPagerContainer.TourneyCalendarPagerAdapter(getChildFragmentManager());
-//TODO: replace the viewpager fragment entirelly with the new id to get the appropriate fragment from th start.
+
 
             mViewPager.setAdapter(calendarPagerAdapter);
           //  mTourneyCalendarPagerAdapter.notifyDataSetChanged();
         }
-
-
-
-        public int getButtonId() {
-            return buttonId;
-        }
-
-        public void setButtonId(int buttonId) {
-            this.buttonId = buttonId;
-        }
+*/
 
         /*********************
          * Fragment  Overrides
@@ -355,6 +396,12 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
             View root = inflater.inflate(R.layout.fragment_content_recivleview, container, false);
             unbinder = ButterKnife.bind(this, root);
+
+
+            Bundle b = getArguments();
+            if (null != b) { //Null Checking
+                fragmentId = b.getInt("id", R.id.matches_calendar);
+            }
 
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -371,10 +418,9 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             if (toolbar != null) {
                 toolbar.setTitle("Torneo");
             }
-            setButtonId(R.id.matches_calendar);
-            mTourneyCalendarPagerAdapter = new FragmentViewPagerContainer.TourneyCalendarPagerAdapter(getChildFragmentManager());
+            mTourneyCalendarPagerAdapter = new FragmentViewPagerContainer.TourneyCalendarPagerAdapter(getChildFragmentManager(), fragmentId);
 
-            mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
+                mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
             //sets the viewpager to the current week
 
             if (ViewCompat.isLaidOut(tabLayout)) {
@@ -410,12 +456,12 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
          **********************/
         public void addSelectedDivision(String node) {
 
-            if(getButtonId()==R.id.matches_calendar){
+            if (fragmentId == R.id.matches_calendar) {
 
                 mTourneyCalendarPagerAdapter.calendarDivReferenceFinder(node);
                 mTourneyCalendarPagerAdapter.notifyDataSetChanged();
             }
-            if(getButtonId()==R.id.matches_leaders){
+            if (fragmentId == R.id.matches_leaders) {
 
                 mTourneyCalendarPagerAdapter.leaderDivReferenceFinder(node);
                 mTourneyCalendarPagerAdapter.notifyDataSetChanged();
@@ -427,18 +473,17 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
 
             mTourneyCalendarPagerAdapter.nukeElement(divisionKey);
             mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-           // mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
+            // mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
 
         }
 
         public void removeAll() {
 
 
-                for (int i = 0 ; i < mTourneyCalendarPagerAdapter.getCount() ; i++ )
-                {
-                    mTourneyCalendarPagerAdapter.getFragmentForPosition(i);
-                    mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-                }
+            for (int i = 0; i < mTourneyCalendarPagerAdapter.getCount(); i++) {
+                //mTourneyCalendarPagerAdapter.getFragmentForPosition(i);
+                mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+            }
 
         }
 
@@ -501,195 +546,208 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             }
 
             @Nullable
-            public void getFragmentForPosition(int position) {
+            public Fragment getFragmentForPosition(int position) {
                 String tag = makeFragmentName(mViewPager.getId(), (int) getItemId(position));
                 Fragment fragment = getChildFragmentManager().findFragmentByTag(tag);
-                getFragmentManager().beginTransaction().remove(fragment).commit();
-                fragment=null;
+                // getFragmentManager().beginTransaction().remove(fragment).commit();
+                return fragment;
             }
 
-            TourneyCalendarPagerAdapter(FragmentManager fm) {
+            TourneyCalendarPagerAdapter(FragmentManager fm, int id) {
                 super(fm);
-                if (mMatchesOfTheDiv.size() == 0) {
-                    for (Divisions div : mDivisions) {
-                        //checks if its saved in the shared preferences
-                        if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
-                            //get the calendar for a given node
-                            queryCalendar = calendarDivReferenceFinder(div.getNode());
-                        }
-                        if (queryCalendar == null) {
-
-                        }
-                    }
-                }
-                if (leaderMaps.size() == 0) {
-
-                    for (Divisions div : mDivisions) {
-                        //checks if its saved in the shared preferences
-                        if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
-                            //get the calendar for a given node
-                            queryLeader = leaderDivReferenceFinder(div.getNode().substring(0, 5) + "Leader");
-                        }
-                        if (queryLeader == null) {
-
-                        }
-                    }
-                }
-            }
-
-            int getPagerCount() {
-                int size = 0;
-                switch (getButtonId()) {
-
-                    case R.id.matches_stats:
-                       //size=;
-
-                        break;
-
-                    case R.id.matches_leaders:
-                        size = leaderMaps.size();
-                        break;
-
+                switch (id) {
                     case R.id.matches_calendar:
-                        size = mMatchesOfTheDiv.size();
+                        if (mMatchesOfTheDiv.size() == 0) {
+                            for (Divisions div : mDivisions) {
+                                //checks if its saved in the shared preferences
+                                if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
+                                    //get the calendar for a given node
+                                    queryCalendar = calendarDivReferenceFinder(div.getNode());
+
+                                }
+                                if (queryCalendar == null) {
+
+                                }
+                            }
+                        }
                         break;
+                    case R.id.matches_leaders:
+                        if (leaderMaps.size() == 0) {
+
+                            for (Divisions div : mDivisions) {
+                                //checks if its saved in the shared preferences
+                                if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
+                                    //get the calendar for a given node
+                                    queryLeader = leaderDivReferenceFinder(div.getNode().substring(0, 5) + "Leader");
+                                }
+                                if (queryLeader == null) {
+
+                                }
+                            }
+                        }
+                        break;
+                    case R.id.matches_stats:
+                        break;
+
                 }
-                return size;
+        }
+
+        int getPagerCount() {
+            int size = 0;
+            switch (fragmentId) {
+
+                case R.id.matches_stats:
+                    //size=;
+
+                    break;
+
+                case R.id.matches_leaders:
+                    size = leaderMaps.size();
+                    break;
+
+                case R.id.matches_calendar:
+                    size = mMatchesOfTheDiv.size();
+                    break;
+            }
+            return size;
+        }
+
+        boolean analizeDate(int position) {
+            //match day converted to Date to compare against the upcoming dates and setup the tablayout
+            date = DateConverter.stringToDate(mMatchesOfTheDiv.get(position).getDate(), "dd-MM-yyyy");
+            Calendar calendar = Calendar.getInstance();
+            //default day is Sunday, set to Monday
+            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            //holds the monday pof the week
+            Date monday = calendar.getTime();
+            //ensures GC on calendar
+            calendar = null;
+            //gets na new instance for Sunday
+            calendar = Calendar.getInstance();
+            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            Date sunday = calendar.getTime();
+
+            //do action:
+            if ((date.equals(monday) || date.after(monday)) && (date.equals(sunday) || date.before(sunday))) {
+
+                System.out.println(date.toString() + "sunday");
+                return true;
             }
 
-            boolean analizeDate(int position) {
-                //match day converted to Date to compare against the upcoming dates and setup the tablayout
-                date = DateConverter.stringToDate(mMatchesOfTheDiv.get(position).getDate(), "dd-MM-yyyy");
-                Calendar calendar = Calendar.getInstance();
-                //default day is Sunday, set to Monday
-                calendar.setFirstDayOfWeek(Calendar.MONDAY);
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                //holds the monday pof the week
-                Date monday = calendar.getTime();
-                //ensures GC on calendar
-                calendar = null;
-                //gets na new instance for Sunday
-                calendar = Calendar.getInstance();
-                calendar.setFirstDayOfWeek(Calendar.MONDAY);
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-                Date sunday = calendar.getTime();
+            return false;
+        }
 
-                //do action:
-                if ((date.equals(monday) || date.after(monday)) && (date.equals(sunday) || date.before(sunday))) {
+        private String makeFragmentName(int viewId, int index) {
+            return "android:switcher:" + viewId + ":" + index;
+        }
 
-                    System.out.println(date.toString() + "sunday");
-                    return true;
+
+        String setFragmentMatchesTabs(int position) {
+            if (mMatchesOfTheDiv.size() > 0) {
+                Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
+                for (Map.Entry<String, Match> entry :
+                        matchMap.entrySet()) {
+                    Match value1 = entry.getValue();
+                    mMatchesOfTheDiv.get(position).setDate(value1.getDate());
                 }
-
-                return false;
-            }
-
-            private String makeFragmentName(int viewId, int index) {
-                return "android:switcher:" + viewId + ":" + index;
-            }
-
-
-            String setFragmentMatchesTabs(int position) {
-                if (mMatchesOfTheDiv.size() > 0) {
-                    Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
-                    for (Map.Entry<String, Match> entry :
-                            matchMap.entrySet()) {
-                        Match value1 = entry.getValue();
-                        mMatchesOfTheDiv.get(position).setDate(value1.getDate());
-                    }
-                    if (analizeDate(position)) {
-                        dateInCurrentWeek = position;
-                    }
-                    // sets the viewpager to the games of the week.
-                    // needs to be here to references the tab layout
-                    if (dateInCurrentWeek != -1) {
-                        mViewPager.setCurrentItem(dateInCurrentWeek, true);
-                    }
+                if (analizeDate(position)) {
+                    dateInCurrentWeek = position;
                 }
-            return mMatchesOfTheDiv.get(position).getDate().toUpperCase();}
-
-            void setFragmentStatsTabs(int position) {
-                if (mMatchesOfTheDiv.size() > 0) {
+                // sets the viewpager to the games of the week.
+                // needs to be here to references the tab layout
+                if (dateInCurrentWeek != -1) {
+                    mViewPager.setCurrentItem(dateInCurrentWeek);
                 }
             }
+            return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
+        }
 
-            String setFragmentLeaderTabs(int position) {
-                String header = "";
-                if (leaderMaps.size() > 0) {
-                    switch (position) {
-                        case 0:
-                            header = "goals".toUpperCase();
-                            break;
-                        case 1:
-                            header ="cards".toUpperCase();
-                            break;
-                    }
+        void setFragmentStatsTabs(int position) {
+            if (mMatchesOfTheDiv.size() > 0) {
+            }
+        }
 
-            }return header; }
-
-            /********************
-             * FIRE BASE LISTENERS
-             *********************/
-
-
-            // returns the pertinent query to firebase by node name
-            private Query calendarDivReferenceFinder(String id) {
-
-
-                Query queryMatchesOfTheDay = null;
-                switch (id) {
-                    case "Div1_Calendar":
-                        queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
-                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+        String setFragmentLeaderTabs(int position) {
+            String header = "";
+            if (leaderMaps.size() > 0) {
+                switch (position) {
+                    case 0:
+                        header = "goals".toUpperCase();
                         break;
-                    case "Div2_Calendar":
-                        queryMatchesOfTheDay = mMatchesOfTheDayDiv2Ref;
-                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
-                        break;
-                    case "Div3_Calendar":
-                        queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
-                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
-                        break;
-                    default:
-                        queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
-                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                    case 1:
+                        header = "cards".toUpperCase();
                         break;
                 }
-                return queryMatchesOfTheDay;
+
             }
+            return header;
+        }
 
-            private Query leaderDivReferenceFinder(String id) {
+        /********************
+         * FIRE BASE LISTENERS
+         *********************/
 
-                Query queryLeaderPlayers = null;
-                switch (id) {
-                    case "Div1_Leader":
-                        queryLeaderPlayers = mLeadersofTheDayDiv1Ref;
-                        addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));
-                        break;
-                    case "Div2_Leader":/*
+
+        // returns the pertinent query to firebase by node name
+        private Query calendarDivReferenceFinder(String id) {
+
+
+            Query queryMatchesOfTheDay = null;
+            switch (id) {
+                case "Div1_Calendar":
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
+                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                    break;
+                case "Div2_Calendar":
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv2Ref;
+                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                    break;
+                case "Div3_Calendar":
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
+                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                    break;
+                default:
+                    queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
+                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                    break;
+            }
+            return queryMatchesOfTheDay;
+        }
+
+        private Query leaderDivReferenceFinder(String id) {
+
+            Query queryLeaderPlayers = null;
+            switch (id) {
+                case "Div1_Leader":
+                    queryLeaderPlayers = mLeadersofTheDayDiv1Ref;
+                    addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));
+                    break;
+                case "Div2_Leader":/*
                         queryLeaderPlayers = mMatchesOfTheDayDiv2Ref;
                         addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));*/
-                        break;
-                    case "Div3_Leader":/*
+                    break;
+                case "Div3_Leader":/*
                         queryLeaderPlayers = mMatchesOfTheDayDiv3Ref;
                         addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));*/
-                        break;
-                    default:/*
+                    break;
+                default:/*
                         queryLeaderPlayers = mMatchesOfTheDayDiv1Ref;
                         addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));*/
-                        break;
-                }
-                return queryLeaderPlayers;
+                    break;
             }
+            return queryLeaderPlayers;
+        }
 
 
-            //firebase event listener
-            private void addLeadersPlayerEvenetListener(Query q) {
-                q.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Players player = dataSnapshot.getValue(Players.class);
-                        String playerid = dataSnapshot.getKey();
+        //firebase event listener
+        private void addLeadersPlayerEvenetListener(Query q) {
+            q.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Players player = dataSnapshot.getValue(Players.class);
+                    String playerid = dataSnapshot.getKey();
 
                        /* for (LeadersIndex index : mLeaderIndex) {
 
@@ -699,215 +757,218 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                                 notifyDataSetChanged();
                             }
                         }*/
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-            //query the division calendar based on the firebase node name
-
-
-            private void addLeadersEvelentListener(Query q) {
-
-                q.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String key = dataSnapshot.getKey();
-                        List<LeadersIndex> mLeaderIndex = new ArrayList<>();
-
-                        for (DataSnapshot mdSnapshot : dataSnapshot.getChildren()) {
-                            LeadersIndex p = mdSnapshot.getValue(LeadersIndex.class);
-                            mLeaderIndex.add(p);
-
-                        }
-
-                        //   Map<String, Map<String, LeadersIndex>> p2 = dataSnapshot.getValue(j);
-                        leaderMaps.put(key, mLeaderIndex);
-                        // mLeaderIndex.add(p);
-                    }
-
-                    // DataSnapshot { key = cards, value = {P2={playerid=101, pos=2}, P1={playerid=100, pos=1}} }
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            //query the division calendar based on the firebase node name
-            private void addCalendarEvelentListener(Query q) {
-                q.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Day d = dataSnapshot.getValue(Day.class);
-                        dataSnapshot.getChildren();
-                        d.setId(dataSnapshot.getKey());
-                        d.setGames(dataSnapshot.getValue(t));
-                        mMatchesOfTheDiv.add(d);
-                        notifyDataSetChanged();
-
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-
-            /*********************
-             * Fragment Overrrides
-             **********************/
-            @Override
-            public Fragment getItem(int position) {
-
-                boolean selected = false;
-                Fragment frag = null;
-
-                switch (getButtonId()) {
-
-                    case R.id.matches_stats:
-                        frag = FragmentTourneyStats.newInstance();
-                        break;
-
-                    case R.id.matches_leaders:
-
-                        List<LeadersIndex> list = new ArrayList<>();
-
-                        if (leaderMaps.size() > 0) {
-                            switch (position) {
-                                case 0:
-                                    list = leaderMaps.get("goals");
-                                    break;
-                                case 1:
-                                    list = leaderMaps.get("cards");
-                                    break;
-                            }
-
-                            frag = FragmentLeaders.newInstance(list);
-                        }
-
-                        break;
-
-                    case R.id.matches_calendar:
-                      //  frag = FragmentMatches.newInstance();
-
-                        if (mMatchesOfTheDiv.size() > 0) {
-
-                            Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
-                            for (Map.Entry<String, Match> entry :
-                                    matchMap.entrySet()) {
-                                Match value1 = entry.getValue();
-                                mMatchesOfTheDiv.get(position).setDate(value1.getDate());
-                            }
-                            //returns true if the match date is in the current week
-                            frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position), selected);
-                        }
-                        break;
                 }
 
-                return frag;
-            }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public int getCount() {
-                return getPagerCount();
-            }
-
-            @Override
-            public int getItemPosition(Object object){
-                // POSITION_NONE makes it possible to reload the PagerAdapter
-                return POSITION_NONE;
-
-        }
-            @Override
-            public Parcelable saveState() {
-                return null;
-            }
-
-            @Override
-            public void restoreState(Parcelable state, ClassLoader loader) {
-
-            }
-            @Override
-            public CharSequence getPageTitle(int position) {
-                //Locale l = Locale.getDefault();
-                // String x =  date ;
-
-                switch (getButtonId()) {
-
-                    case R.id.matches_stats:
-                        setFragmentStatsTabs(position);
-
-                        break;
-
-                    case R.id.matches_leaders:
-                        return setFragmentLeaderTabs(position);
-
-                    case R.id.matches_calendar:
-                        setFragmentMatchesTabs(position);
-                        return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
                 }
-                return null;
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        //query the division calendar based on the firebase node name
+
+
+        private void addLeadersEvelentListener(Query q) {
+
+            q.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    String key = dataSnapshot.getKey();
+                    List<LeadersIndex> mLeaderIndex = new ArrayList<>();
+
+                    for (DataSnapshot mdSnapshot : dataSnapshot.getChildren()) {
+                        LeadersIndex p = mdSnapshot.getValue(LeadersIndex.class);
+                        mLeaderIndex.add(p);
+
+                    }
+
+                    //   Map<String, Map<String, LeadersIndex>> p2 = dataSnapshot.getValue(j);
+                    leaderMaps.put(key, mLeaderIndex);
+                    notifyDataSetChanged();
+                    // mLeaderIndex.add(p);
+                }
+
+                // DataSnapshot { key = cards, value = {P2={playerid=101, pos=2}, P1={playerid=100, pos=1}} }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        //query the division calendar based on the firebase node name
+        private void addCalendarEvelentListener(Query q) {
+            q.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Day d = dataSnapshot.getValue(Day.class);
+                    dataSnapshot.getChildren();
+                    d.setId(dataSnapshot.getKey());
+                    d.setGames(dataSnapshot.getValue(t));
+                    mMatchesOfTheDiv.add(d);
+                    notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+        /*********************
+         * Fragment Overrrides
+         **********************/
+        @Override
+        public Fragment getItem(int position) {
+
+            boolean selected = false;
+            Fragment frag = null;
+
+            switch (fragmentId) {
+
+                case R.id.matches_stats:
+                    frag = FragmentTourneyStats.newInstance();
+                    break;
+
+                case R.id.matches_leaders:
+
+                    List<LeadersIndex> list = new ArrayList<>();
+
+                    if (leaderMaps.size() > 0) {
+                        switch (position) {
+                            case 0:
+                                list = leaderMaps.get("goals");
+                                break;
+                            case 1:
+                                list = leaderMaps.get("cards");
+                                break;
+                        }
+
+                        frag = FragmentLeaders.newInstance(list);
+                    }
+
+                    break;
+
+                case R.id.matches_calendar:
+                    //  frag = FragmentMatches.newInstance();
+
+                    if (mMatchesOfTheDiv.size() > 0) {
+
+                        Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
+                        for (Map.Entry<String, Match> entry :
+                                matchMap.entrySet()) {
+                            Match value1 = entry.getValue();
+                            mMatchesOfTheDiv.get(position).setDate(value1.getDate());
+                        }
+                        //returns true if the match date is in the current week
+                        frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position), selected);
+                    }
+                    break;
             }
 
+            return frag;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getCount() {
+            return getPagerCount();
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            // POSITION_NONE makes it possible to reload the PagerAdapter
+            return POSITION_NONE;
 
         }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+
+        @Override
+        public void restoreState(Parcelable state, ClassLoader loader) {
+
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            //Locale l = Locale.getDefault();
+            // String x =  date ;
+
+            switch (fragmentId) {
+
+                case R.id.matches_stats:
+                    setFragmentStatsTabs(position);
+
+                    break;
+
+                case R.id.matches_leaders:
+                    return setFragmentLeaderTabs(position);
+
+                case R.id.matches_calendar:
+                    setFragmentMatchesTabs(position);
+                    return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
+            }
+            return null;
+        }
+
+
     }
+}
 
 
 }

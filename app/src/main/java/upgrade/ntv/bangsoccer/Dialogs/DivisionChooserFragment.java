@@ -1,13 +1,18 @@
 package upgrade.ntv.bangsoccer.Dialogs;
 
+        import android.app.Dialog;
         import android.app.DialogFragment;
         import android.content.Context;
+        import android.graphics.Color;
+        import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
         import android.support.v7.widget.GridLayoutManager;
         import android.support.v7.widget.RecyclerView;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.view.Window;
+        import android.widget.RelativeLayout;
 
         import butterknife.BindView;
         import butterknife.ButterKnife;
@@ -47,6 +52,18 @@ public class DivisionChooserFragment extends DialogFragment  {
         super.onResume();
     }
 
+    @Override
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        RelativeLayout root = new RelativeLayout(getActivity());
+        root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(root);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        return dialog;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

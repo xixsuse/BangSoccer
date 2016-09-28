@@ -2,6 +2,7 @@ package upgrade.ntv.bangsoccer;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,8 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.Adapters.LeadersAdapter;
+import upgrade.ntv.bangsoccer.Entities.LeadersIndex;
 
 /**
  * A fragment representing a list of Items.
@@ -22,18 +30,28 @@ public class FragmentLeaders extends Fragment {
 
     // TODO: Customize parameter argument names
     private LeadersAdapter mLeadersAdapter;
+    private List<LeadersIndex> leadersIndices = new ArrayList<>();
     private Context mContext;
+    private String LEADER_TYPE="";
     private OnListFragmentInteractionListener mListener;
-
+    public static String ARG_LEADER_INDEX;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public FragmentLeaders() {
     }
+    @BindView(R.id._fragment_leader_type_name)
+    TextView leaderType;
+    @BindView(R.id.list)
+    RecyclerView recyclerView ;
 
-    public static FragmentLeaders newInstance() {
+    public static FragmentLeaders newInstance(List<LeadersIndex> mLeadList, int type) {
         FragmentLeaders fragment = new FragmentLeaders();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(ARG_LEADER_INDEX, (ArrayList<? extends Parcelable>) mLeadList);
+        args.putInt("type",type);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -41,10 +59,22 @@ public class FragmentLeaders extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leaders, container, false);
+        ButterKnife.bind(this, view);
 
-        mLeadersAdapter = new LeadersAdapter();
+        if(getArguments() != null){
+            leadersIndices = getArguments().getParcelableArrayList(ARG_LEADER_INDEX);
+            if(getArguments().getInt("type") == 1){
+                LEADER_TYPE = "Tarjetas";
+            }else if(getArguments().getInt("type") == 0){
+                LEADER_TYPE = "Goles";
+            }
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        }
+
+        leaderType.setText(LEADER_TYPE);
+        mLeadersAdapter = new LeadersAdapter(leadersIndices);
+
+
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

@@ -25,6 +25,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,10 +42,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.firebase.ui.auth.AuthUI.FACEBOOK_PROVIDER;
 
 
 public class SignedInActivity extends AppCompatActivity {
@@ -78,10 +82,10 @@ public class SignedInActivity extends AppCompatActivity {
         if (currentUser == null) {
             startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
-                            //.setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                            .setTheme(AuthUI.getDefaultTheme())
+                            //.setIsSmartLockEnabled(true)
+                            //.setTheme(AuthUI.getDefaultTheme())
                             .setLogo(R.drawable.mcancha)
-                            .setProviders(getSelectedProviders())
+                            .setProviders(FACEBOOK_PROVIDER)
                             .setTosUrl(FIREBASE_TOS_URL)
                             .setTheme(R.style.AppTheme)
                             //.setIsSmartLockEnabled(!BuildConfig.DEBUG)
@@ -89,9 +93,8 @@ public class SignedInActivity extends AppCompatActivity {
                     RC_SIGN_IN);
             return;
         }else{
-            setContentView(R.layout.signed_in_layout);
-            ButterKnife.bind(this);
-            populateProfile();
+            startActivity(ActivityMain.createIntent(this));
+            finish();
         }
 
     }
@@ -108,7 +111,7 @@ public class SignedInActivity extends AppCompatActivity {
                                     AuthUI.getInstance().createSignInIntentBuilder()
                                             .setTheme(AuthUI.getDefaultTheme())
                                             .setLogo(R.drawable.mcancha)
-                                            .setProviders(getSelectedProviders())
+                                            .setProviders(FACEBOOK_PROVIDER)
                                             .setTosUrl(FIREBASE_TOS_URL)
                                             .setTheme(R.style.AppTheme)
                                             .build(),
@@ -120,7 +123,7 @@ public class SignedInActivity extends AppCompatActivity {
                 });
     }
 
-    @OnClick(R.id.delete_account)
+    //@OnClick(R.id.delete_account)
     public void deleteAccountClicked() {
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -149,7 +152,7 @@ public class SignedInActivity extends AppCompatActivity {
                                     AuthUI.getInstance().createSignInIntentBuilder()
                                             .setTheme(AuthUI.getDefaultTheme())
                                             .setLogo(R.drawable.mcancha)
-                                            .setProviders(getSelectedProviders())
+                                            .setProviders(FACEBOOK_PROVIDER)
                                             .setTosUrl(FIREBASE_TOS_URL)
                                             .setTheme(R.style.AppTheme)
                                             .build(),
@@ -186,13 +189,13 @@ public class SignedInActivity extends AppCompatActivity {
             Iterator<String> providerIter = user.getProviders().iterator();
             while (providerIter.hasNext()) {
                 String provider = providerIter.next();
-                if (GoogleAuthProvider.PROVIDER_ID.equals(provider)) {
+                /*if (GoogleAuthProvider.PROVIDER_ID.equals(provider)) {
                     providerList.append("Google");
-                } else if (FacebookAuthProvider.PROVIDER_ID.equals(provider)) {
+                } else */if (FacebookAuthProvider.PROVIDER_ID.equals(provider)) {
                     providerList.append("Facebook");
-                } else if (EmailAuthProvider.PROVIDER_ID.equals(provider)) {
-                    providerList.append("Password");
-                } else {
+                } /*else if (EmailAuthProvider.PROVIDER_ID.equals(provider)) {
+                    providerList.append("Password");*/
+                else {
                     providerList.append(provider);
                 }
 
@@ -241,7 +244,7 @@ public class SignedInActivity extends AppCompatActivity {
 
         //add providers
         selectedProviders.add(AuthUI.EMAIL_PROVIDER);
-        selectedProviders.add(AuthUI.FACEBOOK_PROVIDER);
+        selectedProviders.add(FACEBOOK_PROVIDER);
         selectedProviders.add(AuthUI.GOOGLE_PROVIDER);
 
 
@@ -250,8 +253,12 @@ public class SignedInActivity extends AppCompatActivity {
 
     @MainThread
     private void showSnackbar(@StringRes int errorMessageRes) {
-        Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
-                .show();
+        try{
+            Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
+                    .show();
+        }catch (Exception e){
+            Log.e("signinactivity: ", e.getMessage());
+        }
     }
 
     public static Intent createIntent(Context context) {

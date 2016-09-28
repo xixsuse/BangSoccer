@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_main"
@@ -14,47 +11,29 @@
             android:id="@+id/nav_clubs"
             android:icon="@drawable/ic_teams_icon"
             android:title="Clubes" />
-
         <item
             android:id="@+id/nav_dynamic_tourney"
             android:icon="@drawable/ic_drawer_games"
-            android:title="Partidos" />
-        <!--app:actionLayout="@layout/drawer_switch"-->
+            android:title="Torneo" />
         <item
             android:id="@+id/nav_location"
             android:icon="@drawable/ic_soccer_location_icon"
-            android:title="Estadios" />
-
+            android:title="Canchas" />
     </group>
 
-        <menu><!--
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_setting_light"
-                android:title="Settings" />
-            <item
-                android:id="@+id/nav_facebook"
-                android:icon="@drawable/ic_facebook"
-                android:title="Facebook" />-->
-
-<!--            <item
-                android:id="@+id/nav_email"
-                android:icon="@drawable/ic_player_name_icon2"
-                android:title="Auth" />-->
-
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/ic_upgraden"
-                android:title="Upgrade" />
-        </menu>
 
     <group android:checkableBehavior="single"
         android:id="@+id/user_nav_view_group"
         android:menuCategory="alternative">
-    <item
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_upgraden"
+            android:title="Upgrade" />
+   <!-- <item
         android:id="@+id/users_nav_view_item"
         android:icon="@drawable/ic_player_name_icon2"
-        android:title="Usuario"/>
+        android:title="Usuario"/>-->
 
     </group>
 </menu>

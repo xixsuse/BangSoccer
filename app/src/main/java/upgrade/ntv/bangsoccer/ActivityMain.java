@@ -61,6 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Adapters.NewsFeedAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Attraction.Area;
@@ -68,7 +69,7 @@ import upgrade.ntv.bangsoccer.Attraction.Attraction;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
-import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
+import upgrade.ntv.bangsoccer.Entities.Divisions;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
@@ -81,7 +82,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ActivityCompat.OnRequestPermissionsResultCallback, NewsFeedAdapter.ClickListener,
-        DivisionChooserFragment.onDivisionFragmentInteractionListener {
+        DivisionsAdapter.onDivisionFragmentInteractionListener {
 
 
     public static final int PERMISSION_REQUEST_INTERNET = 1;
@@ -115,6 +116,7 @@ public class ActivityMain extends AppCompatActivity
     public static DatabaseReference mTeamsRef;
     public static DatabaseReference mDivisionsRef;
     public static DatabaseReference mMatchRef;
+    public static DatabaseReference  mLeadersofTheDayDiv1Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv1Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv2Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv3Ref ;
@@ -197,8 +199,8 @@ public class ActivityMain extends AppCompatActivity
     }
 
 
-    @BindView(R.id.users_nav_view_item)
-    MenuItem mUserDisplayName;
+    /*@BindView(R.id.users_nav_view_item)
+    MenuItem mUserDisplayName;*/
 
     @Override
     protected void onResume() {
@@ -362,12 +364,11 @@ public class ActivityMain extends AppCompatActivity
                 databaseReference = FirebaseDatabase.getInstance().getReference();
                 mPlayersDeftailsRef = databaseReference.child("Players");
                 mTeamsRef = databaseReference.child("Clubs");
-                mMatchRef = databaseReference.child("Match");
                 mDivisionsRef = databaseReference.child("Divisions");
                 mMatchesOfTheDayDiv1Ref = databaseReference.child("Div1_Calendar");
                 mMatchesOfTheDayDiv2Ref = databaseReference.child("Div2_Calendar");
                 mMatchesOfTheDayDiv3Ref = databaseReference.child("Div3_Calendar");
-
+                mLeadersofTheDayDiv1Ref = databaseReference.child("Div1_Leader");
             }
         }
     }

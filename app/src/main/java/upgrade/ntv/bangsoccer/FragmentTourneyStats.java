@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.Adapters.TourneyStatsAdapter;
-import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.Entities.Club;
 
 /**
  * A fragment representing a list of Items.

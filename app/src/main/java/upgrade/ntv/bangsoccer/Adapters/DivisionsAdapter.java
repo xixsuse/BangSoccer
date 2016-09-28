@@ -9,22 +9,16 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Divisions;
+import upgrade.ntv.bangsoccer.Entities.Divisions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
+
+import static upgrade.ntv.bangsoccer.ActivityMain.mDivisions;
 
 
 /**
@@ -36,8 +30,10 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
     private Context mContext;
     private int currentPos = 0;
 
+    private onDivisionFragmentInteractionListener mListener ;
     public DivisionsAdapter(Context context) {
         this.mContext = context;
+        mListener = (onDivisionFragmentInteractionListener) context;
     }
 
 
@@ -77,16 +73,18 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
             public void onClick(View v) {
                 holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
                 String node =mDivisions.get(holder.getAdapterPosition()).getNode();
+
                 if (holder.cCheckBox.isChecked()) {
                     mDivisions.get(currentPos).setSelected(true);
                     //saves the divisions to the shared preferences
-
                     Preferences.setPreferredDivisions(mContext, node);
+                    mListener.onDivisionSelected(node);
 
                 } else {
                     mDivisions.get(currentPos).setSelected(false);
                     //removes the divisions from the shared preferences
                     Preferences.removePreferredDivisions(mContext, node);
+                    mListener.onDivisionUnselected(getDivisionID(holder.getAdapterPosition()));
                 }
 
             }
@@ -110,5 +108,9 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
             ButterKnife.bind(this, v);
         }
 
+    }
+    public interface onDivisionFragmentInteractionListener {
+        void onDivisionSelected(String node);
+        void onDivisionUnselected(String divisionKey);
     }
 }

@@ -61,6 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Adapters.NewsFeedAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Attraction.Area;
@@ -81,7 +82,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ActivityCompat.OnRequestPermissionsResultCallback, NewsFeedAdapter.ClickListener,
-        DivisionChooserFragment.onDivisionFragmentInteractionListener {
+        DivisionsAdapter.onDivisionFragmentInteractionListener {
 
 
     public static final int PERMISSION_REQUEST_INTERNET = 1;

@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.Entities.Club;
@@ -45,7 +46,7 @@ import upgrade.ntv.bangsoccer.Entities.Players;
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 public class ActivityClubs extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener,
-        NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,DivisionChooserFragment.onDivisionFragmentInteractionListener,
+        NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,DivisionsAdapter.onDivisionFragmentInteractionListener ,
         FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnListFragmentInteractionListener{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;

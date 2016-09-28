@@ -15,12 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 
 
 public class ActivityAbout extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener,
-        DivisionChooserFragment.onDivisionFragmentInteractionListener {
+        DivisionsAdapter.onDivisionFragmentInteractionListener {
 
 
     @Override

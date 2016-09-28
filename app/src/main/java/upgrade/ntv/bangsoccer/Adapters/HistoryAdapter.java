@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.ActivityMain;
+import upgrade.ntv.bangsoccer.Entities.History;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.Entities.Match;
 

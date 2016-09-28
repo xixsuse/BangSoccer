@@ -37,8 +37,6 @@ public class DivisionChooserFragment extends DialogFragment  {
     private GridLayoutManager lLayout;
 
 
-    private onDivisionFragmentInteractionListener mListener ;
-
     @Override
     public void onResume() {
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
@@ -67,28 +65,6 @@ public class DivisionChooserFragment extends DialogFragment  {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
 
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(getActivity(), recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // mPlayerAdapter.getPlayerID(position);
-                //  String x =  mPlayerAdapter.getPlayerId(position);
-                if(!Preferences.getPreferredDivisions(getActivity(), mDivisions.get(position).getNode())){
-                    mListener.onDivisionSelected(divisionsAdapter.getDivisionNode(position));
-                }else {
-                    mListener.onDivisionUnselected(divisionsAdapter.getDivisionID(position));
-                }
-
-
-
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                // ...
-            }
-        }));
-
-
         return view;
     }
 
@@ -98,29 +74,13 @@ public class DivisionChooserFragment extends DialogFragment  {
         unbinder.unbind();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-       if (context instanceof onDivisionFragmentInteractionListener) {
-            mListener = (onDivisionFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnDivisionDialogListener");
-        }
-    }
-
 
 
 
     @Override
     public void onDetach() {
-        mListener = null;
         super.onDetach();
     }
 
 
-    public interface onDivisionFragmentInteractionListener {
-        void onDivisionSelected(String node);
-        void onDivisionUnselected(String divisionKey);
-    }
 }

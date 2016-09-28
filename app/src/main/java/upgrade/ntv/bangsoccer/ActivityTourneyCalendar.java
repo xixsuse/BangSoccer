@@ -47,6 +47,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
@@ -67,7 +68,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 public class ActivityTourneyCalendar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener,
-        FragmentTourneyStats.OnListFragmentInteractionListener, DivisionChooserFragment.onDivisionFragmentInteractionListener {
+        FragmentTourneyStats.OnListFragmentInteractionListener, DivisionsAdapter.onDivisionFragmentInteractionListener  {
 
     private static final String FRAGMENT_TYPE = "type";
     private static DrawerLayout drawer;
@@ -569,7 +570,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             switch (fragmentId) {
 
                 case R.id.matches_stats:
-                    //size=;
+                    size = 1;
 
                     break;
 
@@ -646,10 +647,10 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             if (leaderMaps.size() > 0) {
                 switch (position) {
                     case 0:
-                        header = "goals".toUpperCase();
+                        header = "goles".toUpperCase();
                         break;
                     case 1:
-                        header = "cards".toUpperCase();
+                        header = "Tarjetas".toUpperCase();
                         break;
                 }
 
@@ -853,17 +854,19 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
                 case R.id.matches_leaders:
 
                     List<LeadersIndex> list = new ArrayList<>();
-
+                    int type=-1;
                     if (leaderMaps.size() > 0) {
                         switch (position) {
                             case  1:
                                 list = leaderMaps.get("goals");
+                                type = 1;
                                 break;
                             case 0:
                                 list = leaderMaps.get("cards");
+                                type = 0;
                                 break;
                         }
-                        frag = FragmentLeaders.newInstance(list);
+                        frag = FragmentLeaders.newInstance(list , type);
                     }
 
                     break;

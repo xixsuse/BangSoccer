@@ -58,15 +58,9 @@ public class ActivityAbout extends AppCompatActivity implements CollapsingToolba
         navigationView.setSelected(true);
 
         TextView text = (TextView) findViewById(R.id.about_text);
-        text.setText( "We’re a group of dominicans who are very different from one another, which is great for creative problem-solving and out-of-the-box"+
-              "  thinking but it turns choosing a pizza topping into a board meeting. But despite our differences we’re joined together by a common belief"+
-                " if you want something to be, go out there and make it yourself” \n"+ " This common belief is what drives the projects we choose to make. We’re heavily invested in our projects because we grew tired of waiting for " +
-               "others to come along and make them. We have three standards for undertaking anything: we either learn a lot from this idea, we love " +
-               "it (like what), or we’re going to enjoy the hell out of making it. This is why we’re not a company that you can hire for any project, like" +
-               " the next “Hot or Not” or show us your\n" +
-               " “It’s like Uber but for horse-drawn carriages (which admittedly sounds hilarious).\n" +
-               " If you really have faith in your idea email us at info@upgrade.do and make us believe in it.\n/" +
-               "  We make the things we love, and we love beautiful things, functional things. We love things that kick ass and look good doing it.");
+        text.setText( "We’re a multidisciplinary group made up of engineers, developers, designers and marketers, joined to create fantastic web and mobile services. \n\n"+
+                "As our name says, we’re always looking to improve not only how we design and develop, but also our lives and the lives of others. \n\n" +
+               "To put it simply, to be the best at everything we do is our biggest inspiration.\n");
         text.setTextSize(14);
     }
 

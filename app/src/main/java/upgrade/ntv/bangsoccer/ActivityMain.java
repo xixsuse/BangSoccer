@@ -199,8 +199,8 @@ public class ActivityMain extends AppCompatActivity
     }
 
 
-    @BindView(R.id.users_nav_view_item)
-    MenuItem mUserDisplayName;
+    /*@BindView(R.id.users_nav_view_item)
+    MenuItem mUserDisplayName;*/
 
     @Override
     protected void onResume() {

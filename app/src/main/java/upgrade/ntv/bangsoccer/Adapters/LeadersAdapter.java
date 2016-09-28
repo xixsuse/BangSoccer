@@ -130,7 +130,7 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
             Players player = mPlayersLeader.get(position);
             holder.vPlayerName.setText(player.getName());
             holder.vPlayerGoals.setText(String.valueOf(player.getGoals()));
-            holder.vPlayerAvatar.setImageResource(R.drawable.ic_player_name_icon);
+            holder.vPlayerAvatar.setImageResource(R.drawable.anon_user_48dp);
             holder.vPlayerClub.setText(player.getTeam());
             holder.Id = mPlayersLeader.get(position).getTeamid();
         }

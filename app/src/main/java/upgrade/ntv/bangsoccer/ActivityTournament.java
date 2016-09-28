@@ -66,7 +66,7 @@ import static upgrade.ntv.bangsoccer.ActivityMain.mMatchesOfTheDayDiv3Ref;
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 
-public class ActivityTourneyCalendar extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+public class ActivityTournament extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener,
         FragmentTourneyStats.OnListFragmentInteractionListener, DivisionsAdapter.onDivisionFragmentInteractionListener  {
 
@@ -344,19 +344,6 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             return frag;
         }
 
-     /*   public void newCalendarPagerAdapater() {
-            //removeAll();
-            mViewPager.removeAllViews();
-            mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-            //setButtonId(R.id.matches_leaders);
-            FragmentViewPagerContainer.TourneyCalendarPagerAdapter calendarPagerAdapter = new FragmentViewPagerContainer.TourneyCalendarPagerAdapter(getChildFragmentManager());
-
-
-            mViewPager.setAdapter(calendarPagerAdapter);
-          //  mTourneyCalendarPagerAdapter.notifyDataSetChanged();
-        }
-*/
-
         /*********************
          * Fragment  Overrides
          **********************/
@@ -377,7 +364,7 @@ public class ActivityTourneyCalendar extends AppCompatActivity implements Naviga
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
             tabLayout.setupWithViewPager(mViewPager);
 

@@ -7,8 +7,8 @@ android {
         applicationId "upgrade.ntv.bangsoccer"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 12
-        versionName "1.4.1"
+        versionCode 13
+        versionName "1.4.2"
     }
 
 

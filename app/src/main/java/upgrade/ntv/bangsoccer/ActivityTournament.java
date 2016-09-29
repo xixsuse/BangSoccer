@@ -365,7 +365,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
             tabLayout.setupWithViewPager(mViewPager);
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -374,8 +374,25 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             toggle.syncState();
 
             if (toolbar != null) {
-                toolbar.setTitle("Torneo");
+                switch (fragmentId){
+
+                    case R.id.matches_stats:
+                        toolbar.setTitle("Tabla de Posiciones");
+                        break;
+                    case R.id.matches_leaders:
+                        toolbar.setTitle("Lideres");
+                        break;
+
+                    case R.id.matches_calendar:
+                        toolbar.setTitle("Calendario");
+                        break;
+                    default:
+                        toolbar.setTitle("Calendario");
+                        break;
+                }
+
             }
+
             mTourneyCalendarPagerAdapter = new FragmentViewPagerContainer.TourneyCalendarPagerAdapter(getChildFragmentManager(), fragmentId);
 
                 mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
@@ -914,8 +931,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
                 case R.id.matches_stats:
                     setFragmentStatsTabs(position);
-
-                    break;
+                    return  "Primera".toUpperCase();
 
                 case R.id.matches_leaders:
                     return setFragmentLeaderTabs(position);

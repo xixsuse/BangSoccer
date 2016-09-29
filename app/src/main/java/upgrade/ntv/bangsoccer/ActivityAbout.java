@@ -58,10 +58,10 @@ public class ActivityAbout extends AppCompatActivity implements CollapsingToolba
         navigationView.setSelected(true);
 
         TextView text = (TextView) findViewById(R.id.about_text);
-        text.setText( "We’re a multidisciplinary group made up of engineers, developers, designers and marketers, joined to create fantastic web and mobile services. \n\n"+
-                "As our name says, we’re always looking to improve not only how we design and develop, but also our lives and the lives of others. \n\n" +
-               "To put it simply, to be the best at everything we do is our biggest inspiration.\n");
-        text.setTextSize(14);
+        text.setText( "We’re a multidisciplinary group made up of engineers, developers, designers and marketers, joined to create fantastic web and mobile services. \n \n"+
+                "As our name says, we’re always looking to improve not only how we design and develop, but also our lives and the lives of others. \n \n" +
+               "To put it simply, to be the best at everything we do is our biggest inspiration. \n");
+        text.setTextSize(16);
     }
 
     @Override

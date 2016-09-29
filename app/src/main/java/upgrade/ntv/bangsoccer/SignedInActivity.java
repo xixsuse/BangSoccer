@@ -31,16 +31,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
@@ -82,7 +86,7 @@ public class SignedInActivity extends AppCompatActivity {
         if (currentUser == null) {
             startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
-                            //.setIsSmartLockEnabled(true)
+                            .setIsSmartLockEnabled(false)
                             //.setTheme(AuthUI.getDefaultTheme())
                             .setLogo(R.drawable.mcancha)
                             .setProviders(FACEBOOK_PROVIDER)
@@ -93,8 +97,12 @@ public class SignedInActivity extends AppCompatActivity {
                     RC_SIGN_IN);
             return;
         }else{
-            startActivity(ActivityMain.createIntent(this));
+
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            facebookPermissions();
             finish();
+            startActivity(ActivityMain.createIntent(this));
+
         }
 
     }
@@ -109,7 +117,7 @@ public class SignedInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             startActivityForResult(
                                     AuthUI.getInstance().createSignInIntentBuilder()
-                                            .setTheme(AuthUI.getDefaultTheme())
+                                            .setTheme(R.style.AppTheme)
                                             .setLogo(R.drawable.mcancha)
                                             .setProviders(FACEBOOK_PROVIDER)
                                             .setTosUrl(FIREBASE_TOS_URL)
@@ -214,11 +222,24 @@ public class SignedInActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            facebookPermissions();
+
             handleSignInResponse(resultCode, data);
             return;
         }
 
         showSnackbar(R.string.unknown_response);
+    }
+    private void facebookPermissions(){
+
+        //Permission for Likes
+
+        LoginManager.getInstance().
+                logInWithPublishPermissions(
+                this,
+                Arrays.asList("publish_actions"));
+
     }
 
     @MainThread

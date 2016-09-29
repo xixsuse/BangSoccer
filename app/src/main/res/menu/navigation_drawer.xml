@@ -8,13 +8,13 @@
             android:icon="@drawable/ic_soccer_journalist"
             android:title="Noticias" />
         <item
-            android:id="@+id/nav_clubs"
-            android:icon="@drawable/ic_teams_icon"
-            android:title="Clubes" />
-        <item
             android:id="@+id/nav_dynamic_tourney"
             android:icon="@drawable/ic_drawer_games"
             android:title="Torneo" />
+        <item
+            android:id="@+id/nav_clubs"
+            android:icon="@drawable/ic_teams_icon"
+            android:title="Clubes" />
         <item
             android:id="@+id/nav_location"
             android:icon="@drawable/ic_soccer_location_icon"

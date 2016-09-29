@@ -331,8 +331,6 @@ public class ActivityMain extends AppCompatActivity
         newsFeedAdapter.setClickListener(this);
 
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         if (BuildConfig.DEBUG) {
             FacebookSdk.setIsDebugEnabled(true);
             FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
@@ -342,7 +340,7 @@ public class ActivityMain extends AppCompatActivity
         FirebaseCrash.log("Activity created");*/
 
 
-        facebookPermissions();
+
     }
 
     public void initFirebaseRefs(){

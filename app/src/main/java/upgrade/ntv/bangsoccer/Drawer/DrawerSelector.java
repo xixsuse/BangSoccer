@@ -9,9 +9,8 @@ import upgrade.ntv.bangsoccer.ActivityClubs;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.ActivityNewsDetails;
 import upgrade.ntv.bangsoccer.ActivityTour;
-import upgrade.ntv.bangsoccer.ActivityTourneyCalendar;
+import upgrade.ntv.bangsoccer.ActivityTournament;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.SignedInActivity;
 import upgrade.ntv.bangsoccer.R;
 
 /**
@@ -32,7 +31,7 @@ public class DrawerSelector {
                 intent = new Intent(callingActivity, ActivityMain.class);
                 break;
             /*case R.id.nav_matches:
-                intent = new Intent(callingActivity, ActivityTourneyCalendar.class);
+                intent = new Intent(callingActivity, ActivityTournament.class);
                 break;*/
             case R.id.nav_location:
                 intent = new Intent(callingActivity, ActivityTour.class);
@@ -49,7 +48,7 @@ public class DrawerSelector {
                 break;
 
             case R.id.nav_dynamic_tourney:
-                intent = new Intent(callingActivity, ActivityTourneyCalendar.class);
+                intent = new Intent(callingActivity, ActivityTournament.class);
 
                 break;
           /*  case R.id.nav_settings:
@@ -59,9 +58,9 @@ public class DrawerSelector {
                 intent = new Intent(callingActivity, ActivityAbout.class);
                 break;
 
-            // 0 = ActivityTourneyCalendar
+            // 0 = ActivityTournament
             case Constants.TOURNAMENT_ACTIVITY:
-                intent = new Intent(callingActivity, ActivityTourneyCalendar.class);
+                intent = new Intent(callingActivity, ActivityTournament.class);
                 break;
             case Constants.NEWS_FEED_DETAILS_ACTIVITY:
                 intent = new Intent(callingActivity, ActivityNewsDetails.class);
@@ -72,9 +71,9 @@ public class DrawerSelector {
 //                break;
 
 
-            case R.id.users_nav_view_item:
-                intent = new Intent(callingActivity, SignedInActivity.class);
-                break;
+           /* case R.id.users_nav_view_item:
+               // intent = new Intent(callingActivity, SignedInActivity.class);
+                break;*/
 
 
             default:

@@ -61,6 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Adapters.NewsFeedAdapter;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Attraction.Area;
@@ -81,7 +82,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ActivityCompat.OnRequestPermissionsResultCallback, NewsFeedAdapter.ClickListener,
-        DivisionChooserFragment.onDivisionFragmentInteractionListener {
+        DivisionsAdapter.onDivisionFragmentInteractionListener {
 
 
     public static final int PERMISSION_REQUEST_INTERNET = 1;
@@ -198,8 +199,8 @@ public class ActivityMain extends AppCompatActivity
     }
 
 
-    @BindView(R.id.users_nav_view_item)
-    MenuItem mUserDisplayName;
+    /*@BindView(R.id.users_nav_view_item)
+    MenuItem mUserDisplayName;*/
 
     @Override
     protected void onResume() {
@@ -330,8 +331,6 @@ public class ActivityMain extends AppCompatActivity
         newsFeedAdapter.setClickListener(this);
 
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
         if (BuildConfig.DEBUG) {
             FacebookSdk.setIsDebugEnabled(true);
             FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
@@ -341,7 +340,7 @@ public class ActivityMain extends AppCompatActivity
         FirebaseCrash.log("Activity created");*/
 
 
-        facebookPermissions();
+
     }
 
     public void initFirebaseRefs(){

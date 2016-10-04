@@ -1,13 +1,18 @@
 package upgrade.ntv.bangsoccer.Dialogs;
 
+        import android.app.Dialog;
         import android.app.DialogFragment;
         import android.content.Context;
+        import android.graphics.Color;
+        import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
         import android.support.v7.widget.GridLayoutManager;
         import android.support.v7.widget.RecyclerView;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.view.Window;
+        import android.widget.RelativeLayout;
 
         import butterknife.BindView;
         import butterknife.ButterKnife;
@@ -37,8 +42,6 @@ public class DivisionChooserFragment extends DialogFragment  {
     private GridLayoutManager lLayout;
 
 
-    private onDivisionFragmentInteractionListener mListener ;
-
     @Override
     public void onResume() {
         ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
@@ -49,6 +52,18 @@ public class DivisionChooserFragment extends DialogFragment  {
         super.onResume();
     }
 
+    @Override
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        RelativeLayout root = new RelativeLayout(getActivity());
+        root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(root);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        return dialog;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,31 +82,8 @@ public class DivisionChooserFragment extends DialogFragment  {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
 
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(getActivity(), recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // mPlayerAdapter.getPlayerID(position);
-                //  String x =  mPlayerAdapter.getPlayerId(position);
-                if(!Preferences.getPreferredDivisions(getActivity(), mDivisions.get(position).getNode())){
-                    mListener.onDivisionSelected(divisionsAdapter.getDivisionNode(position));
-                }else {
-                    mListener.onDivisionUnselected(divisionsAdapter.getDivisionID(position));
-                }
-
-
-
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                // ...
-            }
-        }));
-
-
         return view;
     }
-
 
     @Override public void onDestroyView() {
         super.onDestroyView();
@@ -99,28 +91,9 @@ public class DivisionChooserFragment extends DialogFragment  {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-       if (context instanceof onDivisionFragmentInteractionListener) {
-            mListener = (onDivisionFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnDivisionDialogListener");
-        }
-    }
-
-
-
-
-    @Override
     public void onDetach() {
-        mListener = null;
         super.onDetach();
     }
 
 
-    public interface onDivisionFragmentInteractionListener {
-        void onDivisionSelected(String node);
-        void onDivisionUnselected(String divisionKey);
-    }
 }

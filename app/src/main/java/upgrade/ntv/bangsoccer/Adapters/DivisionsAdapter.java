@@ -18,6 +18,8 @@ import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.Entities.Divisions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
 
+import static upgrade.ntv.bangsoccer.ActivityMain.mDivisions;
+
 
 /**
  * Created by jfrom on 3/22/2016.
@@ -28,8 +30,10 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
     private Context mContext;
     private int currentPos = 0;
 
+    private onDivisionFragmentInteractionListener mListener ;
     public DivisionsAdapter(Context context) {
         this.mContext = context;
+        mListener = (onDivisionFragmentInteractionListener) context;
     }
 
 
@@ -69,16 +73,18 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
             public void onClick(View v) {
                 holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
                 String node =mDivisions.get(holder.getAdapterPosition()).getNode();
+
                 if (holder.cCheckBox.isChecked()) {
                     mDivisions.get(currentPos).setSelected(true);
                     //saves the divisions to the shared preferences
-
                     Preferences.setPreferredDivisions(mContext, node);
+                    mListener.onDivisionSelected(node);
 
                 } else {
                     mDivisions.get(currentPos).setSelected(false);
                     //removes the divisions from the shared preferences
                     Preferences.removePreferredDivisions(mContext, node);
+                    mListener.onDivisionUnselected(getDivisionID(holder.getAdapterPosition()));
                 }
 
             }
@@ -102,5 +108,9 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
             ButterKnife.bind(this, v);
         }
 
+    }
+    public interface onDivisionFragmentInteractionListener {
+        void onDivisionSelected(String node);
+        void onDivisionUnselected(String divisionKey);
     }
 }

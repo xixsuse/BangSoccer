@@ -71,26 +71,34 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
-                String node =mDivisions.get(holder.getAdapterPosition()).getNode();
+                cleanAllDivisionChecks();
+               // holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
+                String node = mDivisions.get(holder.getAdapterPosition()).getNode();
+                String key =mDivisions.get(holder.getAdapterPosition()).getFirebasekey();
+                mDivisions.get(currentPos).setSelected(true);
 
-                if (holder.cCheckBox.isChecked()) {
-                    mDivisions.get(currentPos).setSelected(true);
+                if (!holder.cCheckBox.isChecked()) {
+
+                    holder.cCheckBox.setChecked(true);
                     //saves the divisions to the shared preferences
                     Preferences.setPreferredDivisions(mContext, node);
                     mListener.onDivisionSelected(node);
 
-                } else {
-                    mDivisions.get(currentPos).setSelected(false);
-                    //removes the divisions from the shared preferences
-                    Preferences.removePreferredDivisions(mContext, node);
-                    mListener.onDivisionUnselected(getDivisionID(holder.getAdapterPosition()));
+                }else{
+                    mListener.onDivisionUnselected(key);
                 }
 
+                notifyDataSetChanged();
             }
         });
     }
 
+    public  void cleanAllDivisionChecks(){
+        for (int i = 0 ; i < mDivisions.size() ; i++){
+            mDivisions.get(i).setSelected(false);
+            Preferences.removePreferredDivisions(mContext, mDivisions.get(i).getNode());
+        }
+    }
 
     public static class TeamHolder extends FavoritesViewHolder {
 

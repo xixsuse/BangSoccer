@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 
 import java.util.List;
 
+import upgrade.ntv.bangsoccer.ActivityMain;
+import upgrade.ntv.bangsoccer.Entities.Divisions;
 import upgrade.ntv.bangsoccer.R;
 
 
@@ -22,30 +24,29 @@ public class Preferences {
                 context.getString(R.string.pref_key_map_style),
                 context.getString(R.string.pref_default_map_style));
     }
-    public static boolean getPreferredDivisions(Context context, String division){ //update
+
+    public static boolean getPreferredDivisions(Context context, String division) { //update
         SharedPreferences prefs = context.getSharedPreferences
                 (context.getString(R.string.pref_key_divisions),
                         Context.MODE_PRIVATE);
-        //returns default value if the key does not exist.e
-        boolean result = prefs.getBoolean(division, false);
-
-        return result;
+        //returns default value if the key does not exists.
+        return prefs.getBoolean(division, false);
     }
 
-    public static void setPreferredDivisions(Context context, String division){ //update
+    public static void setPreferredDivisions(Context context, String division) { //update
         //getl divisions preferences
         SharedPreferences prefs = context.getSharedPreferences
                 (context.getString(R.string.pref_key_divisions),
-                Context.MODE_PRIVATE);
+                        Context.MODE_PRIVATE);
         //create editor
         SharedPreferences.Editor editor = prefs.edit();
         //input data
         editor.putBoolean(division, true);
         // Commit the edits
-        editor.commit();
+        editor.apply();
     }
 
-    public static void removePreferredDivisions(Context context, String division){ //update
+    public static void removePreferredDivisions(Context context, String division) { //update
         //getl divisions preferences
         SharedPreferences prefs = context.getSharedPreferences
                 (context.getString(R.string.pref_key_divisions),
@@ -55,10 +56,17 @@ public class Preferences {
         //input data
         editor.remove(division);
         // Commit the edits
-        editor.commit();
+        editor.apply();
     }
 
+    public static void findAndDeletePreferencesForDivisions(Context context) {
 
+        for (Divisions div : ActivityMain.mDivisions) {
+            if (Preferences.getPreferredDivisions(context, div.getNode())) {
+                removePreferredDivisions(context, div.getNode());
+            }
+        }
+    }
 
 
 }

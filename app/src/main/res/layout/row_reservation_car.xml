@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    tools:showIn="@layout/content_reservation_cart">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:weightSum="10">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_height="56dp"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:src="@drawable/ic_google" />
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_height="56dp"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_marginTop="8dp"
+                android:text="Cancha A"
+                android:id="@+id/cancha_txtview"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_marginTop="8dp"
+                android:id="@+id/hour_txtview"
+                android:text="5:00 PM - 6:00 PM"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/colorAccent"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:text="$1,300.00"
+            android:id="@+id/price_txtview"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+
+

@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,12 +94,12 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
     @OnClick({R.id.matches_calendar, R.id.matches_stats, R.id.matches_leaders})
     public void onBottomBarClickListner(View view) {
         final int id = view.getId();
+
         if (getLastSelectedItem() != view.getId()) {
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             mFragmentContainer = FragmentViewPagerContainer.newInstance(id);
             ft.replace(R.id.fragment_holder, mFragmentContainer);
-            //ft.add(R.id.fragment_holder, mFragmentContainer, makePagerFragmentTag(id));
             ft.commit();
             setLastSpinnerSelectedItem(id);
 
@@ -160,7 +161,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourney);
-// TODO: PUT THE TOOLBAR IN THE ACTIVITY AND THE TABLAYOUT IN THE FRAGMENT.
         //fragment type id
         int id = R.id.matches_calendar;
 
@@ -194,11 +194,11 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            /*    if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                 }
                 if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                 }
-
+            */
             }
         });
     }
@@ -355,7 +355,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             View root = inflater.inflate(R.layout.fragment_content_recivleview, container, false);
             unbinder = ButterKnife.bind(this, root);
 
-
             Bundle b = getArguments();
             if (null != b) { //Null Checking
                 fragmentId = b.getInt("id", R.id.matches_calendar);
@@ -443,10 +442,10 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             }
 
         }
-
+//
         public void removeUnselectedDivision(String divisionKey) {
 
-            mTourneyCalendarPagerAdapter.nukeElement(divisionKey);
+            mTourneyCalendarPagerAdapter.nukeElement();
             mTourneyCalendarPagerAdapter.notifyDataSetChanged();
             // mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
 
@@ -474,7 +473,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             private Query queryCalendar;
             private Query queryLeader;
             private Query queryStats;
-
             /*********************
              * Fragment Functions
              **********************/
@@ -517,9 +515,29 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
                 return result;
             }
 
+            boolean removeDay() {
+                boolean result = false;
+
+                try{
+                    mMatchesOfTheDiv.clear();
+                    notifyDataSetChanged();
+                    result = true;
+                }catch (Exception e){
+                    Log.v("Remove Divisions", e.getMessage());
+                }
+
+
+
+                return result;
+            }
+
             //remove a division.
             boolean nukeElement(String divisionKey) {
                 return removeDay(matchScanner(divisionKey));
+            }
+
+            boolean nukeElement() {
+                return removeDay();
             }
 
             @Nullable

@@ -10,11 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Map;
-
 import upgrade.ntv.bangsoccer.Adapters.MatchAdapter;
-import upgrade.ntv.bangsoccer.TournamentObjects.Day;
-import upgrade.ntv.bangsoccer.TournamentObjects.Match;
+import upgrade.ntv.bangsoccer.Entities.Day;
 
 /**
  * Created by Jose on 3/14/2015.
@@ -31,13 +28,17 @@ public class FragmentMatches extends Fragment {
     public static FragmentMatches newInstance(Day games, boolean isInCurrentWeek) {
         FragmentMatches fragment = new FragmentMatches();
         Bundle args = new Bundle();
-
         args.putBoolean(ARG_IS_CURRENT, isInCurrentWeek);
         args.putParcelable(ARG_GAMES, games);
 
         fragment.setArguments(args);
         return fragment;
     }
+
+    public static FragmentMatches newInstance() {
+        return  new FragmentMatches();
+    }
+
 
     public FragmentMatches() {
 

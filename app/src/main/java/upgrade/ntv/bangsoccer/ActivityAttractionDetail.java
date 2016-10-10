@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.TourList.FragmentAttractionDetail;
 
@@ -18,7 +19,7 @@ import upgrade.ntv.bangsoccer.TourList.FragmentAttractionDetail;
  * The tourist attraction detail activity screen which contains the details of
  * a single attraction.
  */
-public class ActivityAttractionDetail extends AppCompatActivity implements DivisionChooserFragment.onDivisionFragmentInteractionListener {
+public class ActivityAttractionDetail extends AppCompatActivity implements DivisionsAdapter.onDivisionFragmentInteractionListener  {
 
     private static final String EXTRA_ATTRACTION = "attraction";
 

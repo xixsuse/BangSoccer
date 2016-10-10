@@ -19,13 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import upgrade.ntv.bangsoccer.Adapters.ClubsAdapter;
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 
-public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DivisionChooserFragment.onDivisionFragmentInteractionListener {
+public class ActivityClubSelect extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DivisionsAdapter.onDivisionFragmentInteractionListener {
 
     // name of the file to preserve areas
     private Activity thisActivity;

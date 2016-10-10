@@ -1,4 +1,4 @@
-package upgrade.ntv.bangsoccer.TournamentObjects;
+package upgrade.ntv.bangsoccer.Entities;
 
 /**
  * Created by root on 8/27/16.

@@ -22,7 +22,7 @@ import java.util.List;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.AppicationCore;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.Entities.Club;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 
 

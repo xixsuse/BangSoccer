@@ -10,11 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,14 +18,11 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.AppConstants.FirebaseUtils;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Club;
-import upgrade.ntv.bangsoccer.TournamentObjects.Day;
-import upgrade.ntv.bangsoccer.TournamentObjects.Match;
+import upgrade.ntv.bangsoccer.Entities.Day;
+import upgrade.ntv.bangsoccer.Entities.Match;
 
 /**
  * Created by jfrom on 3/19/2016.

@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         android:background="@color/cardview_light_background"
         android:weightSum="2">
@@ -15,19 +15,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1.4"
+            android:layout_marginStart="16dp"
+          android:layout_gravity="center_vertical"
+            android:textSize="18sp"
+            android:layout_weight="1.6"
             android:text="Jugador"
             android:textColor="@color/colorAccentLight" />
 
         <TextView
-            android:id="@+id/_info_next_game_date"
+            android:id="@+id/_fragment_leader_type_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="0.2"
+            android:gravity="end"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
             android:text="Goles"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/colorAccentLight" />
     </LinearLayout>
 
@@ -36,11 +40,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/list"
+        android:background="@color/cardview_light_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context=".FragmentLeaders"
-        android:background="@color/colorWhite"
-        tools:listitem="@layout/fragment_leaders" />
+        tools:listitem="@layout/row_leaders" />
 
 </LinearLayout>

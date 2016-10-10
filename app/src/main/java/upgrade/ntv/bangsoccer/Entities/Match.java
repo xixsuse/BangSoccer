@@ -1,4 +1,4 @@
-package upgrade.ntv.bangsoccer.TournamentObjects;
+package upgrade.ntv.bangsoccer.Entities;
 
 
 /**

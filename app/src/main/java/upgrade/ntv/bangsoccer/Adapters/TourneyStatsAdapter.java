@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.TournamentObjects.Club;
+import upgrade.ntv.bangsoccer.Entities.Club;
 
 
 /**

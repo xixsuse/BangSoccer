@@ -71,21 +71,24 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cleanAllDivisionChecks();
+
                // holder.cCheckBox.setChecked(!holder.cCheckBox.isChecked());
                 String node = mDivisions.get(holder.getAdapterPosition()).getNode();
                 String key =mDivisions.get(holder.getAdapterPosition()).getFirebasekey();
                 mDivisions.get(currentPos).setSelected(true);
 
-                if (!holder.cCheckBox.isChecked()) {
+                if(!Preferences.getPreferredDivisions(mContext, key)){
+                    cleanAllDivisionChecks();
+                    if (!holder.cCheckBox.isChecked()) {
 
-                    holder.cCheckBox.setChecked(true);
-                    //saves the divisions to the shared preferences
-                    Preferences.setPreferredDivisions(mContext, node);
-                    mListener.onDivisionSelected(node);
+                        holder.cCheckBox.setChecked(true);
+                        //saves the divisions to the shared preferences
+                        Preferences.setPreferredDivisions(mContext, node);
+                        mListener.onDivisionSelected(node);
 
-                }else{
-                    mListener.onDivisionUnselected(key);
+                    }else{
+                        mListener.onDivisionUnselected(key);
+                    }
                 }
 
                 notifyDataSetChanged();

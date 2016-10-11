@@ -43,7 +43,7 @@ public class Preferences {
         //input data
         editor.putBoolean(division, true);
         // Commit the edits
-        editor.apply();
+        editor.commit();
     }
 
     public static void removePreferredDivisions(Context context, String division) { //update
@@ -56,7 +56,7 @@ public class Preferences {
         //input data
         editor.remove(division);
         // Commit the edits
-        editor.apply();
+        editor.commit();
     }
 
     public static void findAndDeletePreferencesForDivisions(Context context) {

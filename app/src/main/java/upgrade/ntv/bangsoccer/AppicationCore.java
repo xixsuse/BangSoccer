@@ -29,6 +29,8 @@ import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeedDao;
 import upgrade.ntv.bangsoccer.dao.DBPlayer;
 import upgrade.ntv.bangsoccer.dao.DBPlayerDao;
+import upgrade.ntv.bangsoccer.dao.DBSwitch;
+import upgrade.ntv.bangsoccer.dao.DBSwitchDao;
 import upgrade.ntv.bangsoccer.dao.DBTeam;
 import upgrade.ntv.bangsoccer.dao.DBTeamDao;
 import upgrade.ntv.bangsoccer.dao.DBTourney;
@@ -55,6 +57,7 @@ public class AppicationCore extends Application {
     private static DBMatchesPlayerDetailsDao dbMatchesPlayerDetailsDao;
     private static DBNewsFeedDao dbNewsFeedDao;
     private static DBFavoritesDao dbFavoritesDao;
+    private static DBSwitchDao dbSwitchDao;
 
     public static String FRAGMENT_CHOOSE_DIVISION;
 
@@ -83,8 +86,8 @@ public class AppicationCore extends Application {
         dbTourneyDao = daoSession.getDBTourneyDao();
         dbNewsFeedDao = daoSession.getDBNewsFeedDao();
         dbFavoritesDao = daoSession.getDBFavoritesDao();
+        dbSwitchDao = daoSession.getDBSwitchDao();
     }
-
 
 
     /**
@@ -108,6 +111,13 @@ public class AppicationCore extends Application {
      */
     public static void resetFavoritesTable() {
         dbFavoritesDao.deleteAll();
+    }
+
+    /**
+     * Reset values from a Favorites table
+     */
+    public static void resetSwitchTable() {
+        dbSwitchDao.deleteAll();
     }
 
 
@@ -145,8 +155,22 @@ public class AppicationCore extends Application {
         return dbFavoritesDao;
     }
 
+    public static DBSwitchDao getDbSwitchDao() {
+        return dbSwitchDao;
+    }
 
 // **************** General getter methods ****************
+
+    /**
+     * Get switch status
+     *
+     * @return a list of clubs
+     */
+    public static List<DBSwitch> getSwitchStatus() {
+        return dbSwitchDao.loadAll();
+    }
+
+
 
 
     /**

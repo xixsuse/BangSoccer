@@ -75,6 +75,7 @@ import upgrade.ntv.bangsoccer.Entities.Divisions;
 import upgrade.ntv.bangsoccer.Utils.JsonReader;
 import upgrade.ntv.bangsoccer.Utils.JsonWriter;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
+import upgrade.ntv.bangsoccer.Utils.Preferences;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 import upgrade.ntv.bangsoccer.dao.DBSwitch;
@@ -183,7 +184,7 @@ public class ActivityMain extends AppCompatActivity
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Divisions firebaseRequest = dataSnapshot.getValue(Divisions.class);
             firebaseRequest.setFirebasekey(dataSnapshot.getKey());
-            getDivisionsList().add(0, firebaseRequest);
+            getDivisionsList().add(firebaseRequest);
         }
 
         @Override
@@ -207,13 +208,20 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-
-    /*@BindView(R.id.users_nav_view_item)
-    MenuItem mUserDisplayName;*/
-
     @Override
     protected void onResume() {
         super.onResume();
+
+        //ensures a value for the shared pref.
+        boolean result = false;
+        for (Divisions div : mDivisions) {
+            if(Preferences.getPreferredDivisions(this, div.getNode())){
+               result = true;
+            }
+        }
+        if (!result){
+            Preferences.setPreferredDivisions(this, "Div1_Calendar");
+        }
 
         try {
             InputStream in = openFileInput(AREAS_DATA_FILE_NAME);

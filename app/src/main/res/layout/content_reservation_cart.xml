@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:weightSum="10"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_gravity="top"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recycler_reservations_card"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8.8"
+        tools:listitem="@layout/row_reservation_car"
+        />
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_height="0dp"
+        android:layout_weight="1.2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:weightSum="10"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/check_out_button"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_gravity="bottom"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:onClick="PushReservations"
+                >
+
+                <ImageView
+
+                    android:id="@+id/check_out_icon"
+                    android:src="@android:drawable/ic_input_add"
+                    android:layout_gravity="center"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="3"/>
+
+            </android.support.v7.widget.CardView>
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="$2,600.00"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+
+

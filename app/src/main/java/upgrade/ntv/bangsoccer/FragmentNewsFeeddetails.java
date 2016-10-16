@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -169,15 +170,17 @@ public class FragmentNewsFeeddetails extends Fragment  {
         List<DBNewsFeed> list = new ArrayList<>();
 
         for(int i=0; i<favs.size(); i++){
-            for(int j=0; j< all.size(); j++){
+           // for(int j=0; j< all.size(); j++){
+            for(int j=all.size()-1; j>-1; j--){
 
                 if(all.get(j).getPostID().contains(favs.get(i).getFb_id())){
                     list.add(all.get(j));
                 }
             }
 
-
         }
+        Collections.reverse(list);
+
         return list;
     }
 }

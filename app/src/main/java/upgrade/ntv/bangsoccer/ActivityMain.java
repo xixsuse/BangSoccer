@@ -231,6 +231,17 @@ public class ActivityMain extends AppCompatActivity
             Log.v("Loading Areas Failed: ", e.getMessage());
         }
 
+        //Updating NewsFeed
+        updatefavoritesList();
+
+        if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
+            //   facebookAccounts.addAll(favoriteList);
+            newsFeedItems.clear();
+            newsFeedItems.addAll(getListFavorites());
+            updateNewsFeedUI(0); //TODO chequiar esta llamada
+
+        }
+
     }
 
     @Override
@@ -576,6 +587,7 @@ public class ActivityMain extends AppCompatActivity
                 intent = new Intent(this, ActivityFavoriteNFollow.class);
                 startActivity(intent);
                 break;
+
             case R.id.action_divisiones:
                 onDvisionChoosertDialog();
                 break;
@@ -891,11 +903,10 @@ public class ActivityMain extends AppCompatActivity
 
                 updatefavoritesList();
 
-                if(favoriteList!=null && favoriteList.size()>0){
-                    //   facebookAccounts.addAll(favoriteList);
+                if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
                     newsFeedItems.clear();
                     newsFeedItems.addAll(getListFavorites());
-                    updateNewsFeedUI(0); //TODO chequiar esta llamada
+                    updateNewsFeedUI(0);
 
                 }
 
@@ -917,20 +928,36 @@ public class ActivityMain extends AppCompatActivity
     private List<NewsFeedItem> getListFavorites(){
 
         List<NewsFeedItem> list = new ArrayList<>();
+        List<DBFavorites> favs = AppicationCore.getFavorites();
+        List<DBNewsFeed> all = AppicationCore.getAllNewsFeed();
 
-                for(int i=0; i< news.size(); i++){
+        for(int i=0; i<favs.size(); i++){
+            for(int j=all.size()-1; j>-1; j--){
 
-            for(int j=0; j<favoriteList.size(); j++){
+                DBNewsFeed temp = all.get(j);
 
-                DBNewsFeed temp = news.get(i);
-
-                if(temp.getPostID().contains(favoriteList.get(j))){
+                if(temp.getPostID().contains(favs.get(i).getFb_id())){
                     Bitmap bm = bitmapFromByte(temp.getPicture());
                     list.add( new NewsFeedItem(temp.getId(),bm, temp.getMessage(),temp.getUserName(),temp.getPostID(), temp.getLike()));
                     bm=null;
                 }
             }
+
         }
+
+//        for(int i=0; i< news.size(); i++){
+//
+//            for(int j=0; j<favoriteList.size(); j++){
+//
+//                DBNewsFeed temp = news.get(i);
+//
+//                if(temp.getPostID().contains(favoriteList.get(j))){
+//                    Bitmap bm = bitmapFromByte(temp.getPicture());
+//                    list.add( new NewsFeedItem(temp.getId(),bm, temp.getMessage(),temp.getUserName(),temp.getPostID(), temp.getLike()));
+//                    bm=null;
+//                }
+//            }
+//        }
 
         return list;
     }

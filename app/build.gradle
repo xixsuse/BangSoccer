@@ -31,11 +31,13 @@ android {
             keyPassword "Upgrade.do"
         }
     }*/
+/*
     buildTypes {
         release {
             signingConfig signingConfigs.release
         }
     }
+*/
 
     packagingOptions {
         exclude 'META-INF/LICENSE'

@@ -15,8 +15,10 @@ public class NewsFeedItem {
     public Bitmap image;
     public String postID;
     public boolean like;
+    public long id;
 
-    public NewsFeedItem(Bitmap image, String tittle, String user, String postID, boolean like) {
+    public NewsFeedItem(long id, Bitmap image, String tittle, String user, String postID, boolean like) {
+        this.id=id;
         this.image = image;
         this.tittle = tittle;
         this.user=user;

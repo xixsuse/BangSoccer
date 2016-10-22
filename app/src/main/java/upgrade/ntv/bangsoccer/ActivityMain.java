@@ -234,13 +234,15 @@ public class ActivityMain extends AppCompatActivity
         //Updating NewsFeed
         updatefavoritesList();
 
-        if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
-            //   facebookAccounts.addAll(favoriteList);
-            newsFeedItems.clear();
-            newsFeedItems.addAll(getListFavorites());
-            updateNewsFeedUI(0); //TODO chequiar esta llamada
+//        if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
+//            //   facebookAccounts.addAll(favoriteList);
+//            newsFeedItems.clear();
+//            newsFeedItems.addAll(getListFavorites());
+//            updateNewsFeedUI(); //TODO chequiar esta llamada
+//
+//        }
 
-        }
+        updateNewsFeedUI();
 
     }
 
@@ -383,6 +385,16 @@ public class ActivityMain extends AppCompatActivity
 
         populateDummyNewsFeedItems();
 
+//        if(newsFeedItems==null || newsFeedItems.size()<1){
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inSampleSize = 2;
+//            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.welcome, options);
+//            newsFeedItems.add( new NewsFeedItem(0, bm, "Bienvenido a UpSport!","","",false));
+//            bm=null;
+//
+//            newsFeedAdapter.notifyDataSetChanged();
+//        }
+
 
         // Auto newsfeed refresh
         if( isNetworkAvailable() && AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().getToken().length()>2 )
@@ -401,9 +413,10 @@ public class ActivityMain extends AppCompatActivity
                 AppicationCore.getDbSwitchDao().insert(temp);
 
                 //Updating UI
-                updateNewsFeedUI(-1);
+                updateNewsFeedUI();
             }
         });
+
 
 
 
@@ -445,7 +458,7 @@ public class ActivityMain extends AppCompatActivity
             updateDB(); // Updating db to make sure newsfeed do not exceed max value
         }
 
-        updateNewsFeedUI(-1);
+        updateNewsFeedUI();
 
 
     }
@@ -697,11 +710,13 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            refreshStatus=false;
+          //  refreshStatus=false;
 
             if(result>0) {
 
-                updateNewsFeedUI(result);
+                updateNewsFeedUI();
+                news.clear();
+                news.addAll(AppicationCore.getAllNewsFeed());
             }
 
 
@@ -710,6 +725,7 @@ public class ActivityMain extends AppCompatActivity
             count++;
             if(count< facebookAccounts.size()){
                 new RefreshNewsFeed(count).execute();
+                refreshStatus=false;
             }
 
 
@@ -734,14 +750,19 @@ public class ActivityMain extends AppCompatActivity
 
         }
 
+        else{
+            Toast.makeText(thisActivity, "Por favor espere que las noticias terminen de cargar",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
     /**
      * Refresh NewsFeed UI based on new Posts added
-     * @param newPost
+     *
      */
-    private void updateNewsFeedUI(int newPost) {
+    private void updateNewsFeedUI() {
 
      newsFeedItems.clear();
      if(mSwitch.isChecked()){
@@ -751,7 +772,8 @@ public class ActivityMain extends AppCompatActivity
          newsFeedItems.addAll(getListAll());
      }
 
-        newsFeedAdapter.notifyDataSetChanged();
+        if(newsFeedItems!=null || newsFeedItems.size()>0)
+            newsFeedAdapter.notifyDataSetChanged();
 
 
     }
@@ -906,7 +928,7 @@ public class ActivityMain extends AppCompatActivity
                 if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
                     newsFeedItems.clear();
                     newsFeedItems.addAll(getListFavorites());
-                    updateNewsFeedUI(0);
+                    updateNewsFeedUI();
 
                 }
 
@@ -945,19 +967,7 @@ public class ActivityMain extends AppCompatActivity
 
         }
 
-//        for(int i=0; i< news.size(); i++){
-//
-//            for(int j=0; j<favoriteList.size(); j++){
-//
-//                DBNewsFeed temp = news.get(i);
-//
-//                if(temp.getPostID().contains(favoriteList.get(j))){
-//                    Bitmap bm = bitmapFromByte(temp.getPicture());
-//                    list.add( new NewsFeedItem(temp.getId(),bm, temp.getMessage(),temp.getUserName(),temp.getPostID(), temp.getLike()));
-//                    bm=null;
-//                }
-//            }
-//        }
+
 
         return list;
     }
@@ -967,6 +977,11 @@ public class ActivityMain extends AppCompatActivity
     private List<NewsFeedItem> getListAll(){
 
         List<NewsFeedItem> list = new ArrayList<>();
+
+        if(news==null || news.size()<1){
+            news = new ArrayList<>();
+            news.addAll(AppicationCore.getAllNewsFeed());
+        }
 
         for(int i=news.size()-1; i>-1; i--){
             Bitmap bm = bitmapFromByte(news.get(i).getPicture());

@@ -151,22 +151,26 @@ public class FacebookClass {
 
         success=false;
 
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                postID+"/likes",
-                null,
-                HttpMethod.POST,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
+        try {
+            new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    postID + "/likes",
+                    null,
+                    HttpMethod.POST,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
 
-                        if (response!=null) {
-                            if (response.getRawResponse().contains("true")) {
-                                success = true;
+                            if (response != null) {
+                                if (response.getRawResponse().contains("true")) {
+                                    success = true;
+                                }
                             }
                         }
                     }
-                }
-        ).executeAndWait();
+            ).executeAndWait();
+        }catch (Exception e){
+
+        }
 
         return success;
     }
@@ -177,20 +181,24 @@ public class FacebookClass {
 
         success=false;
 
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                postID+"/likes",
-                null,
-                HttpMethod.DELETE,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
+        try {
+            new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    postID + "/likes",
+                    null,
+                    HttpMethod.DELETE,
+                    new GraphRequest.Callback() {
+                        public void onCompleted(GraphResponse response) {
 
-                        if (response.getRawResponse().contains("true")){
-                            success=true;
+                            if (response.getRawResponse().contains("true")) {
+                                success = true;
+                            }
                         }
                     }
-                }
-        ).executeAndWait();
+            ).executeAndWait();
+        }catch (Exception e){
+
+    }
 
         return success;
     }

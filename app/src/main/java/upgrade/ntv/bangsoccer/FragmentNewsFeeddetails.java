@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
+import upgrade.ntv.bangsoccer.dao.DBSwitch;
 
 
 public class FragmentNewsFeeddetails extends Fragment  {
@@ -135,8 +136,14 @@ public class FragmentNewsFeeddetails extends Fragment  {
     public static void updatingNewsfeedList(){
 
         List<DBNewsFeed> temp;
+        boolean status=false;
+        List<DBSwitch> sw= AppicationCore.getSwitchStatus();
 
-        if(! AppicationCore.getSwitchStatus().get(0).getStatus())
+        if(sw!=null && sw.size()>0){
+            status=sw.get(0).getStatus();
+        }
+
+        if(! status)
             temp = AppicationCore.getAllNewsFeed();
 
         else

@@ -49,19 +49,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.koala_activity_main);
 
        ref = FirebaseDatabase.getInstance().getReference();
 
         InitFragments();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_booking);
         //toolbar.setLogo(R.drawable.ic_add_shopping_cart_black_24dp);
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.booking_viewpager);
 
         setSupportActionBar(toolbar);
       //  getSupportActionBar().setIcon(R.drawable.ic_add_shopping_cart_black_24dp);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_booking);
         tabLayout.setupWithViewPager(mViewPager);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -223,10 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
                default:
                    System.out.println("This is the reservation Fragment");
-                   if(MyReservations.IsEmpty())
-                   {
-                       return new BlankFragment();
-                   }
+
                    return new MyReservationsFragment();
 
            }

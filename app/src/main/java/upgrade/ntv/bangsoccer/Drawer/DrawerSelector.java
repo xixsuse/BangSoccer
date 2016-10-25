@@ -12,6 +12,7 @@ import upgrade.ntv.bangsoccer.ActivityTour;
 import upgrade.ntv.bangsoccer.ActivityTournament;
 import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.R;
+import upgrade.ntv.bangsoccer.booking.MainActivity;
 
 /**
  * Created by xeros on 10/19/2015.
@@ -27,6 +28,10 @@ public class DrawerSelector {
         Intent intent = null;
 
         switch (selectedItem) {
+
+            case R.id.nav_reservation:
+                intent = new Intent(callingActivity, MainActivity.class);
+                break;
             case R.id.nav_main:
                 intent = new Intent(callingActivity, ActivityMain.class);
                 break;

@@ -23,19 +23,19 @@ android {
         }
     }
 
-/*    signingConfigs {
+/*  signingConfigs {
         release {
             storeFile file("/home/josefrometa/Downloads/UpgradeKeyStore.jks")
             storePassword "Upgrade.do"
             keyAlias "bangsoccerapp"
             keyPassword "Upgrade.do"
         }
-    }*/
+    }
     buildTypes {
         release {
             signingConfig signingConfigs.release
         }
-    }
+    }*/
 
     packagingOptions {
         exclude 'META-INF/LICENSE'

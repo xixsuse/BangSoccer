@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "upgrade.ntv.bangsoccer"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 13
-        versionName "1.4.2"
+        versionCode 14
+        versionName "1.5"
     }
 
 
@@ -23,21 +23,19 @@ android {
         }
     }
 
-/*    signingConfigs {
+    signingConfigs {
         release {
             storeFile file("/home/josefrometa/Downloads/UpgradeKeyStore.jks")
             storePassword "Upgrade.do"
             keyAlias "bangsoccerapp"
             keyPassword "Upgrade.do"
         }
-    }*/
-/*
+    }
     buildTypes {
         release {
             signingConfig signingConfigs.release
         }
     }
-*/
 
     packagingOptions {
         exclude 'META-INF/LICENSE'

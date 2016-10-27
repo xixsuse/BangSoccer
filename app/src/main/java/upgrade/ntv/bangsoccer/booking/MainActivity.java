@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public List<Fragment> fragments;
     private DatabaseReference ref;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

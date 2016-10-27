@@ -7,10 +7,9 @@ android {
         applicationId "upgrade.ntv.bangsoccer"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 13
-        versionName "1.4.2"
+        versionCode 15
+        versionName "1.5.1"
     }
-
 
     buildTypes {
         release {
@@ -94,5 +93,6 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:24.2.1'
     compile project(':dao')
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta1'
 }
 apply plugin: 'com.google.gms.google-services'

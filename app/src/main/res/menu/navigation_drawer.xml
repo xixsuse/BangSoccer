@@ -16,9 +16,9 @@
             android:icon="@drawable/ic_teams_icon"
             android:title="Clubes" />
         <item
-            android:id="@+id/nav_location"
+            android:id="@+id/nav_field"
             android:icon="@drawable/ic_soccer_location_icon"
-            android:title="Canchas" />
+            android:title="La Cancha" />
     </group>
 
 

@@ -47,7 +47,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 public class ActivityClubs extends AppCompatActivity implements CollapsingToolbarLayout.OnClickListener,
         NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,DivisionsAdapter.onDivisionFragmentInteractionListener ,
-        FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnListFragmentInteractionListener{
+        FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnFragmentHistoryInteractionListener{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout drawer;

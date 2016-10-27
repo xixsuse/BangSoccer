@@ -404,16 +404,17 @@ public class ActivityMain extends AppCompatActivity
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                switchStatusChanged(isChecked);
+              //  switchStatusChanged(isChecked);
+                new switchChangeAsync(isChecked).execute();
                // new RefreshNewsFeed(0).execute();
-                AppicationCore.resetSwitchTable();
-
-                DBSwitch temp = new DBSwitch();
-                temp.setStatus(isChecked);
-                AppicationCore.getDbSwitchDao().insert(temp);
+//                AppicationCore.resetSwitchTable();
+//
+//                DBSwitch temp = new DBSwitch();
+//                temp.setStatus(isChecked);
+//                AppicationCore.getDbSwitchDao().insert(temp);
 
                 //Updating UI
-                updateNewsFeedUI();
+            //    updateNewsFeedUI();
             }
         });
 
@@ -710,13 +711,11 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-          //  refreshStatus=false;
 
             if(result>0) {
-
-                updateNewsFeedUI();
                 news.clear();
                 news.addAll(AppicationCore.getAllNewsFeed());
+                updateNewsFeedUI();
             }
 
 
@@ -918,7 +917,6 @@ public class ActivityMain extends AppCompatActivity
 
     private void switchStatusChanged(boolean isChecked){
 
-        //facebookAccounts.clear();
 
         if( isChecked) {
             // Filter is enabled
@@ -991,4 +989,82 @@ public class ActivityMain extends AppCompatActivity
 
         return list;
     }
+
+
+
+    private class switchChangeAsync extends AsyncTask<Void, Boolean, Boolean> {
+
+        boolean status;
+        boolean result=false;
+
+        public switchChangeAsync(boolean status){
+            this.status=status;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            if(status) {
+                // Filter is enabled
+
+                updatefavoritesList();
+
+                if(status && favoriteList!=null && favoriteList.size()>0){
+                    newsFeedItems.clear();
+                    newsFeedItems.addAll(getListFavorites());
+                    result=true;
+
+
+                }
+
+                else{
+                   result=false;
+                }
+            }
+
+
+            else{
+                // Filter is disabled
+                facebookAccounts.addAll(new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts))));
+                newsFeedItems.clear();
+                newsFeedItems.addAll(getListAll());
+            }
+
+
+            //Updating DB
+            AppicationCore.resetSwitchTable();
+
+            DBSwitch temp = new DBSwitch();
+            temp.setStatus(status);
+            AppicationCore.getDbSwitchDao().insert(temp);
+
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+
+            updateNewsFeedUI();
+
+
+            if(! result) {
+
+                if(mSwitch.isChecked()){
+                Toast.makeText(thisActivity, "Usted No ha seleccionado ningun Favorito",
+                        Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+    }
+
+
 }

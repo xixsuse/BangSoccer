@@ -26,11 +26,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -76,6 +78,7 @@ import upgrade.ntv.bangsoccer.Utils.Permissions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
+import upgrade.ntv.bangsoccer.dao.DBSwitch;
 import upgrade.ntv.bangsoccer.service.UtilityService;
 
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
@@ -109,7 +112,9 @@ public class ActivityMain extends AppCompatActivity
     private boolean refreshStatus = false;  // true: when refresh newsfeeds is in progress
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private final int POST_QTY=2; //  quantity of post per club
-    private GridLayoutManager lLayout;
+    private SwitchCompat mSwitch;
+    private List<String> favoriteList;
+    private List<DBNewsFeed> news;
 
 
     public static DatabaseReference databaseReference;
@@ -141,19 +146,23 @@ public class ActivityMain extends AppCompatActivity
         switch (view.getId()){
 
             case R.id.newsfeed_likes_button:
-                Toast.makeText(thisActivity, "Likes!!!",
-                        Toast.LENGTH_SHORT).show();
-                new FbLikesAsync(position).execute();
+
+                if(isNetworkAvailable())
+                    new FbLikesAsync(position).execute();
+                else{
+                    Toast.makeText(thisActivity, "Revise su conexion a internet",
+                            Toast.LENGTH_LONG).show();
+                }
 
                 break;
 
             case R.id.newsfeed_share:
-                Toast.makeText(thisActivity, "Shares!!!",
-                    Toast.LENGTH_SHORT).show();
+                share(position);
 
                 break;
 
             default:
+               // clickNewsFeed(newsFeedItems.get(position).id);
                 clickNewsFeed(position);
                 break;
         }
@@ -222,6 +231,19 @@ public class ActivityMain extends AppCompatActivity
             Log.v("Loading Areas Failed: ", e.getMessage());
         }
 
+        //Updating NewsFeed
+        updatefavoritesList();
+
+//        if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
+//            //   facebookAccounts.addAll(favoriteList);
+//            newsFeedItems.clear();
+//            newsFeedItems.addAll(getListFavorites());
+//            updateNewsFeedUI(); //TODO chequiar esta llamada
+//
+//        }
+
+        updateNewsFeedUI();
+
     }
 
     @Override
@@ -268,7 +290,7 @@ public class ActivityMain extends AppCompatActivity
             @Override
             public void onRefresh() {
                 if(! isNetworkAvailable()){
-                    Toast.makeText(thisActivity, "Revise su conexion a internet!",
+                    Toast.makeText(thisActivity, "Revise su conexion a internet",
                             Toast.LENGTH_LONG).show();
 
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -299,11 +321,6 @@ public class ActivityMain extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-        facebookAccounts = new ArrayList<>();
-        updatefavoritesList();
-
         //adds a dummy area and Attraction
         setDummyAreaNdAttraction();
 
@@ -324,7 +341,6 @@ public class ActivityMain extends AppCompatActivity
             onInternetPermissionGranted();
         }
 
-        populateDummyNewsFeedItems();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_newsfeed_cardList);
         recyclerView.setHasFixedSize(true);
@@ -338,7 +354,6 @@ public class ActivityMain extends AppCompatActivity
 
         newsFeedAdapter.setClickListener(this);
 
-
         if (BuildConfig.DEBUG) {
             FacebookSdk.setIsDebugEnabled(true);
             FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
@@ -346,6 +361,63 @@ public class ActivityMain extends AppCompatActivity
         AppEventsLogger.activateApp(this);
    /*    FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         FirebaseCrash.log("Activity created");*/
+
+        mSwitch = (SwitchCompat) findViewById(R.id.filter);
+
+        /////////////////// Filter Switch ///////////////////
+        List<DBSwitch> temp = AppicationCore.getSwitchStatus();
+        if(temp!= null && temp.size()>0){
+            mSwitch.setChecked(temp.get(0).getStatus());
+        }
+        else{
+            mSwitch.setChecked( false);
+        }
+
+        /////////////////// Facebook Newsfeed Variables ///////////////////
+        facebookAccounts = new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts)));
+        favoriteList = new ArrayList<>();
+
+        news = AppicationCore.getAllNewsFeed();
+        if(news==null)
+            news= new ArrayList<>();
+
+        switchStatusChanged(mSwitch.isChecked());
+
+        populateDummyNewsFeedItems();
+
+//        if(newsFeedItems==null || newsFeedItems.size()<1){
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inSampleSize = 2;
+//            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.welcome, options);
+//            newsFeedItems.add( new NewsFeedItem(0, bm, "Bienvenido a UpSport!","","",false));
+//            bm=null;
+//
+//            newsFeedAdapter.notifyDataSetChanged();
+//        }
+
+
+        // Auto newsfeed refresh
+        if( isNetworkAvailable() && AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().getToken().length()>2 )
+            new RefreshNewsFeed(0).execute();
+
+
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+              //  switchStatusChanged(isChecked);
+                new switchChangeAsync(isChecked).execute();
+               // new RefreshNewsFeed(0).execute();
+//                AppicationCore.resetSwitchTable();
+//
+//                DBSwitch temp = new DBSwitch();
+//                temp.setStatus(isChecked);
+//                AppicationCore.getDbSwitchDao().insert(temp);
+
+                //Updating UI
+            //    updateNewsFeedUI();
+            }
+        });
+
 
 
 
@@ -382,21 +454,13 @@ public class ActivityMain extends AppCompatActivity
     //dummy data for the global news feed
     public void populateDummyNewsFeedItems(){
 
-        updateDB();
-        newsFeedItems.clear();
 
-        List<DBNewsFeed> newsfeeds = AppicationCore.getAllNewsFeed();
-        if(newsfeeds!=null && newsfeeds.size()>0){
+        if(! mSwitch.isChecked()) {
+            updateDB(); // Updating db to make sure newsfeed do not exceed max value
+        }
 
-            for(int i=newsfeeds.size()-1; i>-1; i--){
-                Bitmap bm = bitmapFromByte(newsfeeds.get(i).getPicture());
-                newsFeedItems.add(new NewsFeedItem(bm, newsfeeds.get(i).getMessage(),newsfeeds.get(i).getUserName(), newsfeeds.get(i).getPostID(), newsfeeds.get(i).getLike()));
-                bm=null;
-            }
-        }
-        else{
-            newsFeedItems.add(new NewsFeedItem(null, "Inicia sesion en Facebook! \n","","", false));
-        }
+        updateNewsFeedUI();
+
 
     }
 
@@ -537,6 +601,7 @@ public class ActivityMain extends AppCompatActivity
                 intent = new Intent(this, ActivityFavoriteNFollow.class);
                 startActivity(intent);
                 break;
+
             case R.id.action_divisiones:
                 onDvisionChoosertDialog();
                 break;
@@ -624,13 +689,12 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            updatefavoritesList();
             refreshStatus=true;
-            if(count==0) {
-//                Toast.makeText(thisActivity, "Actualizando...",
-//                        Toast.LENGTH_SHORT).show();
 
+            if(facebookAccounts==null || facebookAccounts.size()<1){
+                switchStatusChanged(mSwitch.isChecked());
             }
+
         }
 
         @Override
@@ -649,8 +713,9 @@ public class ActivityMain extends AppCompatActivity
             super.onPostExecute(result);
 
             if(result>0) {
-
-                updateNewsFeedUI(result);
+                news.clear();
+                news.addAll(AppicationCore.getAllNewsFeed());
+                updateNewsFeedUI();
             }
 
 
@@ -659,30 +724,22 @@ public class ActivityMain extends AppCompatActivity
             count++;
             if(count< facebookAccounts.size()){
                 new RefreshNewsFeed(count).execute();
-            }
-            else{
-//                Toast.makeText(thisActivity, "Las noticias se han actualizado !",
-//                        Toast.LENGTH_LONG).show();
                 refreshStatus=false;
-                if(newsFeedItems.get(newsFeedItems.size()-1).image==null){
-                    newsFeedItems.remove(newsFeedItems.size()-1);
-                }
-
-
             }
+
 
         }
 
     }
 
 
-    private void clickNewsFeed(int position){
+    private void clickNewsFeed(long position){
 
         if(!refreshStatus){
 
             Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
             //  intent.putExtra("MynewsFeedID", newsFeedItems.size() -1-position);
-            intent.putExtra("MynewsFeedID", position);
+            intent.putExtra("MynewsFeedID", (int)position);
 
             FragmentNewsFeeddetails.updatingNewsfeedList();
 
@@ -692,25 +749,31 @@ public class ActivityMain extends AppCompatActivity
 
         }
 
+        else{
+            Toast.makeText(thisActivity, "Por favor espere que las noticias terminen de cargar",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
     /**
      * Refresh NewsFeed UI based on new Posts added
-     * @param newPost
+     *
      */
-    private void updateNewsFeedUI(int newPost) {
+    private void updateNewsFeedUI() {
 
-        List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+     newsFeedItems.clear();
+     if(mSwitch.isChecked()){
+         newsFeedItems.addAll(getListFavorites());
+     }
+        else{
+         newsFeedItems.addAll(getListAll());
+     }
 
-        for(int i=0; i<newPost; i++){
-            Bitmap bm = bitmapFromByte(list.get(list.size()-1-i).getPicture());
-            newsFeedItems.add(i, new NewsFeedItem(bm, list.get(list.size()-1-i).getMessage(), list.get(list.size()-1-i).getUserName(),list.get(list.size()-1-i).getPostID(), list.get(list.size()-1-i).getLike()));
-            bm=null;
-            // newsFeedAdapter.notifyItemInserted(i);
+        if(newsFeedItems!=null || newsFeedItems.size()>0)
             newsFeedAdapter.notifyDataSetChanged();
 
-        }
 
     }
 
@@ -721,10 +784,11 @@ public class ActivityMain extends AppCompatActivity
      */
     private void updateDB(){
 
-        List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+       // List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+        List<DBNewsFeed> list = news;
         List<DBNewsFeed> newList = new ArrayList<>();
         int size =  facebookAccounts.size() * POST_QTY;
-        int dif= list.size() - size;
+        int dif = (list.size()>0) ? (list.size() - size) : 0;
 
         if(dif>0) {
 
@@ -734,6 +798,8 @@ public class ActivityMain extends AppCompatActivity
                 newList.add(list.get(i));
             }
             AppicationCore.getDbNewsFeedDao().insertInTx(newList);
+            news.clear();
+            news.addAll( AppicationCore.getAllNewsFeed());
         }
 
     }
@@ -750,23 +816,22 @@ public class ActivityMain extends AppCompatActivity
     private void updatefavoritesList(){
 
         List<DBFavorites> favs = AppicationCore.getFavorites();
-        facebookAccounts.clear();
+        favoriteList.clear();
 
         if(favs!=null && favs.size()>0){
 
             for(int i=0; i<favs.size(); i++){
-                facebookAccounts.add(favs.get(i).getFb_id());
+                favoriteList.add(favs.get(i).getFb_id());
             }
         }
-        else{
-            facebookAccounts=new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts)));
-        }
+
     }
 
 
     private boolean updateLikes(int position){
 
-        List<DBNewsFeed> newsFeeds = AppicationCore.getAllNewsFeed();
+       // List<DBNewsFeed> newsFeeds = AppicationCore.getAllNewsFeed();
+        List<DBNewsFeed> newsFeeds = news;
         DBNewsFeed newsFeed = newsFeeds.get(newsFeeds.size() -1 - position);
 
         FacebookClass fb = new FacebookClass();
@@ -818,11 +883,16 @@ public class ActivityMain extends AppCompatActivity
             super.onPostExecute(result);
 
             if(result) {
-                List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+                //List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+                List<DBNewsFeed> list = news;
                 DBNewsFeed item = list.get(list.size() -1 - position);
 
                 item.setLike(!item.getLike());
                 AppicationCore.getDbNewsFeedDao().update(item);
+
+                news.clear();
+                news.addAll(AppicationCore.getAllNewsFeed());
+
 
                 //Modify UI
                  newsFeedItems.get(position).setLike(! newsFeedItems.get(position).like );
@@ -833,12 +903,168 @@ public class ActivityMain extends AppCompatActivity
     }
 
 
-    private void facebookPermissions(){
 
-        //Permission for Likes
-        LoginManager.getInstance().logInWithPublishPermissions(
-                this,
-                Arrays.asList("publish_actions"));
+    private void share(int position){
 
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "#UpSport https://facebook.com/"+newsFeedItems.get(position).postID;
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
+
+
+    private void switchStatusChanged(boolean isChecked){
+
+
+        if( isChecked) {
+            // Filter is enabled
+
+                updatefavoritesList();
+
+                if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
+                    newsFeedItems.clear();
+                    newsFeedItems.addAll(getListFavorites());
+                    updateNewsFeedUI();
+
+                }
+
+                else{
+                    Toast.makeText(thisActivity, "Usted No ha seleccionado ningun Favorito",
+                            Toast.LENGTH_SHORT).show();
+                }
+        }
+
+
+        else{
+            // Filter is disabled
+            facebookAccounts.addAll(new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts))));
+        }
+    }
+
+
+
+    private List<NewsFeedItem> getListFavorites(){
+
+        List<NewsFeedItem> list = new ArrayList<>();
+        List<DBFavorites> favs = AppicationCore.getFavorites();
+        List<DBNewsFeed> all = AppicationCore.getAllNewsFeed();
+
+        for(int i=0; i<favs.size(); i++){
+            for(int j=all.size()-1; j>-1; j--){
+
+                DBNewsFeed temp = all.get(j);
+
+                if(temp.getPostID().contains(favs.get(i).getFb_id())){
+                    Bitmap bm = bitmapFromByte(temp.getPicture());
+                    list.add( new NewsFeedItem(temp.getId(),bm, temp.getMessage(),temp.getUserName(),temp.getPostID(), temp.getLike()));
+                    bm=null;
+                }
+            }
+
+        }
+
+
+
+        return list;
+    }
+
+
+
+    private List<NewsFeedItem> getListAll(){
+
+        List<NewsFeedItem> list = new ArrayList<>();
+
+        if(news==null || news.size()<1){
+            news = new ArrayList<>();
+            news.addAll(AppicationCore.getAllNewsFeed());
+        }
+
+        for(int i=news.size()-1; i>-1; i--){
+            Bitmap bm = bitmapFromByte(news.get(i).getPicture());
+            list.add(new NewsFeedItem(news.get(i).getId(),bm, news.get(i).getMessage(),news.get(i).getUserName(), news.get(i).getPostID(), news.get(i).getLike()));
+            bm=null;
+        }
+
+        return list;
+    }
+
+
+
+    private class switchChangeAsync extends AsyncTask<Void, Boolean, Boolean> {
+
+        boolean status;
+        boolean result=false;
+
+        public switchChangeAsync(boolean status){
+            this.status=status;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            if(status) {
+                // Filter is enabled
+
+                updatefavoritesList();
+
+                if(status && favoriteList!=null && favoriteList.size()>0){
+                    newsFeedItems.clear();
+                    newsFeedItems.addAll(getListFavorites());
+                    result=true;
+
+
+                }
+
+                else{
+                   result=false;
+                }
+            }
+
+
+            else{
+                // Filter is disabled
+                facebookAccounts.addAll(new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts))));
+                newsFeedItems.clear();
+                newsFeedItems.addAll(getListAll());
+            }
+
+
+            //Updating DB
+            AppicationCore.resetSwitchTable();
+
+            DBSwitch temp = new DBSwitch();
+            temp.setStatus(status);
+            AppicationCore.getDbSwitchDao().insert(temp);
+
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+
+            updateNewsFeedUI();
+
+
+            if(! result) {
+
+                if(mSwitch.isChecked()){
+                Toast.makeText(thisActivity, "Usted No ha seleccionado ningun Favorito",
+                        Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+    }
+
+
 }

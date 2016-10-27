@@ -15,11 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import upgrade.ntv.bangsoccer.dao.DBFavorites;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
+import upgrade.ntv.bangsoccer.dao.DBSwitch;
 
 
 public class FragmentNewsFeeddetails extends Fragment  {
@@ -131,7 +134,20 @@ public class FragmentNewsFeeddetails extends Fragment  {
     }
 
     public static void updatingNewsfeedList(){
-        List<DBNewsFeed> temp = AppicationCore.getAllNewsFeed();
+
+        List<DBNewsFeed> temp;
+        boolean status=false;
+        List<DBSwitch> sw= AppicationCore.getSwitchStatus();
+
+        if(sw!=null && sw.size()>0){
+            status=sw.get(0).getStatus();
+        }
+
+        if(! status)
+            temp = AppicationCore.getAllNewsFeed();
+
+        else
+             temp=getFavoriteList();
 
         if(temp!=null && temp.size()>0) {
 
@@ -151,5 +167,27 @@ public class FragmentNewsFeeddetails extends Fragment  {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 2;
         return  BitmapFactory.decodeByteArray(b , 0, b .length, options);
+    }
+
+
+    private static List<DBNewsFeed> getFavoriteList(){
+
+        List<DBFavorites> favs = AppicationCore.getFavorites();
+        List<DBNewsFeed> all = AppicationCore.getAllNewsFeed();
+        List<DBNewsFeed> list = new ArrayList<>();
+
+        for(int i=0; i<favs.size(); i++){
+           // for(int j=0; j< all.size(); j++){
+            for(int j=all.size()-1; j>-1; j--){
+
+                if(all.get(j).getPostID().contains(favs.get(i).getFb_id())){
+                    list.add(all.get(j));
+                }
+            }
+
+        }
+        Collections.reverse(list);
+
+        return list;
     }
 }

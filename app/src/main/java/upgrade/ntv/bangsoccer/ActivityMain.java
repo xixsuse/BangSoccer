@@ -234,13 +234,15 @@ public class ActivityMain extends AppCompatActivity
         //Updating NewsFeed
         updatefavoritesList();
 
-        if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
-            //   facebookAccounts.addAll(favoriteList);
-            newsFeedItems.clear();
-            newsFeedItems.addAll(getListFavorites());
-            updateNewsFeedUI(0); //TODO chequiar esta llamada
+//        if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
+//            //   facebookAccounts.addAll(favoriteList);
+//            newsFeedItems.clear();
+//            newsFeedItems.addAll(getListFavorites());
+//            updateNewsFeedUI(); //TODO chequiar esta llamada
+//
+//        }
 
-        }
+        updateNewsFeedUI();
 
     }
 
@@ -383,6 +385,16 @@ public class ActivityMain extends AppCompatActivity
 
         populateDummyNewsFeedItems();
 
+//        if(newsFeedItems==null || newsFeedItems.size()<1){
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inSampleSize = 2;
+//            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.welcome, options);
+//            newsFeedItems.add( new NewsFeedItem(0, bm, "Bienvenido a UpSport!","","",false));
+//            bm=null;
+//
+//            newsFeedAdapter.notifyDataSetChanged();
+//        }
+
 
         // Auto newsfeed refresh
         if( isNetworkAvailable() && AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().getToken().length()>2 )
@@ -392,18 +404,20 @@ public class ActivityMain extends AppCompatActivity
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                switchStatusChanged(isChecked);
+              //  switchStatusChanged(isChecked);
+                new switchChangeAsync(isChecked).execute();
                // new RefreshNewsFeed(0).execute();
-                AppicationCore.resetSwitchTable();
-
-                DBSwitch temp = new DBSwitch();
-                temp.setStatus(isChecked);
-                AppicationCore.getDbSwitchDao().insert(temp);
+//                AppicationCore.resetSwitchTable();
+//
+//                DBSwitch temp = new DBSwitch();
+//                temp.setStatus(isChecked);
+//                AppicationCore.getDbSwitchDao().insert(temp);
 
                 //Updating UI
-                updateNewsFeedUI(-1);
+            //    updateNewsFeedUI();
             }
         });
+
 
 
 
@@ -445,7 +459,7 @@ public class ActivityMain extends AppCompatActivity
             updateDB(); // Updating db to make sure newsfeed do not exceed max value
         }
 
-        updateNewsFeedUI(-1);
+        updateNewsFeedUI();
 
 
     }
@@ -697,11 +711,11 @@ public class ActivityMain extends AppCompatActivity
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-            refreshStatus=false;
 
             if(result>0) {
-
-                updateNewsFeedUI(result);
+                news.clear();
+                news.addAll(AppicationCore.getAllNewsFeed());
+                updateNewsFeedUI();
             }
 
 
@@ -710,6 +724,7 @@ public class ActivityMain extends AppCompatActivity
             count++;
             if(count< facebookAccounts.size()){
                 new RefreshNewsFeed(count).execute();
+                refreshStatus=false;
             }
 
 
@@ -734,14 +749,19 @@ public class ActivityMain extends AppCompatActivity
 
         }
 
+        else{
+            Toast.makeText(thisActivity, "Por favor espere que las noticias terminen de cargar",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
     /**
      * Refresh NewsFeed UI based on new Posts added
-     * @param newPost
+     *
      */
-    private void updateNewsFeedUI(int newPost) {
+    private void updateNewsFeedUI() {
 
      newsFeedItems.clear();
      if(mSwitch.isChecked()){
@@ -751,7 +771,8 @@ public class ActivityMain extends AppCompatActivity
          newsFeedItems.addAll(getListAll());
      }
 
-        newsFeedAdapter.notifyDataSetChanged();
+        if(newsFeedItems!=null || newsFeedItems.size()>0)
+            newsFeedAdapter.notifyDataSetChanged();
 
 
     }
@@ -896,7 +917,6 @@ public class ActivityMain extends AppCompatActivity
 
     private void switchStatusChanged(boolean isChecked){
 
-        //facebookAccounts.clear();
 
         if( isChecked) {
             // Filter is enabled
@@ -906,7 +926,7 @@ public class ActivityMain extends AppCompatActivity
                 if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
                     newsFeedItems.clear();
                     newsFeedItems.addAll(getListFavorites());
-                    updateNewsFeedUI(0);
+                    updateNewsFeedUI();
 
                 }
 
@@ -945,19 +965,7 @@ public class ActivityMain extends AppCompatActivity
 
         }
 
-//        for(int i=0; i< news.size(); i++){
-//
-//            for(int j=0; j<favoriteList.size(); j++){
-//
-//                DBNewsFeed temp = news.get(i);
-//
-//                if(temp.getPostID().contains(favoriteList.get(j))){
-//                    Bitmap bm = bitmapFromByte(temp.getPicture());
-//                    list.add( new NewsFeedItem(temp.getId(),bm, temp.getMessage(),temp.getUserName(),temp.getPostID(), temp.getLike()));
-//                    bm=null;
-//                }
-//            }
-//        }
+
 
         return list;
     }
@@ -968,6 +976,11 @@ public class ActivityMain extends AppCompatActivity
 
         List<NewsFeedItem> list = new ArrayList<>();
 
+        if(news==null || news.size()<1){
+            news = new ArrayList<>();
+            news.addAll(AppicationCore.getAllNewsFeed());
+        }
+
         for(int i=news.size()-1; i>-1; i--){
             Bitmap bm = bitmapFromByte(news.get(i).getPicture());
             list.add(new NewsFeedItem(news.get(i).getId(),bm, news.get(i).getMessage(),news.get(i).getUserName(), news.get(i).getPostID(), news.get(i).getLike()));
@@ -976,4 +989,82 @@ public class ActivityMain extends AppCompatActivity
 
         return list;
     }
+
+
+
+    private class switchChangeAsync extends AsyncTask<Void, Boolean, Boolean> {
+
+        boolean status;
+        boolean result=false;
+
+        public switchChangeAsync(boolean status){
+            this.status=status;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            if(status) {
+                // Filter is enabled
+
+                updatefavoritesList();
+
+                if(status && favoriteList!=null && favoriteList.size()>0){
+                    newsFeedItems.clear();
+                    newsFeedItems.addAll(getListFavorites());
+                    result=true;
+
+
+                }
+
+                else{
+                   result=false;
+                }
+            }
+
+
+            else{
+                // Filter is disabled
+                facebookAccounts.addAll(new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts))));
+                newsFeedItems.clear();
+                newsFeedItems.addAll(getListAll());
+            }
+
+
+            //Updating DB
+            AppicationCore.resetSwitchTable();
+
+            DBSwitch temp = new DBSwitch();
+            temp.setStatus(status);
+            AppicationCore.getDbSwitchDao().insert(temp);
+
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+
+            updateNewsFeedUI();
+
+
+            if(! result) {
+
+                if(mSwitch.isChecked()){
+                Toast.makeText(thisActivity, "Usted No ha seleccionado ningun Favorito",
+                        Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+    }
+
+
 }

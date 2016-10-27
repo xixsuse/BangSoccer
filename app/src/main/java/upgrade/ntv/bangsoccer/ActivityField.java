@@ -60,6 +60,7 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
                 .child(DB_REF_FIELDS)
                 .child(DB_REF_FIELD_LA_MEDIA_CANCHA);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

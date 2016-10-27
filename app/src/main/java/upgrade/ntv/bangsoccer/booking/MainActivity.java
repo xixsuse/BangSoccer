@@ -117,26 +117,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void PushReservations(View view) {
 
-
+        System.out.println("Reservation size is:"+MyReservations.reservations.size());
+        if(MyReservations.reservations!=null)
         for (ReservationModel reservation:MyReservations.reservations) {
 
-            DateFormat formatter = new SimpleDateFormat("EEEMMMddKK:mm:ss");
-            try{
 
-                Date date = formatter.parse(reservation.ReservationDate);
-                System.out.println(date);
-
-            }
-
-            catch (Exception ex){
-
-                    System.out.println(ex.getMessage());
-            }
            // String weekKey = Integer.toString(reservation.ReservationDate.get(Calendar.WEEK_OF_YEAR));
+              String WeekKey= MyDateUtils.GetWeekFromCustomDate(reservation.ReservationDate);
+              System.out.println("The Week Key is: "+WeekKey);
+            DatabaseReference reservationref = ref.child("Reservaciones").child("Week-"+WeekKey);
 
-            //DatabaseReference reservationref = ref.child("Reservaciones").child("Week-"+weekKey);
-
-            //reservationref.push().setValue(reservation);
+            reservationref.push().setValue(reservation);
 
         }
     }

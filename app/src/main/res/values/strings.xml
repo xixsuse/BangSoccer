@@ -187,6 +187,8 @@
     <string name="auth_providers_header">Use auth providers:</string>
     <string name="email_label">Email</string>
     <string name="facebook_label">Facebook</string>
+
+
     <string name="facebook_label_missing_config">Facebook - configuration missing</string>
     <string name="google_label">Google</string>
     <string name="google_label_missing_config">Google - configuration missing</string>

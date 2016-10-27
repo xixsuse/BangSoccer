@@ -5,6 +5,6 @@ package upgrade.ntv.bangsoccer.booking;
  */
 public class HourObject {
 
-    String Hour;
-    String available;
+    public String Hour;
+   public  String available;
 }

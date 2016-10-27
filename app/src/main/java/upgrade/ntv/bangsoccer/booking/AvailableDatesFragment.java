@@ -172,15 +172,19 @@ public class AvailableDatesFragment extends Fragment {
 
         for (HourObject hour:hoursList) {
 
-            int currentHour = MyMatcher.MatchHourToInt(hour.Hour);
-            tempDate.set(Calendar.YEAR, Calendar.getInstance().YEAR);
-            tempDate.set(Calendar.MONTH, model.monthnumber-1);
-            tempDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(model.day));
-            tempDate.set(Calendar.HOUR_OF_DAY,currentHour);
-            tempDate.set(Calendar.MINUTE, 0);
-            tempDate.set(Calendar.SECOND, 0);
-            tempDate.set(Calendar.MILLISECOND, 0);
-            if( MyReservations.IsReserved(tempDate)){
+          //  int currentHour = MyMatcher.MatchHourToInt(hour.Hour);
+          //  tempDate.set(Calendar.YEAR, Calendar.getInstance().YEAR);
+          //  tempDate.set(Calendar.MONTH, model.monthnumber-1);
+          //  tempDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(model.day));
+         //   tempDate.set(Calendar.HOUR_OF_DAY,currentHour);
+          //  tempDate.set(Calendar.MINUTE, 0);
+          //  tempDate.set(Calendar.SECOND, 0);
+           // tempDate.set(Calendar.MILLISECOND, 0);
+            String fecha = model.monthnumber+"-"+model.day+"-"+ Calendar.getInstance().get(Calendar.YEAR)+"-"+hour.Hour;
+            tempDate.setTime(MyDateUtils.MatchAmPmFormat(fecha));
+            String DatetoCompare=MyDateUtils.Match24HourFormat(tempDate);
+            System.out.println("Tamo peddio la hora es:"+tempDate.getTime());
+            if( MyReservations.IsReserved(DatetoCompare)){
 
                 toremove.add(hour);
             }

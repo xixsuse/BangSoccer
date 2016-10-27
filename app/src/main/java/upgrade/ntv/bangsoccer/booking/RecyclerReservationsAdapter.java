@@ -15,7 +15,7 @@ public class RecyclerReservationsAdapter extends RecyclerView.Adapter<Myreservat
     private final LayoutInflater mInflater;
     private final Context mycontext;
 
-    public RecyclerReservationsAdapter(Context context) {
+    public  RecyclerReservationsAdapter(Context context) {
 
         this.mInflater= LayoutInflater.from(context);
         this.mycontext=context;

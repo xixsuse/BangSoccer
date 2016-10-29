@@ -80,14 +80,14 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
                 if(!Preferences.getPreferredDivisions(mContext, key)){
                     cleanAllDivisionChecks();
                     if (!holder.cCheckBox.isChecked()) {
-
+                        mListener.onDivisionUnselected(key);
                         holder.cCheckBox.setChecked(true);
                         //saves the divisions to the shared preferences
                         Preferences.setPreferredDivisions(mContext, node);
                         mListener.onDivisionSelected(node);
 
                     }else{
-                        mListener.onDivisionUnselected(key);
+                       // mListener.onDivisionUnselected(key);
                     }
                 }
 

@@ -101,7 +101,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // Save the user's current game state
+        // Save the user's current gamez state
         outState.putInt(FRAGMENT_TYPE, getLastSelectedItem());
         super.onSaveInstanceState(outState);
     }

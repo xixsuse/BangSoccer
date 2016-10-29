@@ -72,7 +72,7 @@ public class ActivityClubSelect extends AppCompatActivity implements NavigationV
             @Override
             public void onItemClick(View view, int position) {
 
-                Intent intent = DrawerSelector.onItemSelected(thisActivity, 100);
+                Intent intent = new Intent(thisActivity, ActivityClubs.class);
                 intent.putExtra("CLUBID",  clubsAdapter.getClubID(position));
 
                 if (intent != null) {

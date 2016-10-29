@@ -92,7 +92,7 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
             public void onSuccess(Uri uri) {
                 Picasso.with(getApplicationContext())
                         .load(uri)
-                        .placeholder(R.drawable.ic_goals_icon)
+                        .placeholder(R.drawable.ic_no_image)
                         .into(testimage);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -125,6 +125,23 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     public void onResume() {
         mMapView.onResume();
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
+    }
+
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
     }
 
     @Override

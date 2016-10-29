@@ -175,7 +175,7 @@
     <string name="desc_auth_ui">Demonstrates the Firebase Auth UI flow, with customization options.</string>
 
     <!-- strings for Auth UI demo activities -->
-    <eat-comment/>
+    <eat-comment />
     <string name="launch_title">FirebaseUI Auth Demo</string>
     <string name="green_theme">Green Theme</string>
     <string name="purple_theme">Purple Theme</string>
@@ -187,6 +187,8 @@
     <string name="auth_providers_header">Use auth providers:</string>
     <string name="email_label">Email</string>
     <string name="facebook_label">Facebook</string>
+
+
     <string name="facebook_label_missing_config">Facebook - configuration missing</string>
     <string name="google_label">Google</string>
     <string name="google_label_missing_config">Google - configuration missing</string>
@@ -205,4 +207,11 @@
     <string name="profile_picture_content_desc">Profile picture</string>
     <string name="default_theme">Default theme</string>
     <string name="configuration_required">Configuration is required - see README.md</string>
+    <string name="title_activity_field">La Media Cancha</string>
+    <string name="label_field_moto">
+        <b>"Nuestro MOTO\n\n"</b>
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet ""
+    </string>
 </resources>

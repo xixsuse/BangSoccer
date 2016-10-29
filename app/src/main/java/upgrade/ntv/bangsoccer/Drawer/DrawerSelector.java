@@ -33,6 +33,10 @@ public class DrawerSelector {
             case R.id.nav_reservation:
                 intent = new Intent(callingActivity, MainActivity.class);
                 break;
+
+            case R.id.nav_reservation:
+                intent = new Intent(callingActivity, MainActivity.class);
+                break;
             case R.id.nav_main:
                 intent = new Intent(callingActivity, ActivityMain.class);
                 break;

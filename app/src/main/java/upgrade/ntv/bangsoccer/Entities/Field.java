@@ -17,12 +17,13 @@ public class Field {
             longitude,
             name,
             phone,
-            schedule;
+            schedule,
+            story;
 
     public Field() {
     }
 
-    public Field(String URL, String address, String imageURL, String latitude, String longitude, String name, String phone, String schedule) {
+    public Field(String URL, String address, String imageURL, String latitude, String longitude, String name, String phone, String schedule, String story) {
         this.URL = URL;
         this.address = address;
         this.imageURL = imageURL;
@@ -31,6 +32,7 @@ public class Field {
         this.name = name;
         this.phone = phone;
         this.schedule = schedule;
+        this.story = story;
     }
 
     public void setFIELD_ID(String FIELD_ID) {
@@ -69,6 +71,10 @@ public class Field {
         this.schedule = schedule;
     }
 
+    public void setStory(String story) {
+        this.story = story;
+    }
+
     public String getFIELD_ID() {
         return FIELD_ID;
     }
@@ -103,5 +109,9 @@ public class Field {
 
     public String getSchedule() {
         return schedule;
+    }
+
+    public String getStory() {
+        return story;
     }
 }

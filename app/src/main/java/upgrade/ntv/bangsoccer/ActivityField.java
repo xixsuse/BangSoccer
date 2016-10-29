@@ -15,9 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -114,7 +116,6 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onClick(View v) {
-        // onBackPressed();
     }
 
 
@@ -148,5 +149,11 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
 
     private void setUpMap() {
 
+        int mapStyle = 2;
+
+        mMap.setMapType(mapStyle);
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(19.7845, -84.5124), 13));
     }
 }

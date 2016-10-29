@@ -24,15 +24,12 @@
             android:icon="@drawable/ic_add_shopping_cart_black_24dp"
             android:title="Reservacion" />
             android:title="Canchas" />
-        <item
-            android:id="@+id/nav_reservation"
-            android:icon="@drawable/ic_add_shopping_cart_black_24dp"
-            android:title="Reservacion" />
     </group>
 
 
-    <group android:checkableBehavior="single"
+    <group
         android:id="@+id/user_nav_view_group"
+        android:checkableBehavior="single"
         android:menuCategory="alternative">
 
         <item

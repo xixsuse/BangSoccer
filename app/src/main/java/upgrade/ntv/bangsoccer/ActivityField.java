@@ -19,7 +19,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -118,7 +121,11 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     public void onClick(View v) {
     }
 
-
+    @Override
+    public void onResume() {
+        mMapView.onResume();
+        super.onResume();
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -149,11 +156,20 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
 
     private void setUpMap() {
 
-        int mapStyle = 2;
+        int mapStyle = 1;
 
         mMap.setMapType(mapStyle);
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(19.7845, -84.5124), 13));
+                new LatLng(18.491401, -69.978308), 13));
+
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.mipmap.ic_media_cancha);
+
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(18.491401, -69.978308))
+                .title("La Media Cancha")
+                .icon(icon)
+                .draggable(false));
     }
+
 }

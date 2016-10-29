@@ -19,7 +19,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +40,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +47,6 @@ import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
 import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
-import upgrade.ntv.bangsoccer.AppConstants.Constants;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.Entities.Day;
@@ -73,20 +70,16 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
     private static final String FRAGMENT_TYPE = "type";
     private static DrawerLayout drawer;
-    private SlidingUpPanelLayout slidingUpPanelLayout;
-    private int mLastSelectedItem;
-
-    private FragmentViewPagerContainer mFragmentContainer;
-
     //bottom bar views
     @BindView(R.id.matches_calendar)
     ImageView matchButton;
-
     @BindView(R.id.matches_stats)
     ImageView statsButton;
-
     @BindView(R.id.matches_leaders)
     ImageView leadersButton;
+    private SlidingUpPanelLayout slidingUpPanelLayout;
+    private int mLastSelectedItem;
+    private FragmentViewPagerContainer mFragmentContainer;
 
     //private static Map<Integer, String> mBottomBarButtonID = new HashMap<>();
 
@@ -126,7 +119,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(Constants.TOURNAMENT_ACTIVITY);
+        navigationView.setCheckedItem(R.id.nav_dynamic_tourney);
     }
 
     private void onClickedFragmentLeaders() {
@@ -271,7 +264,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id != Constants.TOURNAMENT_ACTIVITY) {
+        if (id != R.id.nav_dynamic_tourney) {
             Intent intent = DrawerSelector.onItemSelected(this, id);
             if (intent != null) {
                 startActivity(intent);
@@ -310,12 +303,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
     public static class FragmentViewPagerContainer extends Fragment {
 
-        private FragmentViewPagerContainer.TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
-        private List<Day> mMatchesOfTheDiv = new ArrayList<>();
-        private List<Players> mPlayersOfTheDiv = new ArrayList<>();
-        private HashMap<String, List<LeadersIndex>> leaderMaps = new HashMap<>();
-        //TODO: catch map <string, List<index>> handle the goals/cards section
-        private int dateInCurrentWeek = -1;
         @BindView(R.id.toolbar)
 
         Toolbar toolbar;
@@ -323,7 +310,12 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         TabLayout tabLayout;
         @BindView(R.id.tourney_recycleview)
         ViewPager mViewPager;
-
+        private FragmentViewPagerContainer.TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
+        private List<Day> mMatchesOfTheDiv = new ArrayList<>();
+        private List<Players> mPlayersOfTheDiv = new ArrayList<>();
+        private HashMap<String, List<LeadersIndex>> leaderMaps = new HashMap<>();
+        //TODO: catch map <string, List<index>> handle the goals/cards section
+        private int dateInCurrentWeek = -1;
         private Unbinder unbinder;
         private int fragmentId;
         private GenericTypeIndicator<Map<String, Match>> t =
@@ -473,6 +465,46 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             private Query queryCalendar;
             private Query queryLeader;
             private Query queryStats;
+
+            TourneyCalendarPagerAdapter(FragmentManager fm, int id) {
+                super(fm);
+                switch (id) {
+                    case R.id.matches_calendar:
+                        if (mMatchesOfTheDiv.size() == 0) {
+                            for (Divisions div : mDivisions) {
+                                //checks if its saved in the shared preferences
+                                if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
+                                    //get the calendar for a given node
+                                    queryCalendar = calendarDivReferenceFinder(div.getNode());
+
+                                }
+                                if (queryCalendar == null) {
+
+                                }
+                            }
+                        }
+                        break;
+                    case R.id.matches_leaders:
+                        if (leaderMaps.size() == 0) {
+
+                            for (Divisions div : mDivisions) {
+                                //checks if its saved in the shared preferences
+                                if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
+                                    //get the calendar for a given node
+                                    queryLeader = leaderDivReferenceFinder(div.getNode().substring(0, 5) + "Leader");
+                                }
+                                if (queryLeader == null) {
+
+                                }
+                            }
+                        }
+                        break;
+                    case R.id.matches_stats:
+                        break;
+
+                }
+            }
+
             /*********************
              * Fragment Functions
              **********************/
@@ -547,45 +579,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
                 // getFragmentManager().beginTransaction().remove(fragment).commit();
                 return fragment;
             }
-
-            TourneyCalendarPagerAdapter(FragmentManager fm, int id) {
-                super(fm);
-                switch (id) {
-                    case R.id.matches_calendar:
-                        if (mMatchesOfTheDiv.size() == 0) {
-                            for (Divisions div : mDivisions) {
-                                //checks if its saved in the shared preferences
-                                if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
-                                    //get the calendar for a given node
-                                    queryCalendar = calendarDivReferenceFinder(div.getNode());
-
-                                }
-                                if (queryCalendar == null) {
-
-                                }
-                            }
-                        }
-                        break;
-                    case R.id.matches_leaders:
-                        if (leaderMaps.size() == 0) {
-
-                            for (Divisions div : mDivisions) {
-                                //checks if its saved in the shared preferences
-                                if (Preferences.getPreferredDivisions(getActivity(), div.getNode())) {
-                                    //get the calendar for a given node
-                                    queryLeader = leaderDivReferenceFinder(div.getNode().substring(0, 5) + "Leader");
-                                }
-                                if (queryLeader == null) {
-
-                                }
-                            }
-                        }
-                        break;
-                    case R.id.matches_stats:
-                        break;
-
-                }
-        }
 
         int getPagerCount() {
             int size = 0;

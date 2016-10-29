@@ -82,14 +82,6 @@
                 android:value=".ActivityMain" />
         </activity>
         <activity
-            android:name=".ActivitySettings"
-            android:label="@string/title_activity_settings"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityMain" />
-        </activity>
-        <activity
             android:name=".ActivityAbout"
             android:label="@string/title_activity_about"
             android:launchMode="singleTop"

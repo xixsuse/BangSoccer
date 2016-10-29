@@ -16,14 +16,12 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -39,9 +37,6 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,32 +49,22 @@ import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.BindView;
 import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Adapters.NewsFeedAdapter;
-import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.Attraction.Area;
-import upgrade.ntv.bangsoccer.Attraction.Attraction;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
 import upgrade.ntv.bangsoccer.Entities.Divisions;
-import upgrade.ntv.bangsoccer.Utils.JsonReader;
-import upgrade.ntv.bangsoccer.Utils.JsonWriter;
+import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
 import upgrade.ntv.bangsoccer.Utils.Permissions;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
 import upgrade.ntv.bangsoccer.dao.DBFavorites;
 import upgrade.ntv.bangsoccer.dao.DBNewsFeed;
 import upgrade.ntv.bangsoccer.dao.DBSwitch;
-import upgrade.ntv.bangsoccer.service.UtilityService;
 
 import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
@@ -91,32 +76,6 @@ public class ActivityMain extends AppCompatActivity
 
     public static final int PERMISSION_REQUEST_INTERNET = 1;
     public static final int PERMISSION_REQUEST_FINE_LOCATION = 2;
-
-    public static final float TRIGGER_RADIUS = 4000; // 50m
-    private static final int TRIGGER_TRANSITION = Geofence.GEOFENCE_TRANSITION_ENTER |
-            Geofence.GEOFENCE_TRANSITION_EXIT;
-    private static final long EXPIRATION_DURATION = Geofence.NEVER_EXPIRE;
-
-    // List of sites
-    public static ArrayList<Area> mAreasArrayList = new ArrayList<>();
-    public static ArrayList<Attraction> mAttractionsArrayList = new ArrayList<>();
-
-    // name of the file to preserve areas
-    private final String AREAS_DATA_FILE_NAME = "areas_data";
-    private DrawerLayout drawer;
-    private Activity thisActivity;
-    private NewsFeedAdapter newsFeedAdapter;
-    private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
-
-    private List<String> facebookAccounts;
-    private boolean refreshStatus = false;  // true: when refresh newsfeeds is in progress
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private final int POST_QTY=2; //  quantity of post per club
-    private SwitchCompat mSwitch;
-    private List<String> favoriteList;
-    private List<DBNewsFeed> news;
-
-
     public static DatabaseReference databaseReference;
     public static DatabaseReference mPlayersDeftailsRef;
     public static DatabaseReference mTeamsRef;
@@ -131,13 +90,28 @@ public class ActivityMain extends AppCompatActivity
     public static StorageReference mSegundaRef;
     public static StorageReference mTerceraRef;
     public static StorageReference mCuartaRef;
-
     public static List<Divisions> mDivisions = new ArrayList<>();
-
+    private final int POST_QTY = 2; //  quantity of post per club
+    private DrawerLayout drawer;
+    private Activity thisActivity;
+    private NewsFeedAdapter newsFeedAdapter;
+    private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
+    private List<String> facebookAccounts;
+    private boolean refreshStatus = false;  // true: when refresh newsfeeds is in progress
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwitchCompat mSwitch;
+    private List<String> favoriteList;
+    private List<DBNewsFeed> news;
     private Query query;
 //gets the list of divisions
     public static List<Divisions> getDivisionsList() {
         return mDivisions;
+    }
+
+    public static Intent createIntent(Context context) {
+        Intent in = new Intent();
+        in.setClass(context, ActivityMain.class);
+        return in;
     }
 
     @Override
@@ -178,36 +152,6 @@ public class ActivityMain extends AppCompatActivity
 
     }
 
-    //firebase division listener
-    private class DivisionEvenetListener implements ChildEventListener {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Divisions firebaseRequest = dataSnapshot.getValue(Divisions.class);
-            firebaseRequest.setFirebasekey(dataSnapshot.getKey());
-            getDivisionsList().add(firebaseRequest);
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -223,13 +167,6 @@ public class ActivityMain extends AppCompatActivity
             Preferences.setPreferredDivisions(this, "Div1_Calendar");
         }
 
-        try {
-            InputStream in = openFileInput(AREAS_DATA_FILE_NAME);
-            JsonReader reader = new JsonReader();
-            mAreasArrayList = reader.readJsonStream(in);
-        } catch (IOException e) {
-            Log.v("Loading Areas Failed: ", e.getMessage());
-        }
 
         //Updating NewsFeed
         updatefavoritesList();
@@ -244,18 +181,6 @@ public class ActivityMain extends AppCompatActivity
 
         updateNewsFeedUI();
 
-    }
-
-    @Override
-    protected void onStop() {
-        try {
-            OutputStream out = openFileOutput(AREAS_DATA_FILE_NAME, Context.MODE_PRIVATE);
-            JsonWriter writer = new JsonWriter();
-            writer.writeJsonStream(out, mAreasArrayList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        super.onStop();
     }
 
 
@@ -321,8 +246,6 @@ public class ActivityMain extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //adds a dummy area and Attraction
-        setDummyAreaNdAttraction();
 
         if (!Permissions.checkInternetPermission(this)) {
             // See if user has denied permission in the past
@@ -464,17 +387,7 @@ public class ActivityMain extends AppCompatActivity
 
     }
 
-    public void setDummyAreaNdAttraction() {
 
-        Area a1 = new Area(1, "Leonel Plácido", new LatLng(18.467425, -69.915474), 1);
-        mAreasArrayList.add(a1);
-
-        LatLng myTestLatLong = new LatLng(19.791893, -70.681265);
-        Attraction a2 = new Attraction(1, "Leonel Plácido", myTestLatLong, "Atlántico Futbol Club Es un equipo de fútbol Profesional con sede en Puerto Plata, República Dominicana. Fue Fundado en el año 2015 y en la actualidad el equipo participa en la Liga Dominicana de Fútbol.", "El señor Ruben Garcia decidió fundar el club en el 2014 dándole una perspectiva de fútbol a los puertoplateños ya que es un pueblo donde el deporte no es muy popular. Parte de los dirigentes del equipo son Arturo Heinsen gerente del equipo, Segundo Polanco, Fernando Ortega Zeller y su hermano Gustavo Eduardo Zeller lo cual han invertido para que este equipo crezca y sea de los mejores en la LDF Banco Popular.",
-                ContextCompat.getDrawable(this, R.drawable.puerto_atlantico),
-                1, "8:00am - 10:00pm", "Estadio Leonel Plácido, Av. Luis Ginebra, Puerto Plata 57000", "Garrincha F.C nosotros nunca ponemos excusas.");
-        mAttractionsArrayList.add(a2);
-    }
 
 
     /*********************************************************************************************
@@ -538,7 +451,7 @@ public class ActivityMain extends AppCompatActivity
 
     //Run when fine location permission has been granted
     private void onFineLocationPermissionGranted() {
-        UtilityService.requestLocation(this);
+
     }
 
     /**
@@ -569,12 +482,6 @@ public class ActivityMain extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    public static Intent createIntent(Context context) {
-        Intent in = new Intent();
-        in.setClass(context, ActivityMain.class);
-        return in;
     }
 
     @Override
@@ -628,24 +535,6 @@ public class ActivityMain extends AppCompatActivity
         newFragment.show(ft, FRAGMENT_CHOOSE_DIVISION);
     }
 
-    public static List<Geofence> getGeofenceList() {
-
-        List<Geofence> geofenceList = new ArrayList<>();
-
-        for (Area area : mAreasArrayList) {
-
-            geofenceList.add(new Geofence.Builder()
-                    .setCircularRegion(area.getGeo().latitude, area.getGeo().longitude, TRIGGER_RADIUS)
-                    .setRequestId(String.format("%d", area.getId()))
-                    .setTransitionTypes(TRIGGER_TRANSITION)
-                    .setExpirationDuration(EXPIRATION_DURATION)
-                    .build());
-            Log.i("Geofence List", String.format("Added area %d - ", area.getId()) + area.getName());
-        }
-        return geofenceList;
-    }
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -675,69 +564,11 @@ public class ActivityMain extends AppCompatActivity
         return BitmapFactory.decodeByteArray(b, 0, b.length, options);
     }
 
-
-    private class RefreshNewsFeed extends AsyncTask<Void, Integer, Integer> {
-
-
-        private int count;
-
-        public RefreshNewsFeed(int count) {
-            this.count=count;
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            refreshStatus=true;
-
-            if(facebookAccounts==null || facebookAccounts.size()<1){
-                switchStatusChanged(mSwitch.isChecked());
-            }
-
-        }
-
-        @Override
-        protected Integer doInBackground(Void... voids) {
-
-            FacebookClass fb = new FacebookClass();
-            int newPost=fb.getPost(facebookAccounts.get(count),POST_QTY);
-            return newPost;
-
-        }
-
-
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            super.onPostExecute(result);
-
-            if(result>0) {
-                news.clear();
-                news.addAll(AppicationCore.getAllNewsFeed());
-                updateNewsFeedUI();
-            }
-
-
-            mSwipeRefreshLayout.setRefreshing(false);
-
-            count++;
-            if(count< facebookAccounts.size()){
-                new RefreshNewsFeed(count).execute();
-                refreshStatus=false;
-            }
-
-
-        }
-
-    }
-
-
     private void clickNewsFeed(long position){
 
         if(!refreshStatus){
 
-            Intent intent = DrawerSelector.onItemSelected(thisActivity, Constants.NEWS_FEED_DETAILS_ACTIVITY);
+            Intent intent = new Intent(this, ActivityNewsDetails.class);
             //  intent.putExtra("MynewsFeedID", newsFeedItems.size() -1-position);
             intent.putExtra("MynewsFeedID", (int)position);
 
@@ -755,7 +586,6 @@ public class ActivityMain extends AppCompatActivity
         }
 
     }
-
 
     /**
      * Refresh NewsFeed UI based on new Posts added
@@ -776,7 +606,6 @@ public class ActivityMain extends AppCompatActivity
 
 
     }
-
 
     /**
      * Refresh NewsFeed DB based on new Posts added
@@ -804,7 +633,6 @@ public class ActivityMain extends AppCompatActivity
 
     }
 
-
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -826,7 +654,6 @@ public class ActivityMain extends AppCompatActivity
         }
 
     }
-
 
     private boolean updateLikes(int position){
 
@@ -854,56 +681,6 @@ public class ActivityMain extends AppCompatActivity
        return result;
     }
 
-
-
-
-    private class FbLikesAsync extends AsyncTask<Void, Integer, Boolean> {
-
-        int position;
-
-        public FbLikesAsync(int position){
-            this.position=position;
-        }
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            return updateLikes(position);
-
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-
-            if(result) {
-                //List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
-                List<DBNewsFeed> list = news;
-                DBNewsFeed item = list.get(list.size() -1 - position);
-
-                item.setLike(!item.getLike());
-                AppicationCore.getDbNewsFeedDao().update(item);
-
-                news.clear();
-                news.addAll(AppicationCore.getAllNewsFeed());
-
-
-                //Modify UI
-                 newsFeedItems.get(position).setLike(! newsFeedItems.get(position).like );
-                 newsFeedAdapter.notifyDataSetChanged();
-            }
-
-        }
-    }
-
-
-
     private void share(int position){
 
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -913,7 +690,6 @@ public class ActivityMain extends AppCompatActivity
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
-
 
     private void switchStatusChanged(boolean isChecked){
 
@@ -943,8 +719,6 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
-
-
     private List<NewsFeedItem> getListFavorites(){
 
         List<NewsFeedItem> list = new ArrayList<>();
@@ -970,8 +744,6 @@ public class ActivityMain extends AppCompatActivity
         return list;
     }
 
-
-
     private List<NewsFeedItem> getListAll(){
 
         List<NewsFeedItem> list = new ArrayList<>();
@@ -990,7 +762,135 @@ public class ActivityMain extends AppCompatActivity
         return list;
     }
 
+    //firebase division listener
+    private class DivisionEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Divisions firebaseRequest = dataSnapshot.getValue(Divisions.class);
+            firebaseRequest.setFirebasekey(dataSnapshot.getKey());
+            getDivisionsList().add(firebaseRequest);
+        }
 
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
+    private class RefreshNewsFeed extends AsyncTask<Void, Integer, Integer> {
+
+
+        private int count;
+
+        public RefreshNewsFeed(int count) {
+            this.count = count;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            refreshStatus = true;
+
+            if (facebookAccounts == null || facebookAccounts.size() < 1) {
+                switchStatusChanged(mSwitch.isChecked());
+            }
+
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            FacebookClass fb = new FacebookClass();
+            int newPost = fb.getPost(facebookAccounts.get(count), POST_QTY);
+            return newPost;
+
+        }
+
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+
+            if (result > 0) {
+                news.clear();
+                news.addAll(AppicationCore.getAllNewsFeed());
+                updateNewsFeedUI();
+            }
+
+
+            mSwipeRefreshLayout.setRefreshing(false);
+
+            count++;
+            if (count < facebookAccounts.size()) {
+                new RefreshNewsFeed(count).execute();
+                refreshStatus = false;
+            }
+
+
+        }
+
+    }
+
+    private class FbLikesAsync extends AsyncTask<Void, Integer, Boolean> {
+
+        int position;
+
+        public FbLikesAsync(int position) {
+            this.position = position;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            return updateLikes(position);
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+
+            if (result) {
+                //List<DBNewsFeed> list = AppicationCore.getAllNewsFeed();
+                List<DBNewsFeed> list = news;
+                DBNewsFeed item = list.get(list.size() - 1 - position);
+
+                item.setLike(!item.getLike());
+                AppicationCore.getDbNewsFeedDao().update(item);
+
+                news.clear();
+                news.addAll(AppicationCore.getAllNewsFeed());
+
+
+                //Modify UI
+                newsFeedItems.get(position).setLike(!newsFeedItems.get(position).like);
+                newsFeedAdapter.notifyDataSetChanged();
+            }
+
+        }
+    }
 
     private class switchChangeAsync extends AsyncTask<Void, Boolean, Boolean> {
 

@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.Adapters.NewsFeedAdapter;
-import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
 
 /**
@@ -27,10 +25,10 @@ import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
  */
 public class FragmentNewsFeed extends Fragment {
 
-    private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
     // TODO: Customize parameter argument names
     private static final String NEWS_ID = "news-id";
     private static int mNewsID;
+    private List<NewsFeedItem> newsFeedItems = new ArrayList<>();
     private NewsFeedAdapter newsFeedAdapter;
     private Context mContext;
     private OnListFragmentInteractionListener mListener;
@@ -87,8 +85,7 @@ public class FragmentNewsFeed extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
 
-                Intent intent = DrawerSelector.onItemSelected(getActivity(),
-                        Constants.NEWS_FEED_DETAILS_ACTIVITY);
+                Intent intent = new Intent(getActivity(), ActivityNewsDetails.class);
 
                 //will be used to identify and go back to the  calling fragment newsfeedfragment (#1)
                 intent.putExtra("position", position);

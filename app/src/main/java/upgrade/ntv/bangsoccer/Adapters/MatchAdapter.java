@@ -1,6 +1,5 @@
 package upgrade.ntv.bangsoccer.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +17,10 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import upgrade.ntv.bangsoccer.AppConstants.Constants;
-import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
-import upgrade.ntv.bangsoccer.R;
+import upgrade.ntv.bangsoccer.ActivityClubs;
 import upgrade.ntv.bangsoccer.Entities.Day;
 import upgrade.ntv.bangsoccer.Entities.Match;
+import upgrade.ntv.bangsoccer.R;
 
 /**
  * Created by jfrom on 3/19/2016.
@@ -85,7 +83,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHold
             @Override
             public void onClick(View v) {
                 //calls the Team1 Screen based on the teamID
-                Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
+                Intent intent = new Intent(mContext, ActivityClubs.class);
                 String clubid = match.getClubIdA().getFirebasekey();
                 intent.putExtra("CLUBID", clubid);
 
@@ -106,7 +104,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ScheduleHold
             @Override
             public void onClick(View v) {
                 //calls the Team2 Screen based on the teamID
-                Intent intent = DrawerSelector.onItemSelected((Activity) mContext, Constants.CLUBS_ACTIVITY_BY_TEAM);
+                Intent intent = new Intent(mContext, ActivityClubs.class);
                 String clubid = match.getClubIdB().getFirebasekey();
                 intent.putExtra("CLUBID", clubid);
 

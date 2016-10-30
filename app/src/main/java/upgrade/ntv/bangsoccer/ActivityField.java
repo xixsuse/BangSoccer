@@ -38,6 +38,7 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
 
     // For log purposes
     private static final String TAG = ActivityField.class.getSimpleName();
+
     private static final String DB_REF_FIELDS = "Fields";
     private static final String DB_REF_FIELD_LA_MEDIA_CANCHA = "dce43f83-5eb8-4ea5-ac59-78aa60302273";
 

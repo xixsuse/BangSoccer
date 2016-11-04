@@ -81,6 +81,8 @@ public class ActivityMain extends AppCompatActivity
     public static DatabaseReference mTeamsRef;
     public static DatabaseReference mDivisionsRef;
     public static DatabaseReference mMatchRef;
+
+    public static DatabaseReference mDiv1StatsTableRef;
     public static DatabaseReference  mLeadersofTheDayDiv1Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv1Ref ;
     public static DatabaseReference  mMatchesOfTheDayDiv2Ref ;
@@ -370,6 +372,7 @@ public class ActivityMain extends AppCompatActivity
                 mMatchesOfTheDayDiv2Ref = databaseReference.child("Div2_Calendar");
                 mMatchesOfTheDayDiv3Ref = databaseReference.child("Div3_Calendar");
                 mLeadersofTheDayDiv1Ref = databaseReference.child("Div1_Leader");
+                mDiv1StatsTableRef = databaseReference.child("Div1_Stats");
             }
         }
     }

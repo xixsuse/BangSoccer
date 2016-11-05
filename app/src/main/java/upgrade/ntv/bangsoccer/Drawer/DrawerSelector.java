@@ -9,6 +9,7 @@ import upgrade.ntv.bangsoccer.ActivityField;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.ActivityTournament;
 import upgrade.ntv.bangsoccer.R;
+import upgrade.ntv.bangsoccer.booking.ActivityBooking;
 import upgrade.ntv.bangsoccer.booking.MainActivity;
 
 /**
@@ -41,7 +42,7 @@ public class DrawerSelector {
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 break;
             case R.id.nav_reservation:
-                intent = new Intent(callingActivity, MainActivity.class);
+                intent = new Intent(callingActivity, ActivityBooking.class);
                 break;
             case R.id.nav_about:
                 intent = new Intent(callingActivity, ActivityAbout.class);

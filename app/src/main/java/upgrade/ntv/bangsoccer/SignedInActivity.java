@@ -30,26 +30,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.firebase.ui.auth.AuthUI.FACEBOOK_PROVIDER;
@@ -57,25 +52,25 @@ import static com.firebase.ui.auth.AuthUI.FACEBOOK_PROVIDER;
 
 public class SignedInActivity extends AppCompatActivity {
 
+    private static final String FIREBASE_TOS_URL =
+            "https://www.firebase.com/terms/terms-of-service.html";
+    private static final int RC_SIGN_IN = 100;
     @BindView(R.id.user_profile_picture)
     ImageView mUserProfilePicture;
-
     @BindView(R.id.user_email)
     TextView mUserEmail;
-
     @BindView(R.id.user_display_name)
     TextView mUserDisplayName;
-
     @BindView(R.id.user_enabled_providers)
     TextView mEnabledProviders;
-
     @BindView(android.R.id.content)
     View mRootView;
 
-    private static final String FIREBASE_TOS_URL =
-            "https://www.firebase.com/terms/terms-of-service.html";
-
-    private static final int RC_SIGN_IN = 100;
+    public static Intent createIntent(Context context) {
+        Intent in = new Intent();
+        in.setClass(context, SignedInActivity.class);
+        return in;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,7 +91,7 @@ public class SignedInActivity extends AppCompatActivity {
                             .build(),
                     RC_SIGN_IN);
             return;
-        }else{
+        } else {
 
             FacebookSdk.sdkInitialize(getApplicationContext());
             facebookPermissions();
@@ -176,9 +171,9 @@ public class SignedInActivity extends AppCompatActivity {
     private void populateProfile() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user.getPhotoUrl() != null) {
-            Glide.with(this)
+            Picasso.with(getApplicationContext())
                     .load(user.getPhotoUrl())
-                    .fitCenter()
+                    .placeholder(R.drawable.ic_goals_icon)
                     .into(mUserProfilePicture);
         }
 
@@ -199,11 +194,11 @@ public class SignedInActivity extends AppCompatActivity {
                 String provider = providerIter.next();
                 /*if (GoogleAuthProvider.PROVIDER_ID.equals(provider)) {
                     providerList.append("Google");
-                } else */if (FacebookAuthProvider.PROVIDER_ID.equals(provider)) {
+                } else */
+                if (FacebookAuthProvider.PROVIDER_ID.equals(provider)) {
                     providerList.append("Facebook");
                 } /*else if (EmailAuthProvider.PROVIDER_ID.equals(provider)) {
-                    providerList.append("Password");*/
-                else {
+                    providerList.append("Password");*/ else {
                     providerList.append(provider);
                 }
 
@@ -215,8 +210,6 @@ public class SignedInActivity extends AppCompatActivity {
 
         mEnabledProviders.setText(providerList);
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -231,14 +224,15 @@ public class SignedInActivity extends AppCompatActivity {
 
         showSnackbar(R.string.unknown_response);
     }
-    private void facebookPermissions(){
+
+    private void facebookPermissions() {
 
         //Permission for Likes
 
         LoginManager.getInstance().
                 logInWithPublishPermissions(
-                this,
-                Arrays.asList("publish_actions"));
+                        this,
+                        Arrays.asList("publish_actions"));
 
     }
 
@@ -258,7 +252,6 @@ public class SignedInActivity extends AppCompatActivity {
         showSnackbar(R.string.unknown_sign_in_response);
     }
 
-
     @MainThread
     private String[] getSelectedProviders() {
         ArrayList<String> selectedProviders = new ArrayList<>();
@@ -274,17 +267,11 @@ public class SignedInActivity extends AppCompatActivity {
 
     @MainThread
     private void showSnackbar(@StringRes int errorMessageRes) {
-        try{
+        try {
             Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
                     .show();
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("signinactivity: ", e.getMessage());
         }
-    }
-
-    public static Intent createIntent(Context context) {
-        Intent in = new Intent();
-        in.setClass(context, SignedInActivity.class);
-        return in;
     }
 }

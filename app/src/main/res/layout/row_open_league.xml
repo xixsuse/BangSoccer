@@ -14,47 +14,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="4dp">
+        android:layout_margin="4dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
-            android:weightSum="7"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="7">
 
             <TextView
                 android:id="@+id/open_league_event_date"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="center"
                 android:layout_gravity="clip_horizontal"
+                android:layout_weight="1.5"
+                android:gravity="center"
                 android:text="Martes 16 de Abril - 5:00pm"
                 android:textSize="14sp"
-                android:textStyle="normal"
-                android:layout_weight="1.5"/>
+                android:textStyle="normal" />
             <TextView
                 android:id="@+id/open_league_location"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="start|center"
                 android:layout_gravity="clip_horizontal"
+                android:layout_weight="1.5"
+                android:gravity="start|center"
                 android:text="La Media Cancha"
-                android:textSize="14sp"
                 android:textColor="@color/colorAccent"
-                android:textStyle="normal"
-                android:layout_weight="1.5"/>
+                android:textSize="14sp"
+                android:textStyle="normal" />
             <TextView
                 android:id="@+id/open_league_description_txt"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="start|center"
                 android:layout_gravity="clip_horizontal"
+                android:layout_weight="1.5"
+                android:gravity="start|center"
                 android:text="Partido Amistoso"
                 android:textSize="14sp"
-                android:textStyle="normal"
-                android:layout_weight="1.5"/>
+                android:textStyle="normal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,22 +64,22 @@
 
                 <ImageView
                     android:id="@+id/open_league_price_icon"
-                    android:layout_gravity="center|end"
                     android:layout_width="24dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/coins"
+                    android:layout_gravity="center|end"
+                    android:src="@drawable/ic_coins"
                     />
 
                 <TextView
                     android:id="@+id/open_league_price_txt"
-                    android:layout_marginStart="4dp"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
                     android:gravity="start|center"
 
                     android:text="1,200.00 $ "
-                    android:textSize="12sp"
                     android:textColor="@color/colorBlack"
+                    android:textSize="12sp"
                     android:textStyle="normal"/>
 
             </LinearLayout>

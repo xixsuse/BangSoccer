@@ -16,9 +16,9 @@
             android:icon="@drawable/ic_teams_icon"
             android:title="Clubes" />
         <item
-            android:id="@+id/nav_location"
+            android:id="@+id/nav_field"
             android:icon="@drawable/ic_soccer_location_icon"
-            android:title="Canchas" />
+            android:title="La Cancha" />
         <item
             android:id="@+id/nav_reservation"
             android:icon="@drawable/ic_add_shopping_cart_black_24dp"
@@ -26,18 +26,15 @@
     </group>
 
 
-    <group android:checkableBehavior="single"
+    <group
         android:id="@+id/user_nav_view_group"
+        android:checkableBehavior="single"
         android:menuCategory="alternative">
 
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_upgraden"
             android:title="Upgrade" />
-   <!-- <item
-        android:id="@+id/users_nav_view_item"
-        android:icon="@drawable/ic_player_name_icon2"
-        android:title="Usuario"/>-->
 
     </group>
 </menu>

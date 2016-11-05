@@ -25,13 +25,11 @@ import upgrade.ntv.bangsoccer.Entities.Club;
 public class FragmentTourneyStats extends Fragment {
 
 
-    private List<Club> clubItems = new ArrayList<>();
 
     // TODO: Customize parameter argument names
     private static final String TOURNEY_ID = "team-id";
     private int mTournamentID;
     private TourneyStatsAdapter mTournamentStatsAdapter;
-   private Context mContext;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -64,7 +62,7 @@ public class FragmentTourneyStats extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tourney_stats, container, false);
 
-        mTournamentStatsAdapter = new TourneyStatsAdapter(clubItems, getActivity());
+        mTournamentStatsAdapter = new TourneyStatsAdapter(getActivity());
 
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);

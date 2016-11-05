@@ -15,6 +15,92 @@
     <string name="permission_explanation">Allow this app to use your location to show distance to attractions?</string>
     <string name="permission_explanation_action">Let\'s do it!</string>
 
+    <!--reservaciones-->
+    <string name="hour_hint">Dia</string>
+    <string name="minute_hint">Hora</string>
+
+    <string-array name="hour_display">
+        <item>12</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+    </string-array>
+
+    <string-array name="minute_display">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+        <item>46</item>
+        <item>47</item>
+        <item>48</item>
+        <item>49</item>
+        <item>50</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+    </string-array>
+
+    <string-array name="half_day">
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
     <!-- Activity Settings -->
     <string name="title_activity_settings">Settings</string>
     <!-- Shared Preferences Headers -->
@@ -175,7 +261,7 @@
     <string name="desc_auth_ui">Demonstrates the Firebase Auth UI flow, with customization options.</string>
 
     <!-- strings for Auth UI demo activities -->
-    <eat-comment/>
+    <eat-comment />
     <string name="launch_title">FirebaseUI Auth Demo</string>
     <string name="green_theme">Green Theme</string>
     <string name="purple_theme">Purple Theme</string>
@@ -187,6 +273,8 @@
     <string name="auth_providers_header">Use auth providers:</string>
     <string name="email_label">Email</string>
     <string name="facebook_label">Facebook</string>
+
+
     <string name="facebook_label_missing_config">Facebook - configuration missing</string>
     <string name="google_label">Google</string>
     <string name="google_label_missing_config">Google - configuration missing</string>
@@ -205,4 +293,11 @@
     <string name="profile_picture_content_desc">Profile picture</string>
     <string name="default_theme">Default theme</string>
     <string name="configuration_required">Configuration is required - see README.md</string>
+    <string name="title_activity_field">La Media Cancha</string>
+    <string name="label_field_moto">
+        <b>"Nuestro MOTO\n\n"</b>
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet ""
+    </string>
 </resources>

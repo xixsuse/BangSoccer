@@ -8,12 +8,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import upgrade.ntv.bangsoccer.ActivityMain;
+import upgrade.ntv.bangsoccer.Entities.Players;
+import upgrade.ntv.bangsoccer.Entities.StatisticTable;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.Entities.Club;
 
 
 /**
@@ -21,19 +30,53 @@ import upgrade.ntv.bangsoccer.Entities.Club;
  */
 public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapter.TeamStatsHolder>{
 
-    List<Club> mClubList;
-    Context mContext;
+    private List<StatisticTable> mStatisticsList;
+    private  Context mContext;
 
 
-    public TourneyStatsAdapter(List<Club> list, Context context) {
-        this.mClubList = list;
+    public TourneyStatsAdapter( Context context) {
+        this.mStatisticsList = new ArrayList<>();
         this.mContext = context;
+        Query query = ActivityMain.mDiv1StatsTableRef;
+        query.addChildEventListener(new TableEvenetListener());
     }
 
+    //firebase event listener
+    private class TableEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            StatisticTable firebaseRequest = dataSnapshot.getValue(StatisticTable.class);
+            firebaseRequest.setID(dataSnapshot.getKey());
+            mStatisticsList.add(firebaseRequest);
+            notifyDataSetChanged();
+
+
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
 
     @Override
     public int getItemCount() {
-        return this.mClubList.size();
+        return this.mStatisticsList.size();
     }
 
 
@@ -50,52 +93,53 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
     public void onBindViewHolder(TourneyStatsAdapter.TeamStatsHolder holder, int position) {
         // - get element from your dataset at this vTeamPosition
         // - replace the contents of the view with that element
-        holder.vStatsTeamName.setText(mClubList.get(position).getName());
+        holder.vStatsTeamName.setText(mStatisticsList.get(position).getName());
         Picasso.with(mContext).
-                load("https://firebasestorage.googleapis.com/v0/b/bangsoccer-1382.appspot.com/o/MediaCancha%2Fprimera%2FTest_MediaCancha%252Fprimera%252Flogo-Inter-SD-100.jpg?alt=media&token=e3b35af3-691a-4f0b-8e11-f1c3707be92e").
+                load(mStatisticsList.get(position).getImageurl()).
                 placeholder(R.drawable.ic_open_game_icon).
                 into(holder.vTeamAvatar);
        // holder.vTeamAvatar.setImageResource(mClubList.get(position).getTeam_image());
-        holder.vPJ.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vPG.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vPE.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vPP.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vGF.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vGC.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vDG.setText(String.valueOf((int) (Math.random() * ((5) + 1))));
-        holder.vPoints.setText(String.valueOf((int) (Math.random() * ((9) + 1))));
+        holder.vPJ.setText(String.valueOf(mStatisticsList.get(position).getPj()));
+        holder.vPG.setText(String.valueOf(mStatisticsList.get(position).getPg()));
+        holder.vPE.setText(String.valueOf(mStatisticsList.get(position).getPe()));
+        holder.vPP.setText(String.valueOf(mStatisticsList.get(position).getPp()));
+        holder.vGF.setText(String.valueOf(mStatisticsList.get(position).getGf()));
+        holder.vGC.setText(String.valueOf(mStatisticsList.get(position).getGc()));
+        holder.vDG.setText(String.valueOf(mStatisticsList.get(position).getDg()));
+        holder.vPoints.setText(String.valueOf(mStatisticsList.get(position).getPoints()));
 
 
-        holder.Id = mClubList.get(position).getFirebasekey();
+        holder.Id = mStatisticsList.get(position).getID();
 
     }
-        // Provides a reference to the views for each data item
 
-    public static class TeamStatsHolder extends RecyclerView.ViewHolder{
+    static class TeamStatsHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.stats_team_name_text)
         TextView vStatsTeamName;
+        @BindView(R.id.stats_team_icon)
         ImageView vTeamAvatar;
+        @BindView(R.id.stats_pj_text)
         TextView vPJ;
+        @BindView(R.id.stats_pg_text)
         TextView vPG;
+        @BindView(R.id.stats_pe_text)
         TextView vPE;
+        @BindView(R.id.stats_pp_text)
         TextView vPP;
+        @BindView(R.id.stats_gf_text)
         TextView vGF;
+        @BindView(R.id.stats_gc_text)
         TextView vGC;
+        @BindView(R.id.stats_dg_text)
         TextView vDG;
+        @BindView(R.id.stats_ptos_text)
         TextView vPoints;
+
         String Id;
 
-        public TeamStatsHolder(View v){
+        TeamStatsHolder(View v){
             super(v);
-            vStatsTeamName = (TextView) v.findViewById(R.id.stats_team_name_text);
-            vTeamAvatar = (ImageView) v.findViewById(R.id.stats_team_icon);
-            vPJ = (TextView) v.findViewById(R.id.stats_pj_text);
-            vPG = (TextView) v.findViewById(R.id.stats_pg_text);
-            vPE = (TextView) v.findViewById(R.id.stats_pe_text);
-            vPP = (TextView) v.findViewById(R.id.stats_pp_text);
-            vGF = (TextView) v.findViewById(R.id.stats_gf_text);
-            vGC = (TextView) v.findViewById(R.id.stats_gc_text);
-            vDG = (TextView) v.findViewById(R.id.stats_dg_text);
-            vPoints = (TextView) v.findViewById(R.id.stats_ptos_text);
+            ButterKnife.bind(this, v);
         }
     }
 }

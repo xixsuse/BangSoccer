@@ -67,6 +67,11 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".booking.ActivityBooking"
+            android:label="Reservas"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".booking.MainActivity"
             android:label=""
             android:launchMode="singleTop"

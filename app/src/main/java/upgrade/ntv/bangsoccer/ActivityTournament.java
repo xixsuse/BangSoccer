@@ -66,7 +66,7 @@ import static upgrade.ntv.bangsoccer.AppicationCore.FRAGMENT_CHOOSE_DIVISION;
 
 public class ActivityTournament extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         FragmentNewsFeed.OnListFragmentInteractionListener, FragmentLeaders.OnListFragmentInteractionListener,
-        FragmentTourneyStats.OnListFragmentInteractionListener, DivisionsAdapter.onDivisionFragmentInteractionListener  {
+        FragmentTourneyStats.OnListFragmentInteractionListener, DivisionsAdapter.onDivisionFragmentInteractionListener {
 
     private static final String FRAGMENT_TYPE = "type";
     private static DrawerLayout drawer;
@@ -304,12 +304,12 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
     public static class FragmentViewPagerContainer extends Fragment {
 
         @BindView(R.id.toolbar)
-
         Toolbar toolbar;
         @BindView(R.id.tabs)
         TabLayout tabLayout;
         @BindView(R.id.tourney_recycleview)
         ViewPager mViewPager;
+
         private FragmentViewPagerContainer.TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
         private List<Day> mMatchesOfTheDiv = new ArrayList<>();
         private List<Players> mPlayersOfTheDiv = new ArrayList<>();
@@ -365,7 +365,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             toggle.syncState();
 
             if (toolbar != null) {
-                switch (fragmentId){
+                switch (fragmentId) {
 
                     case R.id.matches_stats:
                         toolbar.setTitle("Tabla de Posiciones");
@@ -377,6 +377,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
                     case R.id.matches_calendar:
                         toolbar.setTitle("Calendario");
                         break;
+
                     default:
                         toolbar.setTitle("Calendario");
                         break;
@@ -386,7 +387,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
             mTourneyCalendarPagerAdapter = new FragmentViewPagerContainer.TourneyCalendarPagerAdapter(getChildFragmentManager(), fragmentId);
 
-                mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
+            mViewPager.setAdapter(mTourneyCalendarPagerAdapter);
             //sets the viewpager to the current week
 
             if (ViewCompat.isLaidOut(tabLayout)) {
@@ -434,7 +435,8 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             }
 
         }
-//
+
+        //
         public void removeUnselectedDivision(String divisionKey) {
 
             mTourneyCalendarPagerAdapter.nukeElement();
@@ -448,8 +450,8 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
             for (int i = 0; i < mTourneyCalendarPagerAdapter.getCount(); i++) {
                 //mTourneyCalendarPagerAdapter.getFragmentForPosition(i);
-               // getFragmentManager().beginTransaction().remove(mTourneyCalendarPagerAdapter.getFragmentForPosition(i)).commit();
-              //  mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+                // getFragmentManager().beginTransaction().remove(mTourneyCalendarPagerAdapter.getFragmentForPosition(i)).commit();
+                //  mTourneyCalendarPagerAdapter.notifyDataSetChanged();
             }
 
         }
@@ -550,14 +552,13 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             boolean removeDay() {
                 boolean result = false;
 
-                try{
+                try {
                     mMatchesOfTheDiv.clear();
                     notifyDataSetChanged();
                     result = true;
-                }catch (Exception e){
+                } catch (Exception e) {
                     Log.v("Remove Divisions", e.getMessage());
                 }
-
 
 
                 return result;
@@ -580,162 +581,159 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
                 return fragment;
             }
 
-        int getPagerCount() {
-            int size = 0;
-            switch (fragmentId) {
+            int getPagerCount() {
+                int size = 0;
+                switch (fragmentId) {
 
-                case R.id.matches_stats:
-                    size = 1;
-
-                    break;
-
-                case R.id.matches_leaders:
-                    size = leaderMaps.size();
-                    break;
-
-                case R.id.matches_calendar:
-                    size = mMatchesOfTheDiv.size();
-                    break;
-            }
-            return size;
-        }
-
-        boolean analizeDate(int position) {
-            //match day converted to Date to compare against the upcoming dates and setup the tablayout
-            date = DateConverter.stringToDate(mMatchesOfTheDiv.get(position).getDate(), "dd-MM-yyyy");
-            Calendar calendar = Calendar.getInstance();
-            //default day is Sunday, set to Monday
-            calendar.setFirstDayOfWeek(Calendar.MONDAY);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            //holds the monday pof the week
-            Date monday = calendar.getTime();
-            //ensures GC on calendar
-            calendar = null;
-            //gets na new instance for Sunday
-            calendar = Calendar.getInstance();
-            calendar.setFirstDayOfWeek(Calendar.MONDAY);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-            Date sunday = calendar.getTime();
-
-            //do action:
-            if ((date.equals(monday) || date.after(monday)) && (date.equals(sunday) || date.before(sunday))) {
-
-                System.out.println(date.toString() + "sunday");
-                return true;
-            }
-
-            return false;
-        }
-
-        private String makeFragmentName(int viewId, int index) {
-            return "android:switcher:" + viewId + ":" + index;
-        }
-
-
-        String setFragmentMatchesTabs(int position) {
-            if (mMatchesOfTheDiv.size() > 0) {
-                Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
-                for (Map.Entry<String, Match> entry :
-                        matchMap.entrySet()) {
-                    Match value1 = entry.getValue();
-                    mMatchesOfTheDiv.get(position).setDate(value1.getDate());
-                }
-                if (analizeDate(position)) {
-                    dateInCurrentWeek = position;
-                }
-                // sets the viewpager to the games of the week.
-                // needs to be here to references the tab layout
-                if (dateInCurrentWeek != -1) {
-                    mViewPager.setCurrentItem(dateInCurrentWeek);
-                }
-            }
-            return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
-        }
-
-        void setFragmentStatsTabs(int position) {
-            if (mMatchesOfTheDiv.size() > 0) {
-            }
-        }
-
-        String setFragmentLeaderTabs(int position) {
-            String header = "";
-            if (leaderMaps.size() > 0) {
-                switch (position) {
-                    case 0:
-                        header = "goles".toUpperCase();
+                    case R.id.matches_stats:
+                        size = 1;
                         break;
-                    case 1:
-                        header = "Tarjetas".toUpperCase();
+
+                    case R.id.matches_leaders:
+                        size = leaderMaps.size();
+                        break;
+
+                    case R.id.matches_calendar:
+                        size = mMatchesOfTheDiv.size();
                         break;
                 }
-
+                return size;
             }
-            return header;
-        }
 
-        /********************
-         * FIRE BASE LISTENERS
-         *********************/
+            boolean analizeDate(int position) {
+                //match day converted to Date to compare against the upcoming dates and setup the tablayout
+                date = DateConverter.stringToDate(mMatchesOfTheDiv.get(position).getDate(), "dd-MM-yyyy");
+                Calendar calendar = Calendar.getInstance();
+                //default day is Sunday, set to Monday
+                calendar.setFirstDayOfWeek(Calendar.MONDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                //holds the monday pof the week
+                Date monday = calendar.getTime();
+                //ensures GC on calendar
+                calendar = null;
+                //gets na new instance for Sunday
+                calendar = Calendar.getInstance();
+                calendar.setFirstDayOfWeek(Calendar.MONDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                Date sunday = calendar.getTime();
 
+                //do action:
+                if ((date.equals(monday) || date.after(monday)) && (date.equals(sunday) || date.before(sunday))) {
 
-        // returns the pertinent query to firebase by node name
-        private Query calendarDivReferenceFinder(String id) {
+                    System.out.println(date.toString() + "sunday");
+                    return true;
+                }
 
-
-            Query queryMatchesOfTheDay = null;
-            switch (id) {
-                case "Div1_Calendar":
-                    queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
-                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
-                    break;
-                case "Div2_Calendar":
-                    queryMatchesOfTheDay = mMatchesOfTheDayDiv2Ref;
-                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
-                    break;
-                case "Div3_Calendar":
-                    queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
-                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
-                    break;
-                default:
-                    queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
-                    addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
-                    break;
+                return false;
             }
-            return queryMatchesOfTheDay;
-        }
 
-        private Query leaderDivReferenceFinder(String id) {
+            private String makeFragmentName(int viewId, int index) {
+                return "android:switcher:" + viewId + ":" + index;
+            }
 
-            Query queryLeaderPlayers = null;
-            switch (id) {
-                case "Div1_Leader":
-                    queryLeaderPlayers = mLeadersofTheDayDiv1Ref;
-                    addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));
-                    break;
-                case "Div2_Leader":/*
+            String setFragmentMatchesTabs(int position) {
+                if (mMatchesOfTheDiv.size() > 0) {
+                    Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
+                    for (Map.Entry<String, Match> entry :
+                            matchMap.entrySet()) {
+                        Match value1 = entry.getValue();
+                        mMatchesOfTheDiv.get(position).setDate(value1.getDate());
+                    }
+                    if (analizeDate(position)) {
+                        dateInCurrentWeek = position;
+                    }
+                    // sets the viewpager to the games of the week.
+                    // needs to be here to references the tab layout
+                    if (dateInCurrentWeek != -1) {
+                        mViewPager.setCurrentItem(dateInCurrentWeek);
+                    }
+                }
+                return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
+            }
+
+            void setFragmentStatsTabs(int position) {
+                if (mMatchesOfTheDiv.size() > 0) {
+                }
+            }
+
+            String setFragmentLeaderTabs(int position) {
+                String header = "";
+                if (leaderMaps.size() > 0) {
+                    switch (position) {
+                        case 0:
+                            header = "goles".toUpperCase();
+                            break;
+                        case 1:
+                            header = "Tarjetas".toUpperCase();
+                            break;
+                    }
+
+                }
+                return header;
+            }
+
+            /********************
+             * FIRE BASE LISTENERS
+             *********************/
+
+
+            // returns the pertinent query to firebase by node name
+            private Query calendarDivReferenceFinder(String id) {
+
+
+                Query queryMatchesOfTheDay = null;
+                switch (id) {
+                    case "Div1_Calendar":
+                        queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
+                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                        break;
+                    case "Div2_Calendar":
+                        queryMatchesOfTheDay = mMatchesOfTheDayDiv2Ref;
+                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                        break;
+                    case "Div3_Calendar":
+                        queryMatchesOfTheDay = mMatchesOfTheDayDiv3Ref;
+                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                        break;
+                    default:
+                        queryMatchesOfTheDay = mMatchesOfTheDayDiv1Ref;
+                        addCalendarEvelentListener(queryMatchesOfTheDay.orderByChild("date"));
+                        break;
+                }
+                return queryMatchesOfTheDay;
+            }
+
+            private Query leaderDivReferenceFinder(String id) {
+
+                Query queryLeaderPlayers = null;
+                switch (id) {
+                    case "Div1_Leader":
+                        queryLeaderPlayers = mLeadersofTheDayDiv1Ref;
+                        addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));
+                        break;
+                    case "Div2_Leader":/*
                         queryLeaderPlayers = mMatchesOfTheDayDiv2Ref;
                         addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));*/
-                    break;
-                case "Div3_Leader":/*
+                        break;
+                    case "Div3_Leader":/*
                         queryLeaderPlayers = mMatchesOfTheDayDiv3Ref;
                         addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));*/
-                    break;
-                default:/*
+                        break;
+                    default:/*
                         queryLeaderPlayers = mMatchesOfTheDayDiv1Ref;
                         addLeadersEvelentListener(queryLeaderPlayers.orderByChild("pos"));*/
-                    break;
+                        break;
+                }
+                return queryLeaderPlayers;
             }
-            return queryLeaderPlayers;
-        }
 
-
-        //firebase event listener
-        private void addLeadersPlayerEvenetListener(Query q) {
-            q.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Players player = dataSnapshot.getValue(Players.class);
-                    String playerid = dataSnapshot.getKey();
+            //firebase event listener
+            private void addLeadersPlayerEvenetListener(Query q) {
+                q.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Players player = dataSnapshot.getValue(Players.class);
+                        String playerid = dataSnapshot.getKey();
 
                        /* for (LeadersIndex index : mLeaderIndex) {
 
@@ -745,218 +743,217 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
                                 notifyDataSetChanged();
                             }
                         }*/
-                }
+                    }
 
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-        //query the division calendar based on the firebase node name
-
-
-        private void addLeadersEvelentListener(Query q) {
-
-            q.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    String key = dataSnapshot.getKey();
-                    List<LeadersIndex> mLeaderIndex = new ArrayList<>();
-
-                    for (DataSnapshot mdSnapshot : dataSnapshot.getChildren()) {
-                        LeadersIndex p = mdSnapshot.getValue(LeadersIndex.class);
-                        mLeaderIndex.add(p);
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
                     }
 
-                    //   Map<String, Map<String, LeadersIndex>> p2 = dataSnapshot.getValue(j);
-                    leaderMaps.put(key, mLeaderIndex);
-                    notifyDataSetChanged();
-                    // mLeaderIndex.add(p);
-                }
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                // DataSnapshot { key = cards, value = {P2={playerid=101, pos=2}, P1={playerid=100, pos=1}} }
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        //query the division calendar based on the firebase node name
-        private void addCalendarEvelentListener(Query q) {
-            q.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Day d = dataSnapshot.getValue(Day.class);
-                    dataSnapshot.getChildren();
-                    d.setId(dataSnapshot.getKey());
-                    d.setGames(dataSnapshot.getValue(t));
-                    mMatchesOfTheDiv.add(d);
-                    notifyDataSetChanged();
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-
-        /*********************
-         * Fragment Overrrides
-         **********************/
-        @Override
-        public Fragment getItem(int position) {
-
-            boolean selected = false;
-            Fragment frag = null;
-
-            switch (fragmentId) {
-
-                case R.id.matches_stats:
-                    frag = FragmentTourneyStats.newInstance();
-                    break;
-
-                case R.id.matches_leaders:
-
-                    List<LeadersIndex> list = new ArrayList<>();
-                    int type=-1;
-                    if (leaderMaps.size() > 0) {
-                        switch (position) {
-                            case  1:
-                                list = leaderMaps.get("goals");
-                                type = 1;
-                                break;
-                            case 0:
-                                list = leaderMaps.get("cards");
-                                type = 0;
-                                break;
-                        }
-                        frag = FragmentLeaders.newInstance(list , type);
                     }
 
-                    break;
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                case R.id.matches_calendar:
-                    //  frag = FragmentMatches.newInstance();
-
-                    if (mMatchesOfTheDiv.size() > 0) {
-
-                        Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
-                        for (Map.Entry<String, Match> entry :
-                                matchMap.entrySet()) {
-                            Match value1 = entry.getValue();
-                            mMatchesOfTheDiv.get(position).setDate(value1.getDate());
-                        }
-                        //returns true if the match date is in the current week
-                        frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position), selected);
                     }
-                    break;
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
-            return frag;
-        }
+            //query the division calendar based on the firebase node name
+            private void addLeadersEvelentListener(Query q) {
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+                q.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        String key = dataSnapshot.getKey();
+                        List<LeadersIndex> mLeaderIndex = new ArrayList<>();
 
-        @Override
-        public int getCount() {
-            return getPagerCount();
-        }
+                        for (DataSnapshot mdSnapshot : dataSnapshot.getChildren()) {
+                            LeadersIndex p = mdSnapshot.getValue(LeadersIndex.class);
+                            mLeaderIndex.add(p);
 
-        @Override
-        public int getItemPosition(Object object) {
-            // POSITION_NONE makes it possible to reload the PagerAdapter
-            return POSITION_NONE;
+                        }
 
-        }
+                        //   Map<String, Map<String, LeadersIndex>> p2 = dataSnapshot.getValue(j);
+                        leaderMaps.put(key, mLeaderIndex);
+                        notifyDataSetChanged();
+                        // mLeaderIndex.add(p);
+                    }
 
-        @Override
-        public Parcelable saveState() {
-            return null;
-        }
+                    // DataSnapshot { key = cards, value = {P2={playerid=101, pos=2}, P1={playerid=100, pos=1}} }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-        @Override
-        public void restoreState(Parcelable state, ClassLoader loader) {
+                    }
 
-        }
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            //Locale l = Locale.getDefault();
-            // String x =  date ;
+                    }
 
-            switch (fragmentId) {
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                case R.id.matches_stats:
-                    setFragmentStatsTabs(position);
-                    return  "Primera".toUpperCase();
+                    }
 
-                case R.id.matches_leaders:
-                    return setFragmentLeaderTabs(position);
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                case R.id.matches_calendar:
-                    setFragmentMatchesTabs(position);
-                    return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
+                    }
+                });
             }
-            return null;
+
+            //query the division calendar based on the firebase node name
+            private void addCalendarEvelentListener(Query q) {
+                q.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Day d = dataSnapshot.getValue(Day.class);
+                        dataSnapshot.getChildren();
+                        d.setId(dataSnapshot.getKey());
+                        d.setGames(dataSnapshot.getValue(t));
+                        mMatchesOfTheDiv.add(d);
+                        notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+
+            /*********************
+             * Fragment Overrrides
+             **********************/
+            @Override
+            public Fragment getItem(int position) {
+
+                boolean selected = false;
+                Fragment frag = null;
+
+                switch (fragmentId) {
+
+                    case R.id.matches_stats:
+                        frag = FragmentTourneyStats.newInstance();
+                        break;
+
+                    case R.id.matches_leaders:
+
+                        List<LeadersIndex> list = new ArrayList<>();
+                        int type = -1;
+                        if (leaderMaps.size() > 0) {
+                            switch (position) {
+                                case 1:
+                                    list = leaderMaps.get("goals");
+                                    type = 1;
+                                    break;
+                                case 0:
+                                    list = leaderMaps.get("cards");
+                                    type = 0;
+                                    break;
+                            }
+                            frag = FragmentLeaders.newInstance(list, type);
+                        }
+
+                        break;
+
+                    case R.id.matches_calendar:
+                        //  frag = FragmentMatches.newInstance();
+
+                        if (mMatchesOfTheDiv.size() > 0) {
+
+                            Map<String, Match> matchMap = mMatchesOfTheDiv.get(position).getGames();
+                            for (Map.Entry<String, Match> entry :
+                                    matchMap.entrySet()) {
+                                Match value1 = entry.getValue();
+                                mMatchesOfTheDiv.get(position).setDate(value1.getDate());
+                            }
+                            //returns true if the match date is in the current week
+                            frag = FragmentMatches.newInstance(mMatchesOfTheDiv.get(position), selected);
+                        }
+                        break;
+                }
+
+                return frag;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public int getCount() {
+                return getPagerCount();
+            }
+
+            @Override
+            public int getItemPosition(Object object) {
+                // POSITION_NONE makes it possible to reload the PagerAdapter
+                return POSITION_NONE;
+
+            }
+
+            @Override
+            public Parcelable saveState() {
+                return null;
+            }
+
+            @Override
+            public void restoreState(Parcelable state, ClassLoader loader) {
+
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                //Locale l = Locale.getDefault();
+                // String x =  date ;
+
+                switch (fragmentId) {
+
+                    case R.id.matches_stats:
+                        setFragmentStatsTabs(position);
+                        return "Primera".toUpperCase();
+
+                    case R.id.matches_leaders:
+                        return setFragmentLeaderTabs(position);
+
+                    case R.id.matches_calendar:
+                        setFragmentMatchesTabs(position);
+                        return mMatchesOfTheDiv.get(position).getDate().toUpperCase();
+                }
+                return null;
+            }
+
+
         }
-
-
     }
-}
 
 
 }

@@ -7,8 +7,8 @@ android {
         applicationId "upgrade.ntv.bangsoccer"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 15
-        versionName "1.5.1"
+        versionCode 16
+        versionName "1.6"
     }
 
 
@@ -94,5 +94,6 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:25.0.0'
     compile project(':dao')
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta2'
+    compile 'cn.carbswang.android:NumberPickerView:1.1.1' //current picker
 }
 apply plugin: 'com.google.gms.google-services'

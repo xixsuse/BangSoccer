@@ -1,6 +1,5 @@
 package upgrade.ntv.bangsoccer;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -27,8 +26,11 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
@@ -49,10 +51,19 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         NavigationView.OnNavigationItemSelectedListener, AppBarLayout.OnOffsetChangedListener,DivisionsAdapter.onDivisionFragmentInteractionListener ,
         FragmentPlayers.OnListFragmentInteractionListener, FragmentHistory.OnFragmentHistoryInteractionListener{
 
+    // For log purposes
+    private static final String TAG = ActivityField.class.getSimpleName();
+
+    private static final String DB_REF_CLUBS = "Clubs";
+    private static final String DB_REF_FIELD_LA_MEDIA_CANCHA = "565faa52-7d02-4907-bef7-ef5e18f90fea";
+
+    // Firebase references
+    public static DatabaseReference mDatabaseRef;
+    public static StorageReference mStorageRef;
+    private static SlidingUpPanelLayout slidingUpPanelLayout;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout drawer;
     private CollapsingToolbarLayout collapsingToolbar;
-    private static SlidingUpPanelLayout slidingUpPanelLayout;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -61,8 +72,6 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     private String teamid = "";
     private Toolbar toolbar;
     private ViewPager mViewPager;
-
-    private Activity thisActivity;
 
     private TextView vPlayerName;
     private TextView vPlayerFullName;
@@ -83,9 +92,12 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_clubs);
+        setContentView(R.layout.activity_club);
 
-        this.thisActivity = this;
+        mStorageRef = FirebaseStorage.getInstance().getReference()
+                .child(DB_REF_CLUBS)
+                .child(DB_REF_FIELD_LA_MEDIA_CANCHA);
+
         teamid = (String) getIntent().getExtras().get("CLUBID");
 
         BindActivity();
@@ -358,6 +370,10 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     }
 
+    @Override
+    public void onClick(View v) {
+        onBackPressed();
+    }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -427,10 +443,5 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
             }
             return null;
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        onBackPressed();
     }
 }

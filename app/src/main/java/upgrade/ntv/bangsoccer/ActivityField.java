@@ -11,9 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,13 +27,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
+import upgrade.ntv.bangsoccer.Entities.Field;
 
 public class ActivityField extends AppCompatActivity implements OnMapReadyCallback,
         CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener{
@@ -45,7 +53,19 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     // Firebase references
     public static DatabaseReference mDatabaseRef;
     public static StorageReference mStorageRef;
-
+    //Views
+    @BindView(R.id.field_image)
+    ImageView mFieldImage;
+    @BindView(R.id.mainText)
+    TextView mMainText;
+    @BindView(R.id.field_url)
+    TextView mFieldURL;
+    @BindView(R.id.field_phone)
+    TextView mFieldPhone;
+    @BindView(R.id.field_shcedule)
+    TextView mFieldSchedule;
+    @BindView(R.id.field_address)
+    TextView mFieldAddress;
     // Map Stuff
     private MapView mMapView;
     private GoogleMap mMap;
@@ -54,6 +74,7 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_field);
+        ButterKnife.bind(this);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference()
                 .child(DB_REF_FIELDS)
@@ -70,8 +91,6 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
         mMapView = (MapView) findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,15 +105,40 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
         // Gets to GoogleMap from the MapView and does initialization stuff
         mMapView.getMapAsync(this);
 
-        final ImageView testimage = (ImageView) findViewById(R.id.field_image);
-        mStorageRef.child("MediaCancha.jpg")
+        onAddDatabaseRefListeners();
+
+    }
+
+    private void onAddDatabaseRefListeners() {
+        mDatabaseRef.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        Field field = dataSnapshot.getValue(Field.class);
+                        if (field != null) {
+                            onAddStorageRefListeners(field.getImageURL());
+                            onUpdateFieldInfo(field);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "getField:onCancelled", databaseError.toException());
+                    }
+                });
+    }
+
+    private void onAddStorageRefListeners(String image) {
+        mStorageRef.child(image)
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.with(getApplicationContext())
                         .load(uri)
                         .placeholder(R.drawable.ic_no_image)
-                        .into(testimage);
+                        .into(mFieldImage);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -102,6 +146,15 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
                 // Handle any errors
             }
         });
+    }
+
+    private void onUpdateFieldInfo(Field field) {
+
+        mMainText.setText(field.getStory());
+        mFieldURL.setText(field.getURL());
+        mFieldPhone.setText(field.getPhone());
+        mFieldSchedule.setText(field.getSchedule());
+        mFieldAddress.setText(field.getAddress());
 
     }
 

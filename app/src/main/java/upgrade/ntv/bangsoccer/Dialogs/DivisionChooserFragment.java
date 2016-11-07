@@ -1,29 +1,24 @@
 package upgrade.ntv.bangsoccer.Dialogs;
 
-        import android.app.Dialog;
-        import android.app.DialogFragment;
-        import android.content.Context;
-        import android.graphics.Color;
-        import android.graphics.drawable.ColorDrawable;
-        import android.os.Bundle;
-        import android.support.v7.widget.GridLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.view.Window;
-        import android.widget.RelativeLayout;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.RelativeLayout;
 
-        import butterknife.BindView;
-        import butterknife.ButterKnife;
-        import butterknife.Unbinder;
-        import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
-        import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
-        import upgrade.ntv.bangsoccer.R;
-        import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
-        import upgrade.ntv.bangsoccer.Utils.Preferences;
-
-        import static upgrade.ntv.bangsoccer.ActivityMain.mDivisions;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
+import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
+import upgrade.ntv.bangsoccer.R;
 
 /**
  * Created by jfro on 8/25/16.
@@ -33,11 +28,9 @@ public class DivisionChooserFragment extends DialogFragment  {
 
     //TAG
     private static final String TAG = DivisionChooserFragment.class.getSimpleName();
-
-    private Unbinder unbinder;
     @BindView(R.id.divisions_recyclerview)
     RecyclerView recyclerView;
-
+    private Unbinder unbinder;
     private DivisionsAdapter divisionsAdapter;
     private GridLayoutManager lLayout;
 

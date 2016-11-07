@@ -1,5 +1,6 @@
 package upgrade.ntv.bangsoccer;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fastaccess.permission.base.PermissionHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -41,18 +44,15 @@ import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 import upgrade.ntv.bangsoccer.Entities.Field;
 
-public class ActivityField extends AppCompatActivity implements OnMapReadyCallback,
-        CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener{
+public class ActivityField extends AppCompatActivity implements OnMapReadyCallback, OnPermissionCallback,
+        CollapsingToolbarLayout.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     // For log purposes
     private static final String TAG = ActivityField.class.getSimpleName();
 
     private static final String DB_REF_FIELDS = "Fields";
     private static final String DB_REF_FIELD_LA_MEDIA_CANCHA = "dce43f83-5eb8-4ea5-ac59-78aa60302273";
-
-    // Firebase references
-    public static DatabaseReference mDatabaseRef;
-    public static StorageReference mStorageRef;
+    private static final String PERMISSION_CALL_PHONE = Manifest.permission.CALL_PHONE;
     //Views
     @BindView(R.id.field_image)
     ImageView mFieldImage;
@@ -66,6 +66,11 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     TextView mFieldSchedule;
     @BindView(R.id.field_address)
     TextView mFieldAddress;
+    // Firebase references
+    private DatabaseReference mDatabaseRef;
+    private StorageReference mStorageRef;
+    // Permissions
+    private PermissionHelper permissionHelper;
     // Map Stuff
     private MapView mMapView;
     private GoogleMap mMap;
@@ -75,6 +80,8 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_field);
         ButterKnife.bind(this);
+
+        permissionHelper = PermissionHelper.getInstance(this);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference()
                 .child(DB_REF_FIELDS)
@@ -106,7 +113,6 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
         mMapView.getMapAsync(this);
 
         onAddDatabaseRefListeners();
-
     }
 
     private void onAddDatabaseRefListeners() {
@@ -137,7 +143,7 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
             public void onSuccess(Uri uri) {
                 Picasso.with(getApplicationContext())
                         .load(uri)
-                        .placeholder(R.drawable.ic_no_image)
+                        .placeholder(R.drawable.bg_football)
                         .into(mFieldImage);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -173,6 +179,25 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onClick(View v) {
+        Intent intent;
+
+        int id = v.getId();
+        switch (id) {
+            case R.id.mainButton1:
+                permissionHelper.setForceAccepting(true).request(PERMISSION_CALL_PHONE);
+                break;
+            case R.id.mainButton2:
+                intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr=18.491401,-69.978308"));
+                startActivity(intent);
+                break;
+            case R.id.mainButton3:
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "a_marranzini@hotmail.com"));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Reservación");
+                //emailIntent.putExtra(Intent.EXTRA_TEXT, "body");
+                startActivity(Intent.createChooser(emailIntent, "Que app deseas usar?"));
+                break;
+        }
     }
 
     @Override
@@ -196,6 +221,44 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "8095307335"));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        permissionHelper.setForceAccepting(false).request(PERMISSION_CALL_PHONE);
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "8095307335"));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+
     }
 
     @Override

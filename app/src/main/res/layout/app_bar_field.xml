@@ -23,10 +23,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:id="@+id/field_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:id="@+id/field_image"/>
+                android:scaleType="center" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

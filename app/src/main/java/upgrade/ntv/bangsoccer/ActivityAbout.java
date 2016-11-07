@@ -1,6 +1,5 @@
 package upgrade.ntv.bangsoccer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
-import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
 
 

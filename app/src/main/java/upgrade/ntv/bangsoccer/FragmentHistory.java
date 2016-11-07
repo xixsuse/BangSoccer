@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import upgrade.ntv.bangsoccer.Adapters.HistoryAdapter;
-import upgrade.ntv.bangsoccer.Adapters.MatchAdapter;
 import upgrade.ntv.bangsoccer.Decorators.DividerItemDecoration;
 
 public class FragmentHistory extends Fragment {

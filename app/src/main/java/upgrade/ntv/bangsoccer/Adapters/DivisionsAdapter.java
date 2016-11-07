@@ -14,11 +14,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.ActivityMain;
-import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.Entities.Divisions;
+import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.Utils.Preferences;
-
-import static upgrade.ntv.bangsoccer.ActivityMain.mDivisions;
 
 
 /**
@@ -105,6 +103,12 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
         }
     }
 
+    public interface onDivisionFragmentInteractionListener {
+        void onDivisionSelected(String node);
+
+        void onDivisionUnselected(String divisionKey);
+    }
+
     public static class TeamHolder extends FavoritesViewHolder {
 
         String Id;
@@ -121,9 +125,5 @@ public class DivisionsAdapter extends RecyclerView.Adapter<DivisionsAdapter.Team
             ButterKnife.bind(this, v);
         }
 
-    }
-    public interface onDivisionFragmentInteractionListener {
-        void onDivisionSelected(String node);
-        void onDivisionUnselected(String divisionKey);
     }
 }

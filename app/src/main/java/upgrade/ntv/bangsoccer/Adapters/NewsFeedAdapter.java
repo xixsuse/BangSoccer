@@ -5,23 +5,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.NewsFeed.NewsFeedItem;
 import upgrade.ntv.bangsoccer.R;
-import upgrade.ntv.bangsoccer.RecyclerItemClickLister;
 
 
 public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.NewsFeedViewHolder> {
 
+    static private ClickListener clickListener;
     private List<NewsFeedItem> newsFeedItems;
     private Context context;
-    static private ClickListener clickListener;
 
     public NewsFeedAdapter(List<NewsFeedItem> newsFeedItems, Context context){
         this.newsFeedItems = newsFeedItems;
@@ -30,7 +27,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.NewsFe
 
 
     public void setClickListener(ClickListener clickListener){
-        this.clickListener= clickListener;
+        NewsFeedAdapter.clickListener = clickListener;
     }
 
     @Override
@@ -71,7 +68,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.NewsFe
 
 
     public interface ClickListener{
-        public void itemClicked(View view, int position);
+        void itemClicked(View view, int position);
     }
 
 

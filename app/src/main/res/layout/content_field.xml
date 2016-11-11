@@ -20,8 +20,10 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:background="@color/colorTransparent"
+            android:drawableTint="@color/colorPrimaryDark"
             android:drawableTop="@drawable/ic_phone"
-            android:text="call"
+            android:onClick="onClick"
+            android:text="Llamar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,8 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorTransparent"
+            android:drawableTint="@color/colorPrimaryDark"
             android:drawableTop="@drawable/ic_map"
-            android:text="drive"
+            android:onClick="onClick"
+            android:text="Ruta"
             app:layout_constraintLeft_toRightOf="@+id/mainButton1"
             app:layout_constraintRight_toLeftOf="@+id/mainButton3"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,8 +48,10 @@
             android:layout_marginEnd="32dp"
             android:layout_marginTop="16dp"
             android:background="@color/colorTransparent"
+            android:drawableTint="@color/colorPrimaryDark"
             android:drawableTop="@drawable/ic_email"
-            android:text="contact"
+            android:onClick="onClick"
+            android:text="Contactar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +63,6 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="@string/label_field_moto"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mainButton2" />

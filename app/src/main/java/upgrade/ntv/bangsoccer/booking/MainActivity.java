@@ -1,14 +1,13 @@
 package upgrade.ntv.bangsoccer.booking;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,17 +17,15 @@ import android.view.ViewGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    public List<Fragment> fragments;
     /** 809-549-7944
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -38,12 +35,10 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    public List<Fragment> fragments;
     private DatabaseReference ref;
 
 
@@ -135,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String GetWeekFor(Calendar reservationDate) {
 
-        System.out.println("This is the week for a reservation:"+reservationDate.WEEK_OF_YEAR);
-        return  Integer.toString(reservationDate.WEEK_OF_YEAR);
+        System.out.println("This is the week for a reservation:" + Calendar.WEEK_OF_YEAR);
+        return Integer.toString(Calendar.WEEK_OF_YEAR);
 
     }
 

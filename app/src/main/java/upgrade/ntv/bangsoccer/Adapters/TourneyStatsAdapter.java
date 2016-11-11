@@ -20,7 +20,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.ActivityMain;
-import upgrade.ntv.bangsoccer.Entities.Players;
 import upgrade.ntv.bangsoccer.Entities.StatisticTable;
 import upgrade.ntv.bangsoccer.R;
 
@@ -41,44 +40,10 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
         query.addChildEventListener(new TableEvenetListener());
     }
 
-    //firebase event listener
-    private class TableEvenetListener implements ChildEventListener {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            StatisticTable firebaseRequest = dataSnapshot.getValue(StatisticTable.class);
-            firebaseRequest.setID(dataSnapshot.getKey());
-            mStatisticsList.add(firebaseRequest);
-            notifyDataSetChanged();
-
-
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    }
-
     @Override
     public int getItemCount() {
         return this.mStatisticsList.size();
     }
-
 
     @Override
     public TeamStatsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -140,6 +105,39 @@ public class TourneyStatsAdapter extends RecyclerView.Adapter<TourneyStatsAdapte
         TeamStatsHolder(View v){
             super(v);
             ButterKnife.bind(this, v);
+        }
+    }
+
+    //firebase event listener
+    private class TableEvenetListener implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            StatisticTable firebaseRequest = dataSnapshot.getValue(StatisticTable.class);
+            firebaseRequest.setID(dataSnapshot.getKey());
+            mStatisticsList.add(firebaseRequest);
+            notifyDataSetChanged();
+
+
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
         }
     }
 }

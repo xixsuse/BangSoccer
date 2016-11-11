@@ -2,7 +2,6 @@ package upgrade.ntv.bangsoccer.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.Entities.History;
-import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.Entities.Match;
+import upgrade.ntv.bangsoccer.R;
 
 /**
  * Created by jfrom on 3/19/2016.
@@ -49,46 +48,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryM
         Query query = ActivityMain.databaseReference.child(division + "_History").child(clubId);
         query.addValueEventListener(new HistoryEventListener());
 
-    }
-
-    //firebase event listener
-    private class HistoryEventListener implements ValueEventListener {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            // whenever data at this location is updated.
-            for (DataSnapshot mdSnapshot : dataSnapshot.getChildren()) {
-
-                History history = mdSnapshot.getValue(History.class);
-                history.setHISTORY_ID(dataSnapshot.getKey());
-
-                Query query = ActivityMain.databaseReference
-                        .child(mDivision + "_Calendar")
-                        .child(history.getDate())
-                        .child(history.getVS());
-                query.addValueEventListener(new MatchEventListener());
-            }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    }
-
-    //firebase event listener
-    private class MatchEventListener implements ValueEventListener {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            Match match = dataSnapshot.getValue(Match.class);
-            match.setMatchId(dataSnapshot.getKey());
-            mMatchesHistory.add(match);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
     }
 
     @Override
@@ -155,6 +114,46 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryM
             super(v);
             //butter knife bind
             ButterKnife.bind(this, v);
+        }
+    }
+
+    //firebase event listener
+    private class HistoryEventListener implements ValueEventListener {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // whenever data at this location is updated.
+            for (DataSnapshot mdSnapshot : dataSnapshot.getChildren()) {
+
+                History history = mdSnapshot.getValue(History.class);
+                history.setHISTORY_ID(dataSnapshot.getKey());
+
+                Query query = ActivityMain.databaseReference
+                        .child(mDivision + "_Calendar")
+                        .child(history.getDate())
+                        .child(history.getVS());
+                query.addValueEventListener(new MatchEventListener());
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    }
+
+    //firebase event listener
+    private class MatchEventListener implements ValueEventListener {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Match match = dataSnapshot.getValue(Match.class);
+            match.setMatchId(dataSnapshot.getKey());
+            mMatchesHistory.add(match);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
         }
     }
 }

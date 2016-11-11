@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import upgrade.ntv.bangsoccer.R;
@@ -32,8 +30,8 @@ public class RecyclerHoursAdapter extends RecyclerView.Adapter<HoursViewHolder> 
     private final Context framecontext;
 
     private final availableDatesViewModel model;
-    private LayoutInflater mInflater;
     List<HourObject> mhours;
+    private LayoutInflater mInflater;
 
 
     public RecyclerHoursAdapter(Context context, List<HourObject> hours, availableDatesViewModel model){

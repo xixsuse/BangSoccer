@@ -173,15 +173,18 @@ public class ActivityMain extends AppCompatActivity
         //Updating NewsFeed
         updatefavoritesList();
 
-//        if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
-//            //   facebookAccounts.addAll(favoriteList);
-//            newsFeedItems.clear();
-//            newsFeedItems.addAll(getListFavorites());
-//            updateNewsFeedUI(); //TODO chequiar esta llamada
-//
-//        }
+    boolean flag=false;
 
-        updateNewsFeedUI();
+        if(mSwitch!=null)
+            flag=mSwitch.isChecked();
+        else {
+
+            List<DBSwitch> sw = AppicationCore.getSwitchStatus();
+            if(sw != null && sw.size()>0)
+                flag= sw.get(0).getStatus();
+        }
+
+        updateNewsFeedUI(flag);
 
     }
 
@@ -287,16 +290,6 @@ public class ActivityMain extends AppCompatActivity
    /*    FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         FirebaseCrash.log("Activity created");*/
 
-        mSwitch = (SwitchCompat) findViewById(R.id.filter);
-
-        /////////////////// Filter Switch ///////////////////
-        List<DBSwitch> temp = AppicationCore.getSwitchStatus();
-        if(temp!= null && temp.size()>0){
-            mSwitch.setChecked(temp.get(0).getStatus());
-        }
-        else{
-            mSwitch.setChecked( false);
-        }
 
         /////////////////// Facebook Newsfeed Variables ///////////////////
         facebookAccounts = new LinkedList<String>(Arrays.asList(getResources().getStringArray(R.array.fb_accounts)));
@@ -306,44 +299,12 @@ public class ActivityMain extends AppCompatActivity
         if(news==null)
             news= new ArrayList<>();
 
-        switchStatusChanged(mSwitch.isChecked());
-
         populateDummyNewsFeedItems();
-
-//        if(newsFeedItems==null || newsFeedItems.size()<1){
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//            options.inSampleSize = 2;
-//            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.welcome, options);
-//            newsFeedItems.add( new NewsFeedItem(0, bm, "Bienvenido a UpSport!","","",false));
-//            bm=null;
-//
-//            newsFeedAdapter.notifyDataSetChanged();
-//        }
 
 
         // Auto newsfeed refresh
         if( isNetworkAvailable() && AccessToken.getCurrentAccessToken() != null && AccessToken.getCurrentAccessToken().getToken().length()>2 )
             new RefreshNewsFeed(0).execute();
-
-
-        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-              //  switchStatusChanged(isChecked);
-                new switchChangeAsync(isChecked).execute();
-               // new RefreshNewsFeed(0).execute();
-//                AppicationCore.resetSwitchTable();
-//
-//                DBSwitch temp = new DBSwitch();
-//                temp.setStatus(isChecked);
-//                AppicationCore.getDbSwitchDao().insert(temp);
-
-                //Updating UI
-            //    updateNewsFeedUI();
-            }
-        });
-
-
 
 
     }
@@ -380,12 +341,18 @@ public class ActivityMain extends AppCompatActivity
     //dummy data for the global news feed
     public void populateDummyNewsFeedItems(){
 
+        boolean flag =false;
+        List<DBSwitch> sw = AppicationCore.getSwitchStatus();
 
-        if(! mSwitch.isChecked()) {
+        if(sw != null && sw.size()>0)
+            flag= sw.get(0).getStatus();
+
+        if(flag) {
+      //  if(! mSwitch.isChecked()) {
             updateDB(); // Updating db to make sure newsfeed do not exceed max value
         }
 
-        updateNewsFeedUI();
+        updateNewsFeedUI(flag);
 
 
     }
@@ -490,7 +457,30 @@ public class ActivityMain extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_newsfeed, menu);
+
+        View view =  menu.findItem(R.id.myswitch).getActionView();
+        mSwitch = (SwitchCompat) view.findViewById(R.id.filter2);
+
+        /////////////////// Filter Switch ///////////////////
+        List<DBSwitch> temp = AppicationCore.getSwitchStatus();
+        if(temp!= null && temp.size()>0){
+            mSwitch.setChecked(temp.get(0).getStatus());
+        }
+        else{
+            mSwitch.setChecked( false);
+        }
+
+        switchStatusChanged(mSwitch.isChecked());
+
+
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                new switchChangeAsync(isChecked).execute();
+
+            }
+        });
 
 
         return true;
@@ -594,10 +584,10 @@ public class ActivityMain extends AppCompatActivity
      * Refresh NewsFeed UI based on new Posts added
      *
      */
-    private void updateNewsFeedUI() {
+    private void updateNewsFeedUI(boolean mySwitch) {
 
      newsFeedItems.clear();
-     if(mSwitch.isChecked()){
+     if(mySwitch){
          newsFeedItems.addAll(getListFavorites());
      }
         else{
@@ -705,7 +695,7 @@ public class ActivityMain extends AppCompatActivity
                 if(mSwitch.isChecked() && favoriteList!=null && favoriteList.size()>0){
                     newsFeedItems.clear();
                     newsFeedItems.addAll(getListFavorites());
-                    updateNewsFeedUI();
+                    updateNewsFeedUI(isChecked);
 
                 }
 
@@ -833,7 +823,7 @@ public class ActivityMain extends AppCompatActivity
             if (result > 0) {
                 news.clear();
                 news.addAll(AppicationCore.getAllNewsFeed());
-                updateNewsFeedUI();
+                updateNewsFeedUI(mSwitch.isChecked());
             }
 
 
@@ -955,7 +945,7 @@ public class ActivityMain extends AppCompatActivity
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
 
-            updateNewsFeedUI();
+            updateNewsFeedUI(mSwitch.isChecked());
 
 
             if(! result) {

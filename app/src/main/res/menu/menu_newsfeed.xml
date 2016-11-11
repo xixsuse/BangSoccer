@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<item
-    android:id="@+id/action_favorites"
-    android:orderInCategory="2"
-    app:showAsAction="ifRoom"
-    android:title="follow"
+    <item
+        android:id="@+id/action_favorites"
+        android:icon="@drawable/ic_football_badge"
+        android:orderInCategory="2"
+        android:title="favorites"
 
-    android:icon="@drawable/ic_football_badge"/>
+        app:showAsAction="ifRoom" />
 
-<item
-    android:id="@+id/action_divisiones"
-    android:orderInCategory="1"
-    app:showAsAction="ifRoom"
-    android:title="follow"
+    <item
+        android:id="@+id/action_divisiones"
+        android:icon="@drawable/ic_organization"
+        android:orderInCategory="1"
+        android:title="divisions"
 
-    android:icon="@drawable/ic_organization"/>
+        app:showAsAction="ifRoom" />
 
-<item
-    android:id="@+id/myswitch"
-    android:title=""
-    app:showAsAction="always"
-    app:actionLayout="@layout/item_switch" />
+    <item
+        android:id="@+id/myswitch"
+        android:title=""
+        app:actionLayout="@layout/item_switch"
+        app:showAsAction="always" />
 
 </menu>

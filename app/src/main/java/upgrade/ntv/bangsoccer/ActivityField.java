@@ -50,9 +50,11 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     // For log purposes
     private static final String TAG = ActivityField.class.getSimpleName();
 
+    // Required Permissions
+    private static final String PERMISSION_CALL_PHONE = Manifest.permission.CALL_PHONE;
+
     private static final String DB_REF_FIELDS = "Fields";
     private static final String DB_REF_FIELD_LA_MEDIA_CANCHA = "dce43f83-5eb8-4ea5-ac59-78aa60302273";
-    private static final String PERMISSION_CALL_PHONE = Manifest.permission.CALL_PHONE;
     //Views
     @BindView(R.id.field_image)
     ImageView mFieldImage;
@@ -137,6 +139,8 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
     }
 
     private void onAddStorageRefListeners(String image) {
+
+
         mStorageRef.child(image)
                 .getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -144,6 +148,7 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
                 Picasso.with(getApplicationContext())
                         .load(uri)
                         .placeholder(R.drawable.bg_football)
+                        .fit()
                         .into(mFieldImage);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -152,6 +157,8 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
                 // Handle any errors
             }
         });
+
+
     }
 
     private void onUpdateFieldInfo(Field field) {
@@ -266,15 +273,13 @@ public class ActivityField extends AppCompatActivity implements OnMapReadyCallba
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id != R.id.nav_about) {
-
+        if (id != R.id.nav_field) {
             Intent intent = DrawerSelector.onItemSelected(this, id);
-
             if (intent != null) {
                 startActivity(intent);
-                // overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
             }
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

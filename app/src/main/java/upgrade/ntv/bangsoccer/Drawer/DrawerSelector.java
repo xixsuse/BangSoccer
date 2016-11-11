@@ -10,7 +10,6 @@ import upgrade.ntv.bangsoccer.ActivityMain;
 import upgrade.ntv.bangsoccer.ActivityTournament;
 import upgrade.ntv.bangsoccer.R;
 import upgrade.ntv.bangsoccer.booking.ActivityBooking;
-import upgrade.ntv.bangsoccer.booking.MainActivity;
 
 /**
  * Created by xeros on 10/19/2015.

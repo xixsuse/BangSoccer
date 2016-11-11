@@ -13,17 +13,59 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/mainButton1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorTransparent"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:drawableTop="@drawable/ic_phone"
+            android:onClick="onClick"
+            android:text="Llamar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/mainButton2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorTransparent"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:drawableTop="@drawable/ic_map"
+            android:onClick="onClick"
+            android:text="Ruta"
+            app:layout_constraintLeft_toRightOf="@+id/mainButton1"
+            app:layout_constraintRight_toLeftOf="@+id/mainButton3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/mainButton3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorTransparent"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:drawableTop="@drawable/ic_email"
+            android:onClick="onClick"
+            android:text="Contactar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/mainText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/label_field_moto"
+            android:layout_marginTop="24dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/mainButton2" />
 
         <LinearLayout
             android:id="@+id/linearLayout_divider1"
@@ -36,7 +78,7 @@
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/mainText" />
 
         <ImageView
             android:id="@+id/image_url"
@@ -51,12 +93,11 @@
 
         <TextView
             android:id="@+id/field_url"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:text="www.lamediacancha.com"
             app:layout_constraintBottom_toBottomOf="@+id/image_url"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/image_url"
@@ -76,12 +117,11 @@
 
         <TextView
             android:id="@+id/field_phone"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="(809) 555 - 5555"
             app:layout_constraintBottom_toBottomOf="@+id/image_phone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/image_phone"
@@ -101,12 +141,11 @@
 
         <TextView
             android:id="@+id/field_shcedule"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="Open From To"
             app:layout_constraintBottom_toBottomOf="@+id/image_shcedule"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/image_shcedule"
@@ -119,19 +158,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:tint="@color/colorPrimaryDark"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_shcedule"
             app:srcCompat="@drawable/ic_address" />
 
         <TextView
             android:id="@+id/field_address"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="The real address no bulto no cotorra"
+            android:singleLine="false"
             app:layout_constraintBottom_toBottomOf="@+id/image_address"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@+id/image_address"

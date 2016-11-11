@@ -25,6 +25,8 @@
     <color name="grey_3">#DCDCDC</color>
     <color name="black_1">#373737</color>
 
+    <color name="colorTransparent">#00000000</color>
+
     // FAKE Primary Colors
     <color name="colorPrimaryDark">#377b2b</color>
 

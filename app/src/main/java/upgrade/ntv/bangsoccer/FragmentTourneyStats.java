@@ -10,11 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import upgrade.ntv.bangsoccer.Adapters.TourneyStatsAdapter;
-import upgrade.ntv.bangsoccer.Entities.Club;
 
 /**
  * A fragment representing a list of Items.

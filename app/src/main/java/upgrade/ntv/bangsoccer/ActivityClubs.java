@@ -138,7 +138,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
         //    mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         //toolbar team image
         final ImageView img = (ImageView) findViewById(R.id.club_header_img);
-        final TextView txt = (TextView) findViewById(R.id.clubs_header_team_name);
+        //final TextView txt = (TextView) findViewById(R.id.clubs_header_team_name);
 
         String currentKey = getTeamId();
         this.query = ActivityMain.mTeamsRef.child(currentKey);
@@ -156,7 +156,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
                             placeholder(R.drawable.ic_upgraden).
                             into(img);
 
-                    txt.setText(mClub.getName());
+                   // txt.setText(mClub.getName());
                 }
 
             }

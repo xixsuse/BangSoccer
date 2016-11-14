@@ -31,40 +31,6 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
     public List<Players> mPlayersLeader = new ArrayList<>();
     private Query queryLeaders;
 
-    public LeadersAdapter() {
-
-        queryLeaders = ActivityMain.mPlayersDeftailsRef;
-        queryLeaders.orderByChild("goals");
-        queryLeaders.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Players firebaseRequest = dataSnapshot.getValue(Players.class);
-                firebaseRequest.setmFireBaseKey(dataSnapshot.getKey());
-                mPlayersLeader.add(firebaseRequest);
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
     public LeadersAdapter(final List<LeadersIndex> list) {
 
         queryLeaders = ActivityMain.mPlayersDeftailsRef;
@@ -109,6 +75,9 @@ public class LeadersAdapter extends RecyclerView.Adapter<LeadersAdapter.TeamHold
     }
 
 
+    public String getPlayerId(int position) {
+        return this.mPlayersLeader.get(position).getmFireBaseKey();
+    }
     @Override
     public int getItemCount() {
         return this.mPlayersLeader.size();

@@ -25,12 +25,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.luseen.datelibrary.DateConverter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -46,6 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
 import upgrade.ntv.bangsoccer.Drawer.DrawerSelector;
@@ -77,7 +80,32 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
     ImageView statsButton;
     @BindView(R.id.matches_leaders)
     ImageView leadersButton;
-    private SlidingUpPanelLayout slidingUpPanelLayout;
+
+    //sliding view elements
+    @BindView(R.id.sliding_layout_tourney)
+    SlidingUpPanelLayout slidingUpPanelLayoutT;
+    @BindView(R.id.player_detail__name_tourney)
+    TextView vPlayerNameT;
+    @BindView(R.id.detailss_player_fullname_text_tourney)
+    TextView vPlayerFullNameT;
+    @BindView(R.id.player_detail_avatar_tourney)
+    CircleImageView vPlayerAvatarT;
+    @BindView(R.id.details_player__nationality_text_tourney)
+    TextView vPlayerNationalityT;
+    @BindView(R.id.detailss_player_position_text_tourney)
+    TextView vLeaderPositionT;
+    @BindView(R.id.detailss_player_weight_height_text_tourney)
+    TextView vPlayerWeightNHeightT;
+    @BindView(R.id.detailss_player_goals_text_tourney)
+    TextView vPlayerGoalsT;
+    @BindView(R.id.detailss_player_discipline_text_tourney)
+    TextView vPlayerCardsT;
+    @BindView(R.id.detailss_player_dominant_foot_tourney)
+    TextView vPlayerDominantFootT;
+    @BindView(R.id.player_detail_Alias_n_Number_tourney)
+    TextView vPlayerAliasNNumberT;
+    String PlayerId;
+
     private int mLastSelectedItem;
     private FragmentViewPagerContainer mFragmentContainer;
 
@@ -122,17 +150,59 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         navigationView.setCheckedItem(R.id.nav_dynamic_tourney);
     }
 
-    private void onClickedFragmentLeaders() {
-        try {
-            if (findViewById(R.id.dragView) != null) {
-                findViewById(R.id.dragView).setVisibility(View.VISIBLE);
+
+
+
+    private void BindSlidingPanel() {
+        slidingUpPanelLayoutT.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+                slidingUpPanelLayoutT.setAnchorPoint(0.0f);
+                slidingUpPanelLayoutT.setPanelHeight(0);
+                slidingUpPanelLayoutT.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
             }
 
-        } catch (Exception e) {
-            Log.i("view exception", e.getMessage());
-        }
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+
+            }
+        });
+
     }
+
+    private void onClickedFragmentLeaders(final String playerid) {
+        PlayerId = playerid;
+        Query query = ActivityMain.mPlayersDeftailsRef.child(playerid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot playerSnapshot) {
+                Players playerDetails = playerSnapshot.getValue(Players.class);
+                vPlayerNameT.setText(playerDetails.getName());
+                vPlayerFullNameT.setText(playerDetails.getName());
+                vPlayerAvatarT.setImageResource(playerDetails.getAvatar());
+                vPlayerNationalityT.setText(playerDetails.getNationality());
+                vLeaderPositionT.setText(playerDetails.getPosition());
+
+                vPlayerWeightNHeightT.setText(playerDetails.getWeightNHeight());
+                vPlayerGoalsT.setText(playerDetails.getGoals());
+                vPlayerCardsT.setText(playerDetails.getCards());
+                vPlayerDominantFootT.setText(playerDetails.getDominant_foot());
+                vPlayerAliasNNumberT.setText(playerDetails.getAliasNNumber());
+                vPlayerAvatarT.setImageResource(R.drawable.ic_player_name_icon2);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        findViewById(R.id.dragView).setVisibility(View.VISIBLE);
+        slidingUpPanelLayoutT.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
+    }
+
 
     public String makePagerFragmentTag(int id) {
         String i = "string";
@@ -154,6 +224,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourney);
+        ButterKnife.bind(this);
         //fragment type id
         int id = R.id.matches_calendar;
 
@@ -164,8 +235,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         }
         mFragmentContainer = FragmentViewPagerContainer.newInstance(id);
 
-        ButterKnife.bind(this);
-        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
 
         BindActivity();
 
@@ -175,25 +245,8 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         ft.commit();
         setLastSpinnerSelectedItem(id);
 
-        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-
-                slidingUpPanelLayout.setAnchorPoint(0.0f);
-                slidingUpPanelLayout.setPanelHeight(0);
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-            /*    if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                }
-                if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                }
-            */
-            }
-        });
+        BindSlidingPanel();
     }
 
     /*********************
@@ -204,10 +257,10 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (slidingUpPanelLayout != null &&
-                (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
-                        slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        } else if (slidingUpPanelLayoutT != null &&
+                (slidingUpPanelLayoutT.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED ||
+                        slidingUpPanelLayoutT.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+            slidingUpPanelLayoutT.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
             super.onBackPressed();
         }
@@ -280,8 +333,8 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
      **********************/
 
     @Override
-    public void onListFragmentInteraction() {
-        onClickedFragmentLeaders();
+    public void onListFragmentInteraction(String PlayerKey) {
+        onClickedFragmentLeaders(PlayerKey);
     }
 
     @Override
@@ -295,6 +348,12 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         //removes the objects from the viewpager when a division is deselected
         mFragmentContainer.removeUnselectedDivision(divisionKey);
     }
+
+    @Override
+    public void onListFragmentInteraction() {
+
+    }
+
 
     /****************************************************************************************************************************************************************/
     /*********************************************************

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_layout"
+    android:id="@+id/sliding_layout_tourney"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
@@ -93,7 +93,7 @@
         android:visibility="gone">
 
             <include
-                layout="@layout/player_detail_header_slidingpanel"
+                layout="@layout/leader_detail_header_slidingpanel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

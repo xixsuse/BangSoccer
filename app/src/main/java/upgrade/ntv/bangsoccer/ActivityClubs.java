@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import upgrade.ntv.bangsoccer.Adapters.DivisionsAdapter;
 import upgrade.ntv.bangsoccer.Dialogs.DivisionChooserFragment;
@@ -53,46 +55,52 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     // For log purposes
     private static final String TAG = ActivityField.class.getSimpleName();
-
     private static final String DB_REF_CLUBS = "Clubs";
     private static final String DB_REF_FIELD_LA_MEDIA_CANCHA = "565faa52-7d02-4907-bef7-ef5e18f90fea";
 
     // Firebase references
     public static DatabaseReference mDatabaseRef;
     public static StorageReference mStorageRef;
-    private static SlidingUpPanelLayout slidingUpPanelLayout;
+    private Query query;
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private DrawerLayout drawer;
-    private CollapsingToolbarLayout collapsingToolbar;
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private boolean mIsTheTitleVisible = false;
-    private boolean mIsTheTitleContainerVisible = true;
     private String teamid = "";
     private Toolbar toolbar;
     private ViewPager mViewPager;
-
-    private TextView vPlayerName;
-    private TextView vPlayerFullName;
-    private CircleImageView vPlayerAvatar;
-    private TextView vPlayerNationality;
-    private TextView vLeaderPosition;
-    private TextView vPlayerWeightNHeight;
-    private TextView vPlayerGoals;
-    private TextView vPlayerCards;
-    private TextView vPlayerDominantFoot;
-    private TextView vPlayerAliasNNumber;
-    private String PlayerId;
-
     private Club mClub;
-    private Query query;
+
+    //sliding view elements
+    @BindView(R.id.sliding_layout)
+    SlidingUpPanelLayout slidingUpPanelLayout;
+    @BindView(R.id.player_detail__name)
+    TextView vPlayerName;
+    @BindView(R.id.detailss_player_fullname_text)
+    TextView vPlayerFullName;
+    @BindView(R.id.player_detail_avatar)
+    CircleImageView vPlayerAvatar;
+    @BindView(R.id.details_player__nationality_text)
+    TextView vPlayerNationality;
+    @BindView(R.id.detailss_player_position_text)
+    TextView vLeaderPosition;
+    @BindView(R.id.detailss_player_weight_height_text)
+    TextView vPlayerWeightNHeight;
+    @BindView(R.id.detailss_player_goals_text)
+    TextView vPlayerGoals;
+    @BindView(R.id.detailss_player_discipline_text)
+    TextView vPlayerCards;
+    @BindView(R.id.detailss_player_dominant_foot)
+    TextView vPlayerDominantFoot;
+    @BindView(R.id.player_detail_Alias_n_Number)
+    TextView vPlayerAliasNNumber;
+    private String PlayerId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club);
+        ButterKnife.bind(this);
 
         mStorageRef = FirebaseStorage.getInstance().getReference()
                 .child(DB_REF_CLUBS)
@@ -183,7 +191,6 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     }
 
     private void BindSlidingPanel() {
-        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -195,32 +202,9 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    //      slidingUpPanelLayout.setAnchorPoint(0.0f);
-                    //    slidingUpPanelLayout.setPanelHeight(0);
-
-                    Log.i("ActivityClubs", "onPanelStateChanged " + newState.name());
-
-                }
-                if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    //    slidingUpPanelLayout.setAnchorPoint(0.0f);
-
-                }
-                Log.i("ActivityClubs", "onPanelStateChanged " + newState);
-
             }
         });
-        //sliding view elements
-        vPlayerName = (TextView) findViewById(R.id.player_detail__name);
-        vPlayerFullName = (TextView) findViewById(R.id.detailss_player_fullname_text);
-        vPlayerAvatar = (CircleImageView) findViewById(R.id.player_detail_avatar);
-        vPlayerNationality = (TextView) findViewById(R.id.details_player__nationality_text);
-        vLeaderPosition = (TextView) findViewById(R.id.detailss_player_position_text);
-        vPlayerWeightNHeight = (TextView) findViewById(R.id.detailss_player_weight_height_text);
-        vPlayerGoals = (TextView) findViewById(R.id.detailss_player_goals_text);
-        vPlayerCards = (TextView) findViewById(R.id.detailss_player_discipline_text);
-        vPlayerDominantFoot = (TextView) findViewById(R.id.detailss_player_dominant_foot);
-        vPlayerAliasNNumber = (TextView) findViewById(R.id.player_detail_Alias_n_Number);
+
     }
 
     private void onClickedFragmentPlayer(final String playerid) {
@@ -355,8 +339,6 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
     @Override
     public void onListFragmentInteraction(String playerid) {
-        //fragmentPayer interaction listener sends the player id
-        Log.i("ActivityClubs", "onPanelStateChanged " + " FRAGMENTCLICk! ");
         onClickedFragmentPlayer(playerid);
     }
 

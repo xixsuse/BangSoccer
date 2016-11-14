@@ -86,8 +86,7 @@ public class FragmentLeaders extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickLister(getContext(), recyclerView, new RecyclerItemClickLister.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // mPlayerAdapter.getPlayerID(position);
-                mListener.onListFragmentInteraction();
+                mListener.onListFragmentInteraction(mLeadersAdapter.getPlayerId(position));
             }
 
             @Override
@@ -129,6 +128,6 @@ public class FragmentLeaders extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction();
+        void onListFragmentInteraction(String playerkey);
     }
 }

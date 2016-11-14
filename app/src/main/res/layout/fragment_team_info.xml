@@ -46,8 +46,6 @@
                 android:background="@drawable/side_nav_bar">
 
             </LinearLayout>
-
-
         </LinearLayout>
 
 

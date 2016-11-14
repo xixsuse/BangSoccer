@@ -33,8 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:clickable="false"
-            android:focusable="false"
-            app:cardBackgroundColor="@color/colorAccentLight">
+            android:focusable="false">
 
 
             <LinearLayout
@@ -63,8 +62,8 @@
                     android:layout_weight="3"
                     android:src="@drawable/ic_club_stats"
                     android:focusable="true"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"/>
+                    android:clickable="true"/>
+
                 <ImageView
                     android:id="@+id/matches_leaders"
                     android:layout_width="0dp"
@@ -73,8 +72,7 @@
                     android:layout_weight="3"
                     android:src="@drawable/ic_game_winner_celebration_on_podium"
                     android:focusable="true"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"/>
+                    android:clickable="true"/>
 
 
             </LinearLayout>
@@ -89,25 +87,16 @@
         android:id="@+id/dragView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
         android:clickable="true"
         android:focusable="false"
         android:orientation="vertical"
         android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
             <include
                 layout="@layout/player_detail_header_slidingpanel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-
         </LinearLayout>
-
-    </LinearLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

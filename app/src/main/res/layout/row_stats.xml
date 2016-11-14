@@ -29,10 +29,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
             android:layout_weight="4"
-            android:text="Pantoja FC"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/colorBlack"
-            android:textSize="14sp" />
+            android:text="Pantoja FC"/>
 
         <TextView
             android:id="@+id/stats_pj_text"

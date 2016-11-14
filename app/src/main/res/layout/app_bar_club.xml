@@ -29,10 +29,10 @@
                 android:id="@+id/collapse_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="256dp"
+                app:titleEnabled="false"
                 android:fitsSystemWindows="true"
                 android:overScrollMode="always"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTextStyle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
@@ -60,9 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
-                app:tabIndicatorColor="@color/colorAccent"
-                app:tabSelectedTextColor="@color/colorAccent"
-                app:tabTextColor="@color/colorAccentLight" />
+                app:tabIndicatorColor="@color/colorAccentLight"
+                app:tabSelectedTextColor="@color/colorAccent"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -80,7 +79,6 @@
         android:id="@+id/dragView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
         android:clickable="true"
         android:focusable="false"
         android:orientation="vertical"

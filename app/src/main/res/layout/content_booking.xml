@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent"
-    tools:context="booking.MainActivity">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/time_picker"
@@ -51,10 +50,10 @@
     </LinearLayout>
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:padding="16dp"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:weightSum="5">
@@ -62,9 +61,10 @@
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/booking_selected_date"
             android:layout_weight="4"
+            android:layout_height="match_parent"
             android:layout_width="0dp"
             android:gravity="center"
-            android:layout_height="match_parent"
+            android:textColor="@color/colorAccent"
             android:text="Martes 12, 6:00 PM - 7:00 PM" />
 
         <ImageView
@@ -72,7 +72,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_gravity="center"
-            android:layout_height="24dp"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_done"/>
 
     </LinearLayout>

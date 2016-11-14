@@ -9,9 +9,6 @@
         android:id="@+id/filter2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOff="0"
-        android:textOn="1"
-        android:theme="@style/MySwitch"
-        app:showText="true" />
+        android:theme="@style/MySwitch"/>
 
 </LinearLayout>

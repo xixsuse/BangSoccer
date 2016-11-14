@@ -1,86 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    // Base Colors
-    <color name="colorBlack">#212121</color>
-    <color name="colorWhite">#f6f6f6</color>
-
     // Primary Colors
-    <color name="colorPrimary">#FAFAFA</color>
-    <color name="background">#EEEEEE</color>
-    <!--  <color name="colorPrimaryDark">#E64A19</color>-->
-<!--    <color name="colorPrimaryLight">#FF8A65</color>-->
+    <color name="colorPrimaryDark">#002d23</color>
+    <color name="colorPrimary">#01483a</color>
+    <color name="colorPrimaryLight">#377b2b</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorTransparent">#00000000</color>
+
     // Accent Colors
-    <!--    <color name="colorAccent">#a80022</color>-->
-    <color name="colorAccent">#E64E05</color>
-    <color name="colorAccentLailai">#50ca04</color>
-    <!--<color name="colorAccent2">#35c1d3</color>-->
-    <color name="colorAccentLight">#377b2b</color>
+    <color name="colorAccent">#3dbc26</color>
+    <color name="colorAccentDark">#8c8906</color>
+    <color name="colorAccentLight">#828d1b</color>
+
+    //Switch Colors
+    <color name="colorControlSwitchActivated">#be2105</color>
+    <color name="colorControlSwitchHighlight">#be057d</color>
+
+    // Text and IC colors
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>
-
 
     <color name="grey_1">#B6B6B6</color>
     <color name="grey_2">#767676</color>
     <color name="grey_3">#DCDCDC</color>
     <color name="black_1">#373737</color>
 
-    <color name="colorTransparent">#00000000</color>
-
-    // FAKE Primary Colors
-    <color name="colorPrimaryDark">#377b2b</color>
-
-    <color name="colorNewsFeed">#e313110b</color>
-    <color name="textColorPrimary">#66000000</color>
-
-    <color name="text_background">#90000000</color>
     <color name="transparent_actionbar_background">#22000000</color>
-    <color name="lighter_gray">#ddd</color>
-
     <color name="black_overlay">#66000000</color>
 
-    <!--newsfeed card colors-->
-    <color name="colorNewsFeedGradient3">#96363535</color>
-    <color name="colorNewsFeedGradient2">#00a7a7a7</color>
-    <color name="colorNewsFeedGradient1">#91030a0b</color>
-
-    <color name="colorPrimaryfire">#039BE5</color>
-    <color name="colorPrimaryDarkfire">#0288D1</color>
-    <color name="colorAccentfire">#FFA000</color>
-
-    <color name="material_deep_purple_50">#EDE7F6</color>
-    <color name="material_deep_purple_500">#673AB7</color>
-    <color name="material_deep_purple_700">#512DA8</color>
-    <color name="material_deep_purple_a200">#E040FB</color>
-
-    <color name="material_green_50">#E8F5E9</color>
-    <color name="material_green_500">#4CAF50</color>
-    <color name="material_green_700">#388E3C</color>
-    <color name="material_green_300">#AED581</color>
-    <color name="material_green_a200">#69F0AE</color>
-
-    <color name="material_grey_3002">#E0E0E0</color>
-
-    <color name="material_lime_50">#F9FBE7</color>
-    <color name="material_lime_a700">#AEEA00</color>
-
-    <color name="material_purple_50">#F3E5F5</color>
-    <color name="material_purple_a700">#AA00FF</color>
-
-    <color name="material_red_a200">#FF5252</color>
-    esources>
-    <color name="authui_colorPrimary">#3E50B4</color>
-    <color name="authui_colorPrimaryDark">#2F3E9E</color>
-    <color name="authui_colorAccent">#3E50B4</color>
-    <color name="authui_colorActivated">#1a237e</color>
-
-    <color name="headingColor">#212121</color>
-    <color name="bodyTextColor">#c0000000</color>
-    <color name="errorColor">#DD2C00</color>
-    <color name="linkColor">#4285F4</color>
-    <color name="buttonColor">@color/authui_colorPrimary</color>
-    <color name="buttonColorPressed">@color/authui_colorActivated</color>
-    <color name="buttonTextColor">#FFFFFF</color>
-    <color name="inputLabelColor">#757575</color>
-    <color name="shadowColor">#eeeeee</color>
 </resources>

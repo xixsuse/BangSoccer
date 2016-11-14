@@ -15,7 +15,7 @@
     <string name="permission_explanation">Allow this app to use your location to show distance to attractions?</string>
     <string name="permission_explanation_action">Let\'s do it!</string>
 
-    <!--reservaciones-->
+    <!--Reservaciones-->
     <string name="hour_hint">Dia</string>
     <string name="minute_hint">Hora</string>
 
@@ -101,6 +101,7 @@
         <item>AM</item>
         <item>PM</item>
     </string-array>
+
     <!-- Activity Settings -->
     <string name="title_activity_settings">Settings</string>
     <!-- Shared Preferences Headers -->

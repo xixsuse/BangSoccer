@@ -15,7 +15,6 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="?attr/selectableItemBackground"
-        app:cardElevation="8dp"
         app:contentPadding="16dp">
 
         <LinearLayout
@@ -52,7 +51,6 @@
                     android:text="April 15 at 10:17am "
                     android:textAlignment="viewEnd"
                     android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-                    android:textSize="12sp"
                     tools:targetApi="LOLLIPOP" />
 
 

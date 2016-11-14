@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:focusable="true"
-    card_view:cardBackgroundColor="@color/cardview_light_background">
+    android:focusable="true">
 
     <LinearLayout
         android:id="@+id/follow_clubs_row_layout"
@@ -23,7 +22,7 @@
             android:layout_marginStart="56dp"
             android:layout_weight="1"
             android:clickable="false"
-            android:buttonTint="@color/colorPrimaryDark"
+            android:buttonTint="@color/colorAccent"
             android:gravity="center" />
 
         <ImageView
@@ -43,9 +42,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="4.5"
             android:gravity="start|center"
-            android:text="Club Barcelona Atletico"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp" />
+            android:text="Club Barcelona Atletico"/>
 
 
     </LinearLayout>

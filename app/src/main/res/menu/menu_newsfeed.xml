@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/myswitch"
+        android:title=""
+        android:orderInCategory="3"
+        app:actionLayout="@layout/item_switch"
+        app:showAsAction="always" />
+
+
+    <item
         android:id="@+id/action_favorites"
         android:icon="@drawable/ic_football_badge"
         android:orderInCategory="2"
@@ -18,10 +26,5 @@
 
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/myswitch"
-        android:title=""
-        app:actionLayout="@layout/item_switch"
-        app:showAsAction="always" />
 
 </menu>

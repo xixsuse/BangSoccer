@@ -10,7 +10,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/list"
         android:foreground="?attr/selectableItemBackground"
-        android:background="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"

@@ -88,8 +88,7 @@
                             android:layout_gravity="start"
 
                             android:text="Josian Vegueta Acevedo Perez"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="14sp" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
                         <TextView
@@ -98,8 +97,7 @@
                             android:layout_gravity="start"
                             android:text="Nombre Completo"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textColor="@color/colorAccent" />
 
                     </LinearLayout>
 
@@ -135,8 +133,7 @@
                             android:layout_gravity="start"
 
                             android:text="Dominicano"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="14sp" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
                         <TextView
@@ -145,8 +142,7 @@
                             android:layout_gravity="start"
                             android:text="Nacionalidad"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textColor="@color/colorAccent"/>
 
                     </LinearLayout>
 
@@ -182,8 +178,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:text="Defensa"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="14sp" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
                         <TextView
@@ -192,8 +187,7 @@
                             android:layout_gravity="start"
                             android:text="Posicion"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textColor="@color/colorAccent"/>
 
                     </LinearLayout>
 
@@ -230,8 +224,7 @@
                             android:layout_gravity="start"
 
                             android:text="187 Lbs | 5'11 Pies"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="14sp" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
                         <TextView
@@ -240,8 +233,7 @@
                             android:layout_gravity="start"
                             android:text="Peso y Estatura"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textColor="@color/colorAccent"/>
 
                     </LinearLayout>
 
@@ -278,8 +270,7 @@
                             android:layout_gravity="start"
 
                             android:text="Derecho"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="14sp" />
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
                         <TextView
@@ -288,8 +279,7 @@
                             android:layout_gravity="start"
                             android:text="Pie Dominante"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textColor="@color/colorAccent" />
 
                     </LinearLayout>
 
@@ -326,8 +316,7 @@
                             android:layout_gravity="start"
 
                             android:text="7 Goles"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="14sp" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
                         <TextView
@@ -336,8 +325,7 @@
                             android:layout_gravity="start"
                             android:text="Goles"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textColor="@color/colorAccent" />
 
                     </LinearLayout>
 
@@ -374,8 +362,7 @@
                             android:layout_gravity="start"
 
                             android:text="2 Amarillas y 0 Rojas"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textSize="14sp" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                         <TextView
                             android:id="@+id/leaders_player_club"
@@ -384,8 +371,7 @@
                             android:layout_gravity="start"
                             android:text="Disciplina"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="12sp" />
+                            android:textColor="@color/colorAccent" />
 
                     </LinearLayout>
 

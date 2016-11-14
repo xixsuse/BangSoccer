@@ -8,8 +8,8 @@ android {
         applicationId "upgrade.ntv.bangsoccer"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 17
-        versionName "1.6.1"
+        versionCode 19
+        versionName "1.7"
     }
 
 
@@ -17,10 +17,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
         }
         debug {
-            debuggable true
+            debuggable false
         }
     }
     defaultConfig {

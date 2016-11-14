@@ -11,10 +11,10 @@
     // Accent Colors
     <color name="colorAccent">#3dbc26</color>
     <color name="colorAccentDark">#8c8906</color>
-    <color name="colorAccentLight">#828d1b</color>
+    <color name="colorAccentLight">#f5c608</color>
 
     //Switch Colors
-    <color name="colorControlSwitchActivated">#be2105</color>
+    <color name="colorControlSwitchActivated">#f5c608</color>
     <color name="colorControlSwitchHighlight">#be057d</color>
 
     // Text and IC colors

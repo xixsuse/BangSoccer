@@ -24,9 +24,10 @@
     </style>
 
     <style name="MySwitch" parent="AppTheme">
-        <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/colorControlSwitchActivated</item>
-        <item name="colorControlHighlight">@color/colorControlSwitchHighlight</item>
+
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorSwitchThumbNormal">@color/colorControlSwitchActivated</item>
+        <item name="colorControlHighlight">@color/colorControlSwitchActivated</item>
     </style>
 
 

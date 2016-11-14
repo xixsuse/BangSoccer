@@ -2,33 +2,17 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ActivityMain"
-    tools:showIn="@layout/activity_main"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/refresh_layout"
-    >
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ActivityMain"
+    tools:showIn="@layout/activity_main">
 
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/main_newsfeed_cardList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            android:foreground="?attr/selectableItemBackground" />
-
-
-
-    </LinearLayout>
-
-
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_newsfeed_cardList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </android.support.v4.widget.SwipeRefreshLayout>

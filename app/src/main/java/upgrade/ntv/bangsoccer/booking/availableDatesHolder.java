@@ -24,18 +24,18 @@ public class availableDatesHolder extends RecyclerView.ViewHolder {
 
     public void setMonth(String month){
 
-        monthTextView = (TextView) itemView.findViewById(R.id.month_text);
-        monthTextView.setText(month);
+      //  monthTextView = (TextView) itemView.findViewById(R.id.month_text);
+     //   monthTextView.setText(month);
     }
     public void setDay(String day){
 
-        dayTextView= (TextView) itemView.findViewById(R.id.day_text);
-        dayTextView.setText(day);
+     //   dayTextView= (TextView) itemView.findViewById(R.id.day_text);
+     //   dayTextView.setText(day);
     }
     public void setDayofweek(String dayofweek){
 
-        dayofweekTextView = (TextView) itemView.findViewById(R.id.dayofweek_text);
-        dayofweekTextView.setText(dayofweek);
+      //  dayofweekTextView = (TextView) itemView.findViewById(R.id.dayofweek_text);
+     //   dayofweekTextView.setText(dayofweek);
     }
 
 

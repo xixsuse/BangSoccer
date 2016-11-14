@@ -9,11 +9,7 @@
     android:layout_marginStart="4dp"
     android:layout_marginTop="8dp"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardBackgroundColor="@color/cardview_light_background"
-    card_view:cardElevation="4dp">
-    <!--  card_view:cardCornerRadius="10dp"-->
+    android:focusable="true">
 
 
     <LinearLayout
@@ -58,8 +54,7 @@
                     android:layout_gravity="start"
                     android:text="Dare to Improve"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="12sp" />
+                    android:textColor="@color/colorPrimaryDark" />
 
 
 
@@ -69,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorAccentLailai"
+                    android:textColor="@color/colorAccent"
                     android:textSize="12sp" />
 
             </LinearLayout>

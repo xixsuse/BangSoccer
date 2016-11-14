@@ -6,9 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardBackgroundColor="@color/cardview_light_background">
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:textSize="12sp"
         android:text="Club Barcelona Atletico"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
       </LinearLayout>

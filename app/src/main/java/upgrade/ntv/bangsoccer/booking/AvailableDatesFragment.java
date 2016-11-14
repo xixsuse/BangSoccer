@@ -1,3 +1,4 @@
+/*
 package upgrade.ntv.bangsoccer.booking;
 
 import android.os.Bundle;
@@ -22,9 +23,11 @@ import upgrade.ntv.bangsoccer.Adapters.RecyclerHoursAdapter;
 import upgrade.ntv.bangsoccer.R;
 
 
+*/
 /**
  * Created by Jose Rivera on 9/3/2016.
- */
+ *//*
+
 public class AvailableDatesFragment extends Fragment {
 
     private FirebaseRecyclerAdapter<availableDatesViewModel, availableDatesHolder> mAdapter;
@@ -211,3 +214,4 @@ public class AvailableDatesFragment extends Fragment {
     }
 
 }
+*/

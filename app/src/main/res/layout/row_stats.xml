@@ -113,7 +113,7 @@
             android:layout_marginStart="4dp"
             android:layout_weight="0.8"
             android:gravity="center"
-            android:text="+38"
+            android:text="38"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="12sp" />
 
@@ -127,7 +127,7 @@
             android:gravity="center"
             android:text="46"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
 
     </LinearLayout>

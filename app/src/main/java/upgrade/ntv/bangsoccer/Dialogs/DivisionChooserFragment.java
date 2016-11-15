@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ public class DivisionChooserFragment extends DialogFragment  {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(root);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+       // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         return dialog;
@@ -65,9 +66,9 @@ public class DivisionChooserFragment extends DialogFragment  {
 
         recyclerView.setHasFixedSize(true);
 
-        // LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        lLayout = new GridLayoutManager(getActivity(), 1);
-        recyclerView.setLayoutManager(lLayout);
+         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+       // lLayout = new GridLayoutManager(getActivity(), 1);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         divisionsAdapter = new DivisionsAdapter(getActivity());
         recyclerView.setAdapter(divisionsAdapter);

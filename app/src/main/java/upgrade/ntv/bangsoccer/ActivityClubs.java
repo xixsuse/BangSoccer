@@ -164,7 +164,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
                             placeholder(R.drawable.ic_upgraden).
                             into(img);
 
-                   // txt.setText(mClub.getName());
+                    toolbar.setTitle(mClub.getName());
                 }
 
             }

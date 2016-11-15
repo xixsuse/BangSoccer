@@ -150,9 +150,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         navigationView.setCheckedItem(R.id.nav_dynamic_tourney);
     }
 
-
-
-
     private void BindSlidingPanel() {
         slidingUpPanelLayoutT.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -203,7 +200,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
     }
 
-
     public String makePagerFragmentTag(int id) {
         String i = "string";
         switch (id) {
@@ -235,16 +231,12 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
         }
         mFragmentContainer = FragmentViewPagerContainer.newInstance(id);
 
-
-
         BindActivity();
-
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_holder, mFragmentContainer, makePagerFragmentTag(id));
         ft.commit();
         setLastSpinnerSelectedItem(id);
-
 
         BindSlidingPanel();
     }
@@ -287,6 +279,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
                 intent = new Intent(this, ActivityFavoriteNFollow.class);
                 startActivity(intent);
                 break;
+
             case R.id.action_divisiones:
                 onDvisionChoosertDialog();
                 break;
@@ -341,6 +334,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
     public void onDivisionSelected(String node) {
         //add matches to the calendar viewpager when a division is selected
         mFragmentContainer.addSelectedDivision(node);
+       // mFragmentContainer.notifyAll();
     }
 
     @Override
@@ -371,7 +365,6 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
         private FragmentViewPagerContainer.TourneyCalendarPagerAdapter mTourneyCalendarPagerAdapter;
         private List<Day> mMatchesOfTheDiv = new ArrayList<>();
-        private List<Players> mPlayersOfTheDiv = new ArrayList<>();
         private HashMap<String, List<LeadersIndex>> leaderMaps = new HashMap<>();
         //TODO: catch map <string, List<index>> handle the goals/cards section
         private int dateInCurrentWeek = -1;
@@ -705,6 +698,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
                     // needs to be here to references the tab layout
                     if (dateInCurrentWeek != -1) {
                         mViewPager.setCurrentItem(dateInCurrentWeek);
+
                     }
                 }
                 return mMatchesOfTheDiv.get(position).getDate().toUpperCase();

@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/follow_clubs_row_layout"
         android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:layout_height="56dp"
         android:weightSum="10">
 
 
@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="56dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:clickable="false"
             android:buttonTint="@color/colorAccent"
@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:padding="8dp"
             android:src="@drawable/ic_upgraden" />
 
@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
-            android:layout_weight="4.5"
+            android:layout_weight="6"
             android:gravity="start|center"
             android:text="Club Barcelona Atletico"/>
 

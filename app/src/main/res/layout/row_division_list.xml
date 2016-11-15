@@ -4,6 +4,9 @@
     android:id="@+id/division_row_cardview"
     android:layout_width="match_parent"
     android:layout_height="56dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp">
     android:clickable="true"
     android:focusable="true">
 

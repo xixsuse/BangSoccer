@@ -4,6 +4,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     android:orientation="vertical"
     android:weightSum="4">
 
@@ -16,10 +17,10 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:contentDescription="@string/desc_firebase_lockup"
-            android:src="@drawable/ic_upgraden"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/desc_firebase_lockup"
+            android:src="@drawable/ic_upgraden" />
 
         <TextView
             android:id="@+id/title_text"

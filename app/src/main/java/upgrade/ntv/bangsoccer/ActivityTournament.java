@@ -419,7 +419,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
             tabLayout.setupWithViewPager(mViewPager);
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    getActivity(), drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                    getActivity(), drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
             drawer.setDrawerListener(toggle);
             toggle.syncState();
 

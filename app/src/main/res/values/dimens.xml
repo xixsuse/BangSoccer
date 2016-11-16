@@ -1,41 +1,57 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">8dp</dimen>
-    <dimen name="activity_vertical_margin">4dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <!-- COMMON -->
+    <dimen name="app_bar_height">240dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
-    <dimen name="app_bar_height">300dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- MARGINS -->
+    <dimen name="margin_text">@dimen/margin_16dp</dimen>
+    <dimen name="margin_tiny">@dimen/margin_4dp</dimen>
+    <dimen name="margin_small">@dimen/margin_8dp</dimen>
+    <dimen name="margin_standard">@dimen/margin_16dp</dimen>
+    <dimen name="margin_big">@dimen/margin_24dp</dimen>
+
+    <!-- MARGIN SIZES -->
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_24dp">24dp</dimen>
+    <dimen name="margin_32dp">32dp</dimen>
+
+    <dimen name="image_size">120dp</dimen>
+    <integer name="list_columns">1</integer>
+
+    <!-- Sign In Activity -->
+    <dimen name="sign_in_image_size">128dp</dimen>
+
+    <!-- Navigation header -->
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="nav_header_padding">16dp</dimen>
+    <dimen name="nav_header_image_size">80dp</dimen>
+
+    <!-- Profile Activity -->
+    <dimen name="profile_padding_top">32dp</dimen>
+    <dimen name="profile_card_margin_top">16dp</dimen>
+    <dimen name="profile_button_padding">8dp</dimen>
+
+    <!-- Item Details Activity -->
+    <dimen name="item_tittle_bar_elevation">2dp</dimen>
+    <dimen name="item_text_start_margin">96dp</dimen>
+
+
+    <dimen name="fab_margin">16dp</dimen>
+    <!-- <dimen name="app_bar_height">300dp</dimen>-->
     <dimen name="text_margin">16dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="standard_margin">16dp</dimen>
     <dimen name="small_margin">8dp</dimen>
     <dimen name="tiny_margin">4dp</dimen>
-    <dimen name="image_size">120dp</dimen>
-    <dimen name="fab_margin_hidden">-8dp</dimen>
-    <item name="keyline1" type="dimen">@dimen/standard_margin</item>
-    <dimen name="keyline2">72dp</dimen>
-    <item name="keyline3" type="dimen">@dimen/standard_margin</item>
-    <integer name="list_columns">1</integer>
     <!-- scrollable list -->
     <dimen name="header_height">200dip</dimen>
-    <dimen name="tabs_height">48dip</dimen>
-    <!-- feed item -->
-    <dimen name="feed_item_margin">10dp</dimen>
-    <dimen name="feed_item_padding_top_bottom">20dp</dimen>
-    <dimen name="feed_item_padding_left_right">15dp</dimen>
-    <dimen name="feed_item_profile_pic">50dp</dimen>
-    <dimen name="feed_item_profile_info_padd">10dp</dimen>
-    <dimen name="feed_item_profile_name">15dp</dimen>
-    <dimen name="feed_item_timestamp">13dp</dimen>
-    <dimen name="feed_item_status_pad_left_right">15dp</dimen>
-    <dimen name="feed_item_status_pad_top">13dp</dimen>
-    <dimen name="feed_item_corner_radius">3dp</dimen>
-    <dimen name="feed_item_border_width">1dp</dimen>
+
     <!--login-->
     <dimen name="icon_top_margin">24dp</dimen>
     <dimen name="icon_bottom_margin">24dp</dimen>

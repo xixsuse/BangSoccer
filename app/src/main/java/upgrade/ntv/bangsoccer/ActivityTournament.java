@@ -479,6 +479,7 @@ public class ActivityTournament extends AppCompatActivity implements NavigationV
 
                 mTourneyCalendarPagerAdapter.calendarDivReferenceFinder(node);
                 mTourneyCalendarPagerAdapter.notifyDataSetChanged();
+
             }
             if (fragmentId == R.id.matches_leaders) {
 

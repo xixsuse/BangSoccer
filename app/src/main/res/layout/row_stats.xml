@@ -125,6 +125,7 @@
             android:layout_marginStart="4dp"
             android:layout_weight="0.8"
             android:gravity="center"
+            android:textColor="@color/colorAccentLight"
             android:text="46"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="16sp" />

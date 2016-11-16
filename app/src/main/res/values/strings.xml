@@ -1,12 +1,70 @@
 <resources>
+
+    <!-- Overall Strings -->
     <string name="app_name">Media Cancha</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- Navigation drawer -->
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_drawer_option_profile">My Profile</string>
+    <string name="nav_drawer_option_medical_centers">Medical Centers</string>
+    <string name="nav_drawer_option_ARS">Specialists</string>
+    <string name="nav_drawer_tittle_advanced">Advanced</string>
+    <string name="nav_drawer_option_settings">Settings</string>
+    <string name="nav_drawer_option_about">About Up°</string>
+
+    <!-- ACTION BUTTONS -->
+    <string name="action_settings">Settings</string>
+    <string name="action_edit">Edit</string>
+
+    <!--PREFERENCES CATEGORY TITLES-->
+    <string name="pref_category_title_general">GENERAL</string>
+    <string name="pref_category_title_about">ABOUT</string>
+
+    <!--PREFERENCES TITLES-->
+    <string name="pref_title_map_style">Map style</string>
+    <string name="pref_title_push_notifications">Push Notifications</string>
+    <string name="pref_title_theme">Theme</string>
+    <string name="pref_title_account_id">Logged in as</string>
+    <string name="pref_title_version_id">App Version</string>
+    <string name="pref_title_build_id">Build Number</string>
+
+    <!--PREFERENCES SUMMARIES-->
+    <string name="pref_summary_notifications_on">Allowed</string>
+    <string name="pref_summary_notifications_off">Not allowed</string>
+    <string name="pref_summary_theme_on">Dark</string>
+    <string name="pref_summary_theme_off">Light</string>
+
+    <!--PREFERENCES KEYS-->
+    <string name="pref_key_map_style" translatable="false">map_style</string>
+    <string name="pref_key_push_notifications" translatable="false">push_notifications</string>
+    <string name="pref_key_theme" translatable="false">theme</string>
+    <string name="pref_key_account_id" translatable="false">account_id</string>
+    <string name="pref_key_version_id" translatable="false">version_id</string>
+    <string name="pref_key_build_id" translatable="false">build_id</string>
+
+    <!--PREFERENCES DEFAULTS-->
+    <string name="pref_default_map_style">1</string>
+
+    <!--PREFERENCES LIST OPTIONS-->
+    <string-array name="pref_list_map_style">
+        <item>Normal</item>
+        <item>Satellite</item>
+        <item>Terrain</item>
+        <item>Hybrid</item>
+    </string-array>
+    <string-array name="pref_list_map_style_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+
     <string name="facebook_app_id">116280978808946</string>
     <string name="facebook_application_id" translatable="false">116280978808946</string>
 
-    <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_activity_matches_calendar">ActivityMatchesCalendar</string>
     <string name="section_format">Hello World from section: %1$d</string>
@@ -107,27 +165,11 @@
     <!-- Shared Preferences Headers -->
     <string name="pref_header_map">Map</string>
     <!-- Shared Preferences keys -->
-    <string name="pref_key_map_style" translatable="false">map_style</string>
     <string name="pref_key_divisions" translatable="false">divisions</string>
     <!-- Shared  Preferences Titles-->
-    <string name="pref_title_map_style">Map style</string>
     <string name="pref_title_divisions">Divisiones</string>
     <!-- Shared  Preferences Defaults-->
-    <string name="pref_default_map_style" translatable="false">101</string>
     <string name="pref_default_divisions" translatable="false">Div1_Calendar</string>
-    <!-- Shared Preferences Defaults-->
-    <string-array name="pref_list_map_style">
-        <item>Normal</item>
-        <item>Satellite</item>
-        <item>Terrain</item>
-        <item>Hybrid</item>
-    </string-array>
-    <string-array name="pref_list_map_style_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
     <!--login-->
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>

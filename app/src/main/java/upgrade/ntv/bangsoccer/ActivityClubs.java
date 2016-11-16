@@ -61,15 +61,6 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     // Firebase references
     public static DatabaseReference mDatabaseRef;
     public static StorageReference mStorageRef;
-    private Query query;
-
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private DrawerLayout drawer;
-    private String teamid = "";
-    private Toolbar toolbar;
-    private ViewPager mViewPager;
-    private Club mClub;
-
     //sliding view elements
     @BindView(R.id.sliding_layout)
     SlidingUpPanelLayout slidingUpPanelLayout;
@@ -93,6 +84,13 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
     TextView vPlayerDominantFoot;
     @BindView(R.id.player_detail_Alias_n_Number)
     TextView vPlayerAliasNNumber;
+    private Query query;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private DrawerLayout drawer;
+    private String teamid = "";
+    private Toolbar toolbar;
+    private ViewPager mViewPager;
+    private Club mClub;
     private String PlayerId;
 
 
@@ -113,7 +111,7 @@ public class ActivityClubs extends AppCompatActivity implements CollapsingToolba
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 

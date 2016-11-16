@@ -58,32 +58,30 @@ public class ActivityBooking extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_booking);
         ButterKnife.bind(this);
 
-
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setSelected(true);
-
-
+       // navigationView.setSelected(true);
+        drawer.setSelected(true);
 
         mPickerViewH.setOnValueChangedListener(this);
         mPickerViewM.setOnValueChangedListener(this);
+        mPickerViewH.setDividerColor(R.color.colorAccent);
+        mPickerViewM.setDividerColor(R.color.colorAccentLight);
         mSubmit.setOnClickListener(this);
         selectedDateTextView = (AppCompatTextView)this.findViewById(R.id.booking_selected_date);
+
         initTime();
     }
 
-    //habdles the initialization of the pickers
+    //handles the initialization of the pickers
     private void initTime(){
         GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
         int h = calendar.get(Calendar.HOUR_OF_DAY);

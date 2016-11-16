@@ -2,8 +2,8 @@
 <resources>
 
     //Dark Theme
-    <color name="colorPrimaryDark">#0d0d0d</color>
-    <color name="colorPrimary">#131313</color>
+    <color name="colorPrimaryDark">#121111</color>
+    <color name="colorPrimary">#1e1e1e</color>
 
     // Primary Colors
 <!--    <color name="colorPrimaryDark">#002d23</color>
@@ -15,7 +15,7 @@
     // Accent Colors
     <color name="colorAccent">#3dbc26</color>
     <color name="colorAccentDark">#8c8906</color>
-    <color name="colorAccentLight">#f5c608</color>
+    <color name="colorAccentLight">#8c8906</color>
 
     //Switch Colors
     <color name="colorControlSwitchActivated">#f5c608</color>
